@@ -20,9 +20,10 @@ namespace game_store_domain.Entities
 
     internal class Game
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get;set; }
-
+        public List<GameGenres> Genres { get; set; } = new List<GameGenres>();
     }
 }
