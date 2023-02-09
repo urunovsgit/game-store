@@ -1,0 +1,2 @@
+﻿1. Couldn't access GitLab from VS 2022 (GitLab extension for VS does not supports VS 2022 version)
+	Possible solution: use GitHub instead of GitLab
