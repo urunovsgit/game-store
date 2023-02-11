@@ -1,3 +1,4 @@
+using game_store_domain;
 using game_store_domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<game_store_domain.GameStoreDbContext>(opts => {
-    opts.UseSqlServer(builder.Configuration["ConnectionStrings:GAMESTORE_SQL_CONNECTIONSTRING"]);
+builder.Services.AddDbContext<GameStoreDbContext>(opts => {
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:GAMESTORE_DB_CONN_STR"]);
 });
 
 builder.Services.AddScoped<IGameServices, GameServiceProvider>();

@@ -12,13 +12,19 @@ namespace game_store_domain.Entities
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         [Required]
         public string Description { get; set; }
 
         [Required]
         public decimal Price { get; set; }
+
+        [Required]
+        public DateTime PublishDate { get; set; } = DateTime.Now;
+
+        [Required]
+        public string Owner { get; set; }
 
         public List<Genre> Genres { get; set; } = new List<Genre>();
     }

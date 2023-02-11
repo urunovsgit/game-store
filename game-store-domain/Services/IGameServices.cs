@@ -9,7 +9,7 @@ namespace game_store_domain.Services
 {
     public interface IGameServices
     {
-        public (IEnumerable<Game>, int) GetGames(List<Genre> genres, int pageSize, int page);
+        public (IEnumerable<Game>, int) GetGames(SortFilterPageOptions options);
         public Game GetGameById(int id);
         public Game AddNewGame(Game game);
         public Game UpdateGame(Game game);
