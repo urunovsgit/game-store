@@ -22,6 +22,8 @@ namespace game_store_domain.Services
             var gamesQuery = _storeDbContext.Set<Game>().AsQueryable();
 
             var games = gamesQuery.AsNoTracking()
+                                  .Include(game => game.Genres)
+                                  .ThenInclude(genre => genre.SubGenres)
                                   .OrderAndFilterBy(options)
                                   .Paginate(options)
                                   .ToList();
