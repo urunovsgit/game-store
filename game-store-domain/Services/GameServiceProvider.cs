@@ -1,5 +1,4 @@
-﻿using Azure;
-using game_store_domain.Entities;
+﻿using game_store_domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace game_store_domain.Services
     {
         private readonly DbContext _storeDbContext;
 
-        public GameServiceProvider(DbContext storeDbContext)
+        public GameServiceProvider(GameStoreDbContext storeDbContext)
         {
             _storeDbContext = storeDbContext;
         }

@@ -50,16 +50,16 @@ namespace game_store_domain.Services
 
         public static IQueryable<Game> Paginate(this IQueryable<Game> queryable, SortFilterPageOptions options)
         {
-            var totalPages = (int)Math.Ceiling((decimal)queryable.Count() / options.PageSize);
+            //var totalPages = (int)Math.Ceiling((decimal)queryable.Count() / options.PageSize);
 
-            if (options.Page > totalPages)
-            {
-                options.Page = totalPages;
-            }
-            else if (options.Page == 0)
-            {
-                options.Page = 1;
-            }
+            //if (options.Page > totalPages)
+            //{
+            //    options.Page = totalPages;
+            //}
+            //else if (options.Page == 0)
+            //{
+            //    options.Page = 1;
+            //}
 
             return queryable.Skip((options.Page - 1) * options.PageSize)
                             .Take(options.PageSize);
