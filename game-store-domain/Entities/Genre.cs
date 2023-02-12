@@ -16,8 +16,8 @@ namespace game_store_domain.Entities
         public string Name { get; set; }
 
         [AllowNull]
-        public List<Genre> SubGenres { get; set; }
+        virtual public List<Genre> SubGenres { get; set; }
 
-        public List<Game> Games { get; set; } = new List<Game>();
+        virtual public List<Game> Games { get; set; } = new List<Game>();
     }
 }

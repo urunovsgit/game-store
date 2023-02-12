@@ -21,10 +21,7 @@ namespace game_store_domain.Services
         {
             var gamesQuery = _storeDbContext.Set<Game>().AsQueryable();
 
-            var games = gamesQuery.AsNoTracking()
-                                  .Include(game => game.Genres)
-                                  .ThenInclude(genre => genre.SubGenres)
-                                  .OrderAndFilterBy(options)
+            var games = gamesQuery.OrderAndFilterBy(options)
                                   .Paginate(options)
                                   .ToList();
 
@@ -33,7 +30,7 @@ namespace game_store_domain.Services
 
         public Game GetGameById(int id)
         {
-            throw new NotImplementedException();
+            return _storeDbContext.Set<Game>().Find(id);
         }
 
         public Game AddNewGame(Game game)

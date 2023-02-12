@@ -29,6 +29,12 @@ namespace game_store.Controllers
             });
         }
 
+        public IActionResult ViewGame(int gameId)
+        {
+            var game = _gameServicesProvider.GetGameById(gameId);
+            return View(game);
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -1,101 +1,46 @@
 ﻿@model GamesViewModel
 
+<!--Games section  -->
 
-<!-- Page Preloder -->
-<div id="preloder">
-    <div class="loader"></div>
-</div>
+<div class="row">
+    @foreach (var game in Model.Games)
+    {
+        <div class="col-lg-4 col-md-6">
+            <div class="recent-game-item">
+                <div class="rgi-thumb set-bg" data-setbg="img/recent-game/7.jpg">
+                    @{
+                        string genresAsString = "";
+                        @foreach (var genre in game.Genres)
+                        {
+                            if (string.IsNullOrEmpty(genresAsString))
+                            {
+                                genresAsString += genre.Name;
+                            }
+                            else
+                            {
+                                genresAsString += "/" + genre.Name;
+                            }
 
-<!-- Header section -->
-<header class="header-section">
-    <div class="container">
-        <!-- logo -->
-        <a class="site-logo" asp-controller="Home" asp-action="Index">
-            <img src="img/logo.png" alt="">
-        </a>
-        <div class="user-panel">
-            <a href="#">Login</a>  /  <a href="#">Register</a>
-        </div>
-        <!-- responsive -->
-        <div class="nav-switch">
-            <i class="fa fa-bars"></i>
-        </div>
-        <!-- site menu -->
-        <nav class="main-menu">
-            <ul>
-                <li><a asp-controller="Home" asp-action="Index">Games</a></li>
-                <li><a href="categories.html">Blog</a></li>
-                <li><a href="community.html">Forums</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
-<!-- Header section end -->
-<!-- Recent game section  -->
-<section class="recent-game-section spad set-bg" data-setbg="img/recent-game-bg.png">
-    <div class="container">
-        <div class="row">
-            @foreach (var game in Model.Games)
-            {
-                <div class="col-lg-4 col-md-6">
-                    <div class="recent-game-item">
-                        <div class="rgi-thumb set-bg" @*data-setbg="img/recent-game/1.jpg"*@>
-                            @{
-                                string genresAsString = "";
-                                @foreach (var genre in game.Genres)
+                            if (genre.SubGenres != null)
+                            {
+                                foreach (var subgenre in genre.SubGenres)
                                 {
-                                    if (string.IsNullOrEmpty(genresAsString))
-                                    {
-                                        genresAsString += genre.Name;
-                                    }
-                                    else
-                                    {
-                                        genresAsString += "/" + genre.Name;
-                                    }
-
-                                    if (genre.SubGenres != null)
-                                    {
-                                        foreach (var subgenre in genre.SubGenres)
-                                        {
-                                            genresAsString += "/" + subgenre.Name;
-                                        }
-                                    }
+                                    genresAsString += "/" + subgenre.Name;
                                 }
                             }
-                            <div class="cata racing">@genresAsString</div>
-                        </div>
-                        <div class="rgi-content">
-                            <h5>@game.Title</h5>
-                            <p>@game.Description</p>
-                            <a href="#" class="comment">3 Comments</a>
-                            <div class="rgi-extra">
-                                <p>$@game.Price</p>
-                            </div>
-                        </div>
+                        }
+                    }
+                    <div class="cata racing">@genresAsString</div>
+                </div>
+                <div class="rgi-content">
+                    <a asp-controller="Home" asp-action="ViewGame" asp-route-gameId="@game.Id"><h5>@game.Title</h5></a>
+                    <a href="#" class="comment">3 Comments</a>
+                    <div class="rgi-extra">
+                        <p>$@game.Price</p>
                     </div>
                 </div>
-            }
+            </div>
         </div>
-    </div>
-</section>
-<!-- Recent game section end -->
-
-<!-- Footer section -->
-<footer class="footer-section">
-    <div class="container">
-        <ul class="footer-menu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="review.html">Games</a></li>
-            <li><a href="categories.html">Blog</a></li>
-            <li><a href="community.html">Forums</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <p class="copyright">
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-        </p>
-    </div>
-</footer>
-<!-- Footer section end -->
+    }
+</div>
+<!-- Games section end -->

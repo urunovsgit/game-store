@@ -16,5 +16,8 @@ namespace game_store_domain
         {
             Database.EnsureCreated();
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+                => optionsBuilder.UseLazyLoadingProxies();
     }
 }

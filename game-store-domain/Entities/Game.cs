@@ -26,6 +26,7 @@ namespace game_store_domain.Entities
         [Required]
         public string Owner { get; set; }
 
-        public List<Genre> Genres { get; set; } = new List<Genre>();
+        [Required]
+        virtual public List<Genre> Genres { get; set; } = new List<Genre>();
     }
 }
