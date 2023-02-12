@@ -18,7 +18,7 @@ namespace game_store.Controllers
 
         public IActionResult Index(int page = 1)
         {
-            var options = new SortFilterPageOptions { Page = page };
+            var options = new SortFilterPageOptions { Page = page, PageSize = 10 };
             var (games, count) = _gameServicesProvider.GetGames(options);
 
             return View(new GamesViewModel
