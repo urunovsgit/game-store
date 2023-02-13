@@ -36,7 +36,7 @@ namespace game_store.Controllers
                 Description = gameDescr
             };
 
-            //_gameServicesProvider.AddNewGame(game);
+            _gameServicesProvider.AddNewGame(game);
 
             return RedirectToAction(nameof(Index), "Home");
         }
