@@ -1,0 +1,18 @@
+﻿<div class="comment-form-warp">
+	<h4 class="comment-title">Add new game</h4>
+	<form class="comment-form" asp-controller="Game" asp-action="AddGame">
+		<div class="row">
+			<div class="col-md-6">
+				<input name="gameTitle" type="text" placeholder="Title" required>
+			</div>
+			<div class="col-md-6">
+				<input name="gameOwner" type="text" placeholder="Owner">
+			</div>
+			<div class="col-lg-12">
+				@*<input type="text" placeholder="Subject" disabled="disabled"> @*Here should be Genres input*@
+				<textarea name="gameDescr" placeholder="Description"></textarea>
+				<button type="submit" class="site-btn btn-sm">Send</button>
+			</div>
+		</div>
+	</form>
+</div>

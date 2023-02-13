@@ -35,7 +35,10 @@ namespace game_store_domain.Services
 
         public Game AddNewGame(Game game)
         {
-            throw new NotImplementedException();
+            var gameInstance = _storeDbContext.Set<Game>().Add(game);
+            _storeDbContext.SaveChanges();
+
+            return gameInstance.Entity;
         }
 
         public void DeleteGame(int id)

@@ -33,7 +33,7 @@
                     <div class="cata racing">@genresAsString</div>
                 </div>
                 <div class="rgi-content">
-                    <a asp-controller="Home" asp-action="ViewGame" asp-route-gameId="@game.Id"><h5>@game.Title</h5></a>
+                    <a asp-controller="Game" asp-action="ViewGame" asp-route-gameId="@game.Id"><h5>@game.Title</h5></a>
                     <a href="#" class="comment">3 Comments</a>
                     <div class="rgi-extra">
                         <p>$@game.Price</p>
