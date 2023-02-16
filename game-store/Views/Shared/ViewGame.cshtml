@@ -13,27 +13,15 @@
                         {
                             if (string.IsNullOrEmpty(genresAsString))
                             {
-                                genresAsString += genre.Name;
+                                genresAsString += genre.GetAttribute<DisplayAttribute>().Name;
                             }
                             else
                             {
-                                genresAsString += "/" + genre.Name;
-                            }
-
-                            if (genre.SubGenres != null)
-                            {
-                                foreach (var subgenre in genre.SubGenres)
-                                {
-                                    genresAsString += "/" + subgenre.Name;
-                                }
+                                genresAsString += "/" + genre.GetAttribute<DisplayAttribute>().Name;
                             }
                         }
                     }
                     <div class="cata racing">@genresAsString</div>
-                    <div class="rgi-extra">
-                        <div class="rgi-star"><img src="img/icons/star.png" alt=""></div>
-                        <div class="rgi-heart"><img src="img/icons/heart.png" alt=""></div>
-                    </div>
                 </div>
                 <div class="blog-content">
                     <h3>@Model.Title</h3>

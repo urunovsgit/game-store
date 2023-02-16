@@ -26,13 +26,11 @@ namespace game_store.Controllers
             return View();
         }
 
-        public ActionResult AddGame(string gameTitle, string gameDescr, string gameOwner, List<Genre> genres)
+        public ActionResult AddGame(string gameTitle, string gameDescr, List<GenreNode> genres)
         {
             var game = new Game
             {
                 Title = gameTitle,
-                Owner = gameOwner,
-                Genres = new List<Genre> { new Genre { Name = "Other"} },
                 Description = gameDescr
             };
 

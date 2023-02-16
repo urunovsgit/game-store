@@ -1,5 +1,6 @@
 ﻿using game_store.Models;
 using game_store_domain.Services;
+using game_store_domain.Services.Infrastrucure;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

@@ -1,5 +1,5 @@
 ﻿using game_store_domain.Entities;
-using game_store_domain.Services;
+using game_store_domain.Services.Infrastrucure;
 
 namespace game_store.Models
 {

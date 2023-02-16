@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace game_store_domain.Services
+namespace game_store_domain.Services.Infrastrucure
 {
     public enum GameOption
     {
@@ -16,7 +16,7 @@ namespace game_store_domain.Services
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
-        public GameOption FilterOption { get;set; }
+        public GameOption FilterOption { get; set; }
         public GameOption OrderOptions { get; set; }
         public object FilterValue { get; set; }
     }

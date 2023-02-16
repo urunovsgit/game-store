@@ -14,19 +14,11 @@
                         {
                             if (string.IsNullOrEmpty(genresAsString))
                             {
-                                genresAsString += genre.Name;
+                                genresAsString += (genre).GetAttribute<DisplayAttribute>().Name;
                             }
                             else
                             {
-                                genresAsString += "/" + genre.Name;
-                            }
-
-                            if (genre.SubGenres != null)
-                            {
-                                foreach (var subgenre in genre.SubGenres)
-                                {
-                                    genresAsString += "/" + subgenre.Name;
-                                }
+                                genresAsString += "/" + (genre).GetAttribute<DisplayAttribute>().Name;
                             }
                         }
                     }

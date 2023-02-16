@@ -23,10 +23,6 @@ namespace game_store_domain.Entities
         [Required]
         public DateTime PublishDate { get; set; } = DateTime.Now;
 
-        [Required]
-        public string Owner { get; set; }
-
-        [Required]
-        virtual public List<Genre> Genres { get; set; } = new List<Genre>();
+        virtual public List<Genre> Genres { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using game_store_domain.Entities;
+using game_store_domain.Services.Infrastrucure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace game_store_domain.Services
         public GameServiceProvider(GameStoreDbContext storeDbContext)
         {
             _storeDbContext = storeDbContext;
+            EnsureCreatedGameGenres();
         }
 
         public (IEnumerable<Game>, int) GetGames(SortFilterPageOptions options)
@@ -49,6 +51,94 @@ namespace game_store_domain.Services
         public Game UpdateGame(Game game)
         {
             throw new NotImplementedException();
+        }
+
+        private void EnsureCreatedGameGenres()
+        {
+            if (!_storeDbContext.Set<GenreNode>().Any())
+            {
+                _storeDbContext.Set<GenreNode>().AddRange(
+                    new GenreNode
+                    {
+                        Genre = Genre.Strategy
+                    },
+                    new GenreNode
+                    {
+                        Genre = Genre.Arcade
+                    },
+                    new GenreNode
+                    {
+                        Genre = Genre.RPG
+                    },
+                    new GenreNode
+                    {
+                        Genre = Genre.Puzzle
+                    },
+                    new GenreNode
+                    {
+                        Genre = Genre.Adventure
+                    },
+                    new GenreNode
+                    {
+                        Genre = Genre.Action
+                    },
+                    new GenreNode
+                    {
+                        Genre = Genre.Races
+                    },
+                    new GenreNode
+                    {
+                        Genre = Genre.Sports
+                    },
+                    new GenreNode
+                    {
+                        Genre = Genre.Other
+                    }
+                );
+
+                _storeDbContext.SaveChanges();
+
+                _storeDbContext.Set<GenreNode>().AddRange(
+                    new GenreNode
+                    {
+                        ParentGenre = _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.Races),
+                        Genre = Genre.Formula
+                    },
+                    new GenreNode
+                    {
+                        ParentGenre = _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.Races),
+                        Genre = Genre.Off_road
+                    },
+                    new GenreNode
+                    {
+                        ParentGenre = _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.Races),
+                        Genre = Genre.Rally
+                    },
+                    new GenreNode
+                    {
+                        ParentGenre = _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.RPG),
+                        Genre = Genre.MMORPG
+                    }
+                );
+
+                _storeDbContext.SaveChanges();
+
+                _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.Races)
+                    .SubGenres = new List<GenreNode>
+                    {
+                        _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.Formula),
+                        _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.Off_road),
+                        _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.Rally)
+                    };
+
+                _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.RPG)
+                    .SubGenres = new List<GenreNode>
+                    {
+                        _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.MMORPG)
+                    };
+
+                _storeDbContext.SaveChanges();
+            }
         }
     }
 }

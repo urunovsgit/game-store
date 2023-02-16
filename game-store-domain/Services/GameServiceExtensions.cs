@@ -1,5 +1,6 @@
 ﻿using Azure;
 using game_store_domain.Entities;
+using game_store_domain.Services.Infrastrucure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,6 @@ namespace game_store_domain.Services
                     queryable = queryable.OrderBy(game => game.PublishDate); break;
                 case GameOption.Genre:
                     queryable = queryable.OrderBy(game => game.Genres); break;
-                case GameOption.Owner:
-                    queryable = queryable.OrderBy(game => game.Owner); break;
                 default:
                     queryable = queryable.OrderBy(game => game.Id); break;
             }
