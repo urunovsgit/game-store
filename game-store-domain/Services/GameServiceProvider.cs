@@ -17,6 +17,7 @@ namespace game_store_domain.Services
         {
             _storeDbContext = storeDbContext;
             EnsureCreatedGameGenres();
+            EnsurePopulatedWithDemoData();
         }
 
         public (IEnumerable<Game>, int) GetGames(SortFilterPageOptions options)
@@ -136,6 +137,40 @@ namespace game_store_domain.Services
                     {
                         _storeDbContext.Set<GenreNode>().First(gNode => gNode.Genre == Genre.MMORPG)
                     };
+
+                _storeDbContext.SaveChanges();
+            }
+        }
+
+        private void EnsurePopulatedWithDemoData()
+        {
+            if (!_storeDbContext.Set<Game>().Any())
+            {
+                _storeDbContext.Set<Game>().AddRange(
+                    new Game
+                    {
+                        Title = "World Of Warcraft",
+                        Genres = new List<Genre> { Genre.RPG, Genre.Strategy },
+                        Price = 42,
+                        Description = "WOW Game"
+                    },
+
+                    new Game
+                    {
+                        Title = "Prince Of Persia",
+                        Genres = new List<Genre> { Genre.Action, Genre.Adventure },
+                        Price = 34,
+                        Description = "Sand Of Time"
+                    },
+
+                    new Game
+                    {
+                        Title = "Call Of Duty: MW3",
+                        Genres = new List<Genre> { Genre.Action },
+                        Price = 34,
+                        Description = "Captain Price"
+                    }
+                );
 
                 _storeDbContext.SaveChanges();
             }

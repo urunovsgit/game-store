@@ -39,39 +39,5 @@ namespace game_store.Infrastructure
 
             return default;
         }
-
-        public static void EnsurePopulatedWithDemoData(this GameStoreDbContext appDbContext)
-        {
-            //if (!appDbContext.Set<Game>().Any())
-            //{
-            //    appDbContext.Set<Game>().AddRange(
-            //        new Game
-            //        {
-            //            Title = "World Of Warcraft",
-            //            Genres = new List<GenreNode> { new GenreNode { Name = "RPG" }, new GenreNode { Name = "Strategy" } },
-            //            Price = 42,
-            //            Description = "WOW Game"
-            //        },
-
-            //        new Game
-            //        {
-            //            Title = "Prince Of Persia",
-            //            Genres = new List<GenreNode> { new GenreNode { Name = "Action" }, new GenreNode { Name = "Adventure" } },
-            //            Price = 34,
-            //            Description = "Sand Of Time"
-            //        },
-
-            //        new Game
-            //        {
-            //            Title = "Call Of Duty: MW3",
-            //            Genres = new List<GenreNode> { new GenreNode { Name = "Action" } },
-            //            Price = 34,
-            //            Description = "Captain Price"
-            //        }
-            //    );
-
-            //    appDbContext.SaveChanges();
-            //}
-        }
     }
 }

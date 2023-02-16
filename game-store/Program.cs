@@ -36,10 +36,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Services
-   .CreateScope()
-   .ServiceProvider
-   .GetRequiredService<GameStoreDbContext>()
-   .EnsurePopulatedWithDemoData();
-
 app.Run();
