@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="blog-thumb set-bg" data-setbg="img/recent-game/big.jpg">
+                <div class="blog-thumb set-bg" data-setbg="/img/recent-game/7.jpg">
                     @{
                         string genresAsString = "";
                         @foreach (var genre in Model.Genres)
@@ -17,11 +17,14 @@
                             }
                             else
                             {
-                                genresAsString += "/" + genre.GetAttribute<DisplayAttribute>().Name;
+                                genresAsString += " / " + genre.GetAttribute<DisplayAttribute>().Name;
                             }
                         }
                     }
-                    <div class="cata racing">@genresAsString</div>
+                    @if (!string.IsNullOrEmpty(genresAsString))
+                    {
+                        <div class="cata racing">@genresAsString</div>
+                    }
                 </div>
                 <div class="blog-content">
                     <h3>@Model.Title</h3>

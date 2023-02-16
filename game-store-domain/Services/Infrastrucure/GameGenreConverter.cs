@@ -17,7 +17,7 @@ namespace game_store_domain.Services.Infrastrucure
 
         public static string GenresToString(List<Genre> genres)
         {
-            if (genres == null || genres.Count() == 0)
+            if (genres == null)
             {
                 return null;
             }
@@ -32,7 +32,7 @@ namespace game_store_domain.Services.Infrastrucure
         {
             if (genres == null || genres == string.Empty)
             {
-                return null;
+                return new List<Genre>();
             }
 
             var genresAsEnum = new List<Genre>(genres.Split(' ').Select(i => (Genre)Convert.ToInt32(i)));

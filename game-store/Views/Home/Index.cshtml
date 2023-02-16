@@ -18,11 +18,14 @@
                             }
                             else
                             {
-                                genresAsString += "/" + (genre).GetAttribute<DisplayAttribute>().Name;
+                                genresAsString += " / " + (genre).GetAttribute<DisplayAttribute>().Name;
                             }
                         }
                     }
-                    <div class="cata racing">@genresAsString</div>
+                    @if (!string.IsNullOrEmpty(genresAsString))
+                    {
+                        <div class="cata racing">@genresAsString</div>
+                    }
                 </div>
                 <div class="rgi-content">
                     <a asp-controller="Game" asp-action="ViewGame" asp-route-gameId="@game.Id"><h5>@game.Title</h5></a>
