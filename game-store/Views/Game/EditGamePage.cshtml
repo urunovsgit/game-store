@@ -1,0 +1,70 @@
+﻿@model SingleGameViewModel
+
+@{
+    string imgDataUrl;
+    if (Model.Game.Image.Length != 0)
+    {
+        var gameImage = Convert.ToBase64String(Model.Game.Image);
+        imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
+    }
+    else
+    {
+        imgDataUrl = "/img/default-game-image.jpeg";
+    }
+
+}
+<!-- Page section -->
+<section class="page-section single-blog-page spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog-thumb set-bg" data-setbg="@imgDataUrl">
+                    @{
+                        string genresAsString = "";
+                        @foreach (var genre in Model.Game.Genres)
+                        {
+                            if (string.IsNullOrEmpty(genresAsString))
+                            {
+                                genresAsString += genre.GetAttribute<DisplayAttribute>().Name;
+                            }
+                            else
+                            {
+                                genresAsString += " / " + genre.GetAttribute<DisplayAttribute>().Name;
+                            }
+                        }
+                    }
+                    @if (!string.IsNullOrEmpty(genresAsString))
+                    {
+                        <div class="cata racing">@genresAsString</div>
+                    }
+                </div>
+                <div class="comment-form-warp">
+                    <h4 class="comment-title">Edit game data</h4>
+                    <form asp-controller="Game" asp-action="UpdateGameData" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Game.Id" name="gameId" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input name="gameTitle" value="@Model.Game.Title" type="text" placeholder="Title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="file" id="imageFile" name="imageFile" />
+                            </div>
+                            <div class="col-md-6">
+                                <input name="gamePrice" value="@Model.Game.Price" type="text" placeholder="Price" required>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
+                                    Add / remove genre
+                                </button>
+                                <partial name="_EditGameGenres" model="@Model" />
+                            </div>
+                            <div class="col-lg-12">
+                                <textarea name="gameDescr" placeholder="Description">@Model.Game.Description</textarea>
+                                <button class="site-btn btn-sm">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Page section end -->

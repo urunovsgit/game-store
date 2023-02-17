@@ -1,14 +1,23 @@
 ﻿@model Game
 @{
-    var gameImage = Convert.ToBase64String(Model.Image);
-    var imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
+    string imgDataUrl;
+    if (Model.Image.Length != 0)
+    {
+        var gameImage = Convert.ToBase64String(Model.Image);
+        imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
+    }
+    else
+    {
+        imgDataUrl = "/img/default-game-image.jpeg";
+    }
+
 }
 <!-- Page section -->
 <section class="page-section single-blog-page spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="blog-thumb set-bg" data-setbg="imgDataUrl">
+                <div class="blog-thumb set-bg" data-setbg="@imgDataUrl">
                     @{
                         string genresAsString = "";
                         @foreach (var genre in Model.Genres)
@@ -32,50 +41,56 @@
                     <h3>@Model.Title</h3>
                     <a href="" class="meta-comment">3 comment</a>
                     <p>@Model.Description</p>
-                </div>
-                <div class="comment-warp">
-                    <h4 class="comment-title">Top Coments</h4>
-                    <ul class="comment-list">
-                        <li>
-                            <div class="comment">
-                                <div class="comment-avator set-bg" data-setbg="img/authors/1.jpg"></div>
-                                <div class="comment-content">
-                                    <h5>James Smith <span>June 21, 2018</span></h5>
-                                    <p>Donec venenatis at eros sit amet aliquam. Donec vel orci efficitur, dictum nisl vitae, scelerisque nibh. Curabitur eget ipsum pulvinar nunc gravida interdum. </p>
-                                    <a href="" class="reply">Reply</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="comment">
-                                <div class="comment-avator set-bg" data-setbg="img/authors/2.jpg"></div>
-                                <div class="comment-content">
-                                    <h5>James Smith <span>June 21, 2018</span></h5>
-                                    <p>Donec venenatis at eros sit amet aliquam. Donec vel orci efficitur, dictum nisl vitae, scelerisque nibh. Curabitur eget ipsum pulvinar nunc gravida interdum. </p>
-                                    <a href="" class="reply">Reply</a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="comment-form-warp">
-                    <h4 class="comment-title">Leave Your Comment</h4>
-                    <form class="comment-form">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="text" placeholder="Name">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="email" placeholder="Email">
-                            </div>
-                            <div class="col-lg-12">
-                                <input type="text" placeholder="Subject">
-                                <textarea placeholder="Message"></textarea>
-                                <button class="site-btn btn-sm">Send</button>
-                            </div>
-                        </div>
+                    <form asp-action="EditGameData" asp-controller="Game" method="post">
+                        <input type="hidden" asp-for="Id" name="gameId"/>
+                        <button class="btn btn-primary btn-sm">
+                            Edit data
+                        </button>
                     </form>
                 </div>
+                @*<div class="comment-warp">
+                <h4 class="comment-title">Top Coments</h4>
+                <ul class="comment-list">
+                <li>
+                <div class="comment">
+                <div class="comment-avator set-bg" data-setbg="img/authors/1.jpg"></div>
+                <div class="comment-content">
+                <h5>James Smith <span>June 21, 2018</span></h5>
+                <p>Donec venenatis at eros sit amet aliquam. Donec vel orci efficitur, dictum nisl vitae, scelerisque nibh. Curabitur eget ipsum pulvinar nunc gravida interdum. </p>
+                <a href="" class="reply">Reply</a>
+                </div>
+                </div>
+                </li>
+                <li>
+                <div class="comment">
+                <div class="comment-avator set-bg" data-setbg="img/authors/2.jpg"></div>
+                <div class="comment-content">
+                <h5>James Smith <span>June 21, 2018</span></h5>
+                <p>Donec venenatis at eros sit amet aliquam. Donec vel orci efficitur, dictum nisl vitae, scelerisque nibh. Curabitur eget ipsum pulvinar nunc gravida interdum. </p>
+                <a href="" class="reply">Reply</a>
+                </div>
+                </div>
+                </li>
+                </ul>
+                </div>
+                <div class="comment-form-warp">
+                <h4 class="comment-title">Leave Your Comment</h4>
+                <form class="comment-form">
+                <div class="row">
+                <div class="col-md-6">
+                <input type="text" placeholder="Name">
+                </div>
+                <div class="col-md-6">
+                <input type="email" placeholder="Email">
+                </div>
+                <div class="col-lg-12">
+                <input type="text" placeholder="Subject">
+                <textarea placeholder="Message"></textarea>
+                <button class="site-btn btn-sm">Send</button>
+                </div>
+                </div>
+                </form>
+                </div>*@
             </div>
         </div>
     </div>

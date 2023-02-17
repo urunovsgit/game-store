@@ -29,14 +29,14 @@ namespace game_store.Controllers
                 {
                     Game = new Game(),
                     GenreNodes = _gameServicesProvider.GetAllGenreNodes()
-                }) ;
+                });
         }
 
         public ActionResult AddGame(string gameTitle, string gameDescr, List<GenreNode> genres)
         {
-            var imageFile = Request.Form.Files.First();
+            var imageFile = Request.Form.Files.FirstOrDefault();
             var memStream = new MemoryStream();
-            imageFile.CopyTo(memStream);
+            imageFile?.CopyTo(memStream);
 
             var game = new Game
             {
@@ -50,6 +50,49 @@ namespace game_store.Controllers
             memStream.Dispose();
 
             return RedirectToAction(nameof(Index), "Home");
+        }
+
+        public ActionResult EditGameData(int gameId)
+        {
+            return RedirectToAction(nameof(EditGamePage), new { gameId });
+        }
+
+        public IActionResult EditGamePage(int gameId)
+        {
+            return View(
+                new SingleGameViewModel
+                {
+                    Game = _gameServicesProvider.GetGameById(gameId),
+                    GenreNodes = _gameServicesProvider.GetAllGenreNodes()
+                });
+        }
+
+        public ActionResult UpdateGameData(int gameId, string gameTitle, decimal gamePrice, string gameDescr, List<Genre> genres)
+        {
+            var game = new Game
+            {
+                Id = gameId,
+                Title = gameTitle,
+                Genres = genres,
+                Price = gamePrice,
+                Description = gameDescr
+            };
+
+            var imageFile = Request.Form.Files.FirstOrDefault();
+            var memStream = new MemoryStream();
+
+            if (imageFile != null)
+            {
+                imageFile.CopyTo(memStream);
+                game.Image = memStream.ToArray();
+            }
+
+            _gameServicesProvider.UpdateGame(game);
+
+            memStream.Close();
+            memStream.Dispose();
+
+            return RedirectToAction(nameof(ViewGame), new { gameId });
         }
     }
 }

@@ -5,8 +5,16 @@
 <div class="row">
     @foreach (var game in Model.Games)
     {
-        var gameImage = Convert.ToBase64String(game.Image);
-        var imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
+        string imgDataUrl;
+        if (game.Image.Length != 0)
+        {
+            var gameImage = Convert.ToBase64String(game.Image);
+            imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
+        }
+        else
+        {
+            imgDataUrl = "/img/default-game-image.jpeg";
+        }
 
         <div class="col-lg-4 col-md-6">
             <div class="recent-game-item">
