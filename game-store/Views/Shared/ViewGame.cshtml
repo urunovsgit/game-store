@@ -1,12 +1,14 @@
-﻿
-@model Game
-
+﻿@model Game
+@{
+    var gameImage = Convert.ToBase64String(Model.Image);
+    var imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
+}
 <!-- Page section -->
 <section class="page-section single-blog-page spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="blog-thumb set-bg" data-setbg="/img/recent-game/7.jpg">
+                <div class="blog-thumb set-bg" data-setbg="imgDataUrl">
                     @{
                         string genresAsString = "";
                         @foreach (var genre in Model.Genres)

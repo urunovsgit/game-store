@@ -5,9 +5,12 @@
 <div class="row">
     @foreach (var game in Model.Games)
     {
+        var gameImage = Convert.ToBase64String(game.Image);
+        var imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
+
         <div class="col-lg-4 col-md-6">
             <div class="recent-game-item">
-                <div class="rgi-thumb set-bg" data-setbg="img/recent-game/7.jpg">
+                <div class="rgi-thumb set-bg" data-setbg="@imgDataUrl">
                     @{
                         string genresAsString = "";
                         @foreach (var genre in game.Genres)

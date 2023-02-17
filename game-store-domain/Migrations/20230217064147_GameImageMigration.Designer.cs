@@ -12,8 +12,8 @@ using game_store_domain;
 namespace gamestoredomain.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    [Migration("20230216073706_StableMigration")]
-    partial class StableMigration
+    [Migration("20230217064147_GameImageMigration")]
+    partial class GameImageMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,10 @@ namespace gamestoredomain.Migrations
 
                     b.Property<string>("Genres")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");

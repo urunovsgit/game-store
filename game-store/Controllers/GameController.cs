@@ -34,13 +34,20 @@ namespace game_store.Controllers
 
         public ActionResult AddGame(string gameTitle, string gameDescr, List<GenreNode> genres)
         {
+            var imageFile = Request.Form.Files.First();
+            var memStream = new MemoryStream();
+            imageFile.CopyTo(memStream);
+
             var game = new Game
             {
                 Title = gameTitle,
-                Description = gameDescr
+                Description = gameDescr,
+                Image = memStream.ToArray()
             };
-
             _gameServicesProvider.AddNewGame(game);
+
+            memStream.Close();
+            memStream.Dispose();
 
             return RedirectToAction(nameof(Index), "Home");
         }
