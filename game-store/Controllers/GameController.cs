@@ -1,4 +1,5 @@
-﻿using game_store_domain.Entities;
+﻿using game_store.Models;
+using game_store_domain.Entities;
 using game_store_domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,12 @@ namespace game_store.Controllers
 
         public IActionResult NewGamePage()
         {
-            return View();
+            return View(
+                new SingleGameViewModel
+                {
+                    Game = new Game(),
+                    GenreNodes = _gameServicesProvider.GetAllGenreNodes()
+                }) ;
         }
 
         public ActionResult AddGame(string gameTitle, string gameDescr, List<GenreNode> genres)

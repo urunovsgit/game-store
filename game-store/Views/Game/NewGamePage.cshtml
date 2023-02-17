@@ -1,14 +1,22 @@
-﻿<div class="comment-form-warp">
+﻿@model SingleGameViewModel
+
+<div class="comment-form-warp">
 	<h4 class="comment-title">Add new game</h4>
 	<form class="comment-form" asp-controller="Game" asp-action="AddGame">
 		<div class="row">
 			<div class="col-md-6">
 				<input name="gameTitle" type="text" placeholder="Title" required>
 			</div>
+			<div class="col-md-6">
+				<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
+					Add / remove genre
+				</button>
+				<partial name="_EditGameGenres" model="@Model" />
+			</div>
 			<div class="col-lg-12">
 				@*<input type="text" placeholder="Subject" disabled="disabled"> @*Here should be Genres input*@
 				<textarea name="gameDescr" placeholder="Description"></textarea>
-				<button type="submit" class="site-btn btn-sm">Send</button>
+				<button type="submit" class="site-btn btn-sm">Submit</button>
 			</div>
 		</div>
 	</form>

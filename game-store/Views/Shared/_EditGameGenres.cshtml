@@ -1,0 +1,35 @@
+﻿@model SingleGameViewModel
+
+<div class="modal fade" id="editGenres" tabindex="-1" aria-labelledby="gameGenresEditLbl" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="gameGenresEditLbl">Edit game genres</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="row g-3 align-items-end">
+
+                        <div class="treecontainer">
+                            <treeul>
+                                <treeli>
+                                    <input type="checkbox" id="option"><treelabel for="option"> Electronics</treelabel>
+                                    <treeul>
+                                        <treeli><treelabel><input type="checkbox" class="subOption"> Laptops</treelabel></treeli>
+                                        <treeli><treelabel><input type="checkbox" class="subOption"> TVs</treelabel></treeli>
+                                        <treeli><treelabel><input type="checkbox" class="subOption"> Microphones</treelabel></treeli>
+                                    </treeul>
+                                </treeli>
+                            </treeul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -15,5 +15,6 @@ namespace game_store_domain.Services
         public Game AddNewGame(Game game);
         public Game UpdateGame(Game game);
         public void DeleteGame(int id);
+        public List<GenreNode> GetAllGenreNodes();
     }
 }

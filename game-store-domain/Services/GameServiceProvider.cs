@@ -54,6 +54,13 @@ namespace game_store_domain.Services
             throw new NotImplementedException();
         }
 
+        public List<GenreNode> GetAllGenreNodes()
+        {
+            return _storeDbContext.Set<GenreNode>()
+                .Include(n => n.ParentGenre)
+                .ToList();
+        }
+
         private void EnsureCreatedGameGenres()
         {
             if (!_storeDbContext.Set<GenreNode>().Any())
