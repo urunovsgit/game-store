@@ -26,5 +26,33 @@ namespace game_store_domain.Entities
         public byte[] Image { get; set; }
 
         virtual public List<Genre> Genres { get; set; } = new List<Genre>();
+
+        public void CopyFrom(Game game)
+        {
+            if(Title != game.Title)
+            { 
+                Title = game.Title; 
+            }
+
+            if(Description != game.Description)
+            {
+                Description = game.Description;
+            }
+
+            if(Price != game.Price)
+            {
+                Price = game.Price;
+            }
+
+            if(Genres != null && Genres.SequenceEqual(game.Genres))
+            {
+                Genres = game.Genres;
+            }
+
+            if(Image != null && Image.SequenceEqual(game.Image))
+            {
+                Image = game.Image;
+            }
+        }
     }
 }

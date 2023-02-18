@@ -59,19 +59,11 @@ namespace game_store_domain.Services
         {
             var gameEntity = _storeDbContext.Set<Game>().Find(game.Id);
 
-            if(gameEntity != null)
-            {
-                gameEntity.Title = game.Title;
-                gameEntity.Description = game.Description;
-                gameEntity.Price = game.Price;
-
-                if(game.Image != null)
-                {
-                    gameEntity.Image = game.Image;
-                }
-
-                _storeDbContext.SaveChanges();
-            }
+            //if(gameEntity != null)
+            //{
+            //    gameEntity.CopyFrom(game);
+            //    _storeDbContext.SaveChanges();
+            //}
 
             return gameEntity;
         }

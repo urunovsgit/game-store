@@ -2,9 +2,9 @@
 
 @{
     string imgDataUrl;
-    if (Model.Game.Image != null)
+    if (Model.Image != null)
     {
-        var gameImage = Convert.ToBase64String(Model.Game.Image);
+        var gameImage = Convert.ToBase64String(Model.Image);
         imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
     }
     else
@@ -20,10 +20,10 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <input name="gameTitle" type="text" placeholder="Title" required>
+                <input asp-for="Title" type="text" placeholder="Title" required>
             </div>
             <div class="col-md-6">
-                <input type="file" id="imageFile" name="imageFile" />
+                <input type="file" asp-for="UploadedImage" />
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
                     Add / remove genre
                 </button>
@@ -31,7 +31,7 @@
             </div>
             <div class="col-lg-12">
                 @*<input type="text" placeholder="Subject" disabled="disabled"> @*Here should be Genres input*@
-                <textarea name="gameDescr" placeholder="Description"></textarea>
+                <textarea asp-for="Description" placeholder="Description"></textarea>
                 <button type="submit" class="site-btn btn-sm">Submit</button>
             </div>
         </div>

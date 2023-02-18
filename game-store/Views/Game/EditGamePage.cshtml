@@ -2,9 +2,9 @@
 
 @{
     string imgDataUrl;
-    if (Model.Game.Image.Length != 0)
+    if (Model.Image != null && Model.Image.Length != 0)
     {
-        var gameImage = Convert.ToBase64String(Model.Game.Image);
+        var gameImage = Convert.ToBase64String(Model.Image);
         imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
     }
     else
@@ -21,7 +21,7 @@
                 <div class="blog-thumb set-bg" data-setbg="@imgDataUrl">
                     @{
                         string genresAsString = "";
-                        @foreach (var genre in Model.Game.Genres)
+                        @foreach (var genre in Model.Genres)
                         {
                             if (string.IsNullOrEmpty(genresAsString))
                             {
@@ -41,23 +41,23 @@
                 <div class="comment-form-warp">
                     <h4 class="comment-title">Edit game data</h4>
                     <form asp-controller="Game" asp-action="UpdateGameData" enctype="multipart/form-data">
-                        <input type="hidden" asp-for="Game.Id" name="gameId" />
+                        <input type="hidden" asp-for="Id"/>
                         <div class="row">
                             <div class="col-md-6">
-                                <input name="gameTitle" value="@Model.Game.Title" type="text" placeholder="Title" required>
+                                <input asp-for="Title" type="text" required>
                             </div>
                             <div class="col-md-6">
-                                <input type="file" id="imageFile" name="imageFile" />
+                                <input type="file" asp-for="UploadedImage"/>
                             </div>
                             <div class="col-md-6">
-                                <input name="gamePrice" value="@Model.Game.Price" type="text" placeholder="Price" required>
+                                <input type="text" asp-for="Price" required>
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
                                     Add / remove genre
                                 </button>
                                 <partial name="_EditGameGenres" model="@Model" />
                             </div>
                             <div class="col-lg-12">
-                                <textarea name="gameDescr" placeholder="Description">@Model.Game.Description</textarea>
+                                <textarea asp-for="Description"></textarea>
                                 <button class="site-btn btn-sm">Submit</button>
                             </div>
                         </div>

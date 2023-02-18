@@ -26,28 +26,15 @@ namespace game_store.Controllers
         {
             return View(
                 new SingleGameViewModel
-                {
-                    Game = new Game(),
-                    GenreNodes = _gameServicesProvider.GetAllGenreNodes()
-                });
+                (
+                    new Game(),
+                    _gameServicesProvider.GetAllGenreNodes()
+                ));
         }
 
-        public ActionResult AddGame(string gameTitle, string gameDescr, List<GenreNode> genres)
+        public ActionResult AddGame(SingleGameViewModel gameViewModel)
         {
-            var imageFile = Request.Form.Files.FirstOrDefault();
-            var memStream = new MemoryStream();
-            imageFile?.CopyTo(memStream);
-
-            var game = new Game
-            {
-                Title = gameTitle,
-                Description = gameDescr,
-                Image = memStream.ToArray()
-            };
-            _gameServicesProvider.AddNewGame(game);
-
-            memStream.Close();
-            memStream.Dispose();
+            _gameServicesProvider.AddNewGame(gameViewModel);
 
             return RedirectToAction(nameof(Index), "Home");
         }
@@ -61,38 +48,17 @@ namespace game_store.Controllers
         {
             return View(
                 new SingleGameViewModel
-                {
-                    Game = _gameServicesProvider.GetGameById(gameId),
-                    GenreNodes = _gameServicesProvider.GetAllGenreNodes()
-                });
+                (
+                    _gameServicesProvider.GetGameById(gameId),
+                    _gameServicesProvider.GetAllGenreNodes()
+                ));
         }
 
-        public ActionResult UpdateGameData(int gameId, string gameTitle, decimal gamePrice, string gameDescr, List<Genre> genres)
+        public ActionResult UpdateGameData(SingleGameViewModel gameViewModel)
         {
-            var game = new Game
-            {
-                Id = gameId,
-                Title = gameTitle,
-                Genres = genres,
-                Price = gamePrice,
-                Description = gameDescr
-            };
+            _gameServicesProvider.UpdateGame(gameViewModel);
 
-            var imageFile = Request.Form.Files.FirstOrDefault();
-            var memStream = new MemoryStream();
-
-            if (imageFile != null)
-            {
-                imageFile.CopyTo(memStream);
-                game.Image = memStream.ToArray();
-            }
-
-            _gameServicesProvider.UpdateGame(game);
-
-            memStream.Close();
-            memStream.Dispose();
-
-            return RedirectToAction(nameof(ViewGame), new { gameId });
+            return RedirectToAction(nameof(ViewGame), new { gameId = gameViewModel.Id });
         }
 
         public ActionResult DeleteGame(int gameId)
