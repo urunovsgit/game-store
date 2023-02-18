@@ -94,5 +94,12 @@ namespace game_store.Controllers
 
             return RedirectToAction(nameof(ViewGame), new { gameId });
         }
+
+        public ActionResult DeleteGame(int gameId)
+        {
+            _gameServicesProvider.DeleteGame(gameId);
+
+            return RedirectToAction(nameof(Index), "Home");
+        }
     }
 }

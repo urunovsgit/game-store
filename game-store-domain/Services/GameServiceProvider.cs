@@ -46,8 +46,14 @@ namespace game_store_domain.Services
 
         public void DeleteGame(int id)
         {
-            throw new NotImplementedException();
-        }                    
+            var game = _storeDbContext.Set<Game>().Find(id);
+
+            if (game != null)
+            {
+                _storeDbContext.Set<Game>().Remove(game);
+                _storeDbContext.SaveChanges();
+            }
+        }
 
         public Game UpdateGame(Game game)
         {
