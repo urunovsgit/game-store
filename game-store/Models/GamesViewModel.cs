@@ -6,5 +6,6 @@ namespace game_store.Models
     public class GamesViewModel
     {
         public IEnumerable<Game> Games { get; set; }
+        public string TitleKey { get; set; } = "";
     }
 }

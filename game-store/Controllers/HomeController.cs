@@ -40,7 +40,7 @@ namespace game_store.Controllers
                 games = _gameServicesProvider.GetGamesByGenres(genres).ToList();
             }
 
-            return View(new GamesViewModel { Games = games });
+            return View(new GamesViewModel { Games = games, TitleKey = titleKey });
         }
 
         [HttpPost]
