@@ -1,8 +1,10 @@
 ﻿using game_store_domain.Entities;
 using game_store_domain.Services.Infrastrucure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,13 +22,11 @@ namespace game_store_domain.Services
             EnsurePopulatedWithDemoData();
         }
 
-        public (IEnumerable<Game>, int) GetGames(SortFilterPageOptions options)
+        public (IEnumerable<Game>, int) GetGames(FilterPageOptions options)
         {
             var gamesQuery = _storeDbContext.Set<Game>().AsQueryable();
 
-            var games = gamesQuery.OrderAndFilterBy(options)
-                                  .Paginate(options)
-                                  .ToList();
+            var games = gamesQuery.Filter(options);
 
             return (games, gamesQuery.Count());
         }
@@ -59,20 +59,18 @@ namespace game_store_domain.Services
         {
             var gameEntity = _storeDbContext.Set<Game>().Find(game.Id);
 
-            //if(gameEntity != null)
-            //{
-            //    gameEntity.CopyFrom(game);
-            //    _storeDbContext.SaveChanges();
-            //}
+            if (gameEntity != null)
+            {
+                gameEntity.CopyFrom(game);
+                _storeDbContext.SaveChanges();
+            }
 
             return gameEntity;
         }
 
         public List<GenreNode> GetAllGenreNodes()
         {
-            return _storeDbContext.Set<GenreNode>()
-                .Include(n => n.ParentGenre)
-                .ToList();
+            return _storeDbContext.Set<GenreNode>().ToList();
         }
 
         private void EnsureCreatedGameGenres()
@@ -195,6 +193,24 @@ namespace game_store_domain.Services
 
                 _storeDbContext.SaveChanges();
             }
+        }
+
+        public IEnumerable<Game> GetAllGames()
+        {
+            return _storeDbContext.Set<Game>().ToList();
+        }
+
+        public IEnumerable<Game> GetGamesByGenres(IEnumerable<Genre> genres)
+        {
+            return _storeDbContext.Set<Game>().FilterByGenres(genres);
+        }
+
+        public IEnumerable<Game> GetGamesByTitle(string title)
+        {
+            return _storeDbContext.Set<Game>().ToList()
+                                              .Where(game => game.Title
+                                                .Contains(title, StringComparison.InvariantCultureIgnoreCase))
+                                              .ToList();
         }
     }
 }

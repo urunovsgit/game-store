@@ -2,6 +2,7 @@
 using game_store_domain.Entities;
 using game_store_domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace game_store.Controllers
 {
@@ -24,15 +25,11 @@ namespace game_store.Controllers
 
         public IActionResult NewGamePage()
         {
-            return View(
-                new SingleGameViewModel
-                (
-                    new Game(),
-                    _gameServicesProvider.GetAllGenreNodes()
-                ));
+            ViewBag.GenreNodes = _gameServicesProvider.GetAllGenreNodes();
+            return View(new EditGameViewModel(new Game()));
         }
 
-        public ActionResult AddGame(SingleGameViewModel gameViewModel)
+        public ActionResult AddGame(EditGameViewModel gameViewModel)
         {
             _gameServicesProvider.AddNewGame(gameViewModel);
 
@@ -46,19 +43,17 @@ namespace game_store.Controllers
 
         public IActionResult EditGamePage(int gameId)
         {
-            return View(
-                new SingleGameViewModel
-                (
-                    _gameServicesProvider.GetGameById(gameId),
-                    _gameServicesProvider.GetAllGenreNodes()
-                ));
+            ViewBag.GenreNodes = _gameServicesProvider.GetAllGenreNodes();
+            return View(new EditGameViewModel(_gameServicesProvider.GetGameById(gameId)));
         }
 
-        public ActionResult UpdateGameData(SingleGameViewModel gameViewModel)
+        public string UpdateGameData(EditGameViewModel gameViewModel)
         {
             _gameServicesProvider.UpdateGame(gameViewModel);
 
-            return RedirectToAction(nameof(ViewGame), new { gameId = gameViewModel.Id });
+            var redirectUrl = Url.ActionLink("ViewGame", "Game", new { gameId = gameViewModel.Id });
+
+            return redirectUrl;
         }
 
         public ActionResult DeleteGame(int gameId)

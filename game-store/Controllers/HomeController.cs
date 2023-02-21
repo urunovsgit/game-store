@@ -1,7 +1,9 @@
 ﻿using game_store.Models;
+using game_store_domain.Entities;
 using game_store_domain.Services;
 using game_store_domain.Services.Infrastrucure;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace game_store.Controllers
@@ -17,27 +19,45 @@ namespace game_store.Controllers
             _gameServicesProvider = gameServices;
         }
 
-        public IActionResult Index(int page = 1)
-        {
-            var options = new SortFilterPageOptions { Page = page, PageSize = 10 };
-            var (games, count) = _gameServicesProvider.GetGames(options);
 
-            return View(new GamesViewModel
+        public IActionResult Index(string titleKey = "")
+        {
+            ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
+            ViewBag.GenreNodes = _gameServicesProvider.GetAllGenreNodes();
+            List<Game> games;
+
+            if(!string.IsNullOrEmpty(titleKey)) 
             {
-                Games = games,
-                Options = options,
-                TotalGamesCount = count
-            });
+                games = _gameServicesProvider.GetGamesByTitle(titleKey).ToList();
+            }
+            else if (!TempData.ContainsKey("SelectedGenres"))
+            {
+                games = _gameServicesProvider.GetAllGames().ToList();
+            }
+            else
+            {
+                var genres = JsonConvert.DeserializeObject<List<Genre>>((string)TempData["SelectedGenres"]);
+                games = _gameServicesProvider.GetGamesByGenres(genres).ToList();
+            }
+
+            return View(new GamesViewModel { Games = games });
+        }
+
+        [HttpPost]
+        public void ApplyGenreFilterOptions(List<Genre> genres)
+        {
+            TempData["SelectedGenres"] = JsonConvert.SerializeObject(genres);
+        }
+
+        [HttpPost]
+        public ActionResult FindByGameTitle(string titleToFind)
+        {
+            return RedirectToAction("Index", new {titleKey = titleToFind });
         }
 
         public ActionResult AddGame()
         {
             return RedirectToAction(nameof(AddGame), nameof(GameController));
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

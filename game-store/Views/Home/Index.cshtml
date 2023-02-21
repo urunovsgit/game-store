@@ -1,7 +1,44 @@
-﻿@model GamesViewModel
+﻿@using game_store_domain.Services.Infrastrucure;
+@model GamesViewModel
 
-<!--Games section  -->
-
+<div class="row">
+    <div class="col-lg-5 col-md-6">
+        <div class="widget-item">
+            <form class="search-widget" id="filterByTitleForm" asp-action="FindByGameTitle" asp-controller="Home">
+                <input type="text" placeholder="Search" name="titleToFind">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
+            Filter by genres
+        </button>
+        <div class="modal fade" id="editGenres" tabindex="-1" aria-labelledby="gameGenresEditLbl" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="genresFilterForm">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="gameGenresEditLbl">Edit game genres</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <div class="row g-3 align-items-end">
+                                    <partial name="_GenresView" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="applyGenresFilterBtn" type="submit" class="btn btn-outline-dark" data-bs-dismiss="modal">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
 <div class="row">
     @foreach (var game in Model.Games)
     {
@@ -49,4 +86,3 @@
         </div>
     }
 </div>
-<!-- Games section end -->

@@ -44,12 +44,12 @@ namespace game_store_domain.Entities
                 Price = game.Price;
             }
 
-            if(Genres != null && Genres.SequenceEqual(game.Genres))
+            if(Genres != null && game.Genres != null && !Genres.SequenceEqual(game.Genres))
             {
                 Genres = game.Genres;
             }
 
-            if(Image != null && Image.SequenceEqual(game.Image))
+            if(Image != null && game.Image != null && !Image.SequenceEqual(game.Image))
             {
                 Image = game.Image;
             }

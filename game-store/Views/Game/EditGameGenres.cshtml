@@ -1,4 +1,4 @@
-﻿@model SingleGameViewModel
+﻿@model List<Genre>
 
 <div class="modal fade" id="editGenres" tabindex="-1" aria-labelledby="gameGenresEditLbl" aria-hidden="true">
     <div class="modal-dialog">
@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <div class="row g-3 align-items-end">
-
+                        <partial name="_GenresView" model="Model" />
                     </div>
                 </div>
             </div>

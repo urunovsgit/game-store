@@ -1,4 +1,4 @@
-﻿@model SingleGameViewModel
+﻿@model EditGameViewModel
 
 @{
     string imgDataUrl;
@@ -27,7 +27,7 @@
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
                     Add / remove genre
                 </button>
-                <partial name="_EditGameGenres" model="@Model" />
+                <partial name="_EditGameGenres"/>
             </div>
             <div class="col-lg-12">
                 @*<input type="text" placeholder="Subject" disabled="disabled"> @*Here should be Genres input*@

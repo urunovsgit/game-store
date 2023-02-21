@@ -1,0 +1,27 @@
+﻿<div id="genres" class="form-group">
+    Select genres: <br />
+    @{
+        var parrentGenres = (ViewBag.GenreNodes as List<GenreNode>)?.Where(g => g.ParentGenre == null);
+        var selectedGenres = ViewBag.SelectedGenres as List<Genre> ?? new List<Genre>();
+
+        if (parrentGenres != null)
+        {
+            foreach (var genreNode in parrentGenres)
+            {
+                <input type="checkbox" value="@((int)genreNode.Genre)"
+                    @(Html.Raw(selectedGenres.Contains(genreNode.Genre) ? "checked=\"checked\"" : "")) />
+                @((genreNode.Genre).GetAttribute<DisplayAttribute>().Name)  <br />
+
+                if (genreNode.SubGenres != null)
+                {
+                    foreach (var sgenre in genreNode.SubGenres)
+                    {
+                        <input type="checkbox" value="@((int)sgenre.Genre)" style="margin-left: 15px"
+                            @(Html.Raw(selectedGenres.Contains(sgenre.Genre) ? "checked=\"checked\"" : "")) />
+                        @((sgenre.Genre).GetAttribute<DisplayAttribute>().Name)  <br />
+                    }
+                }
+            }
+        }
+    }
+</div>

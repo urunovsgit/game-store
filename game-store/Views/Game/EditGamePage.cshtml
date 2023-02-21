@@ -1,4 +1,4 @@
-﻿@model SingleGameViewModel
+﻿@model EditGameViewModel
 
 @{
     string imgDataUrl;
@@ -40,8 +40,9 @@
                 </div>
                 <div class="comment-form-warp">
                     <h4 class="comment-title">Edit game data</h4>
-                    <form asp-controller="Game" asp-action="UpdateGameData" enctype="multipart/form-data">
+                    <form id="gameDataForm" enctype="multipart/form-data">
                         <input type="hidden" asp-for="Id"/>
+                        <input type="hidden" asp-for="Image" />
                         <div class="row">
                             <div class="col-md-6">
                                 <input asp-for="Title" type="text" required>
@@ -54,11 +55,30 @@
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
                                     Add / remove genre
                                 </button>
-                                <partial name="_EditGameGenres" model="@Model" />
+                                <div class="modal fade" id="editGenres" tabindex="-1" aria-labelledby="gameGenresEditLbl" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="gameGenresEditLbl">Edit game genres</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <div class="row g-3 align-items-end">
+                                                        <partial name="_GenresView" model="Model.Genres" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-lg-12">
                                 <textarea asp-for="Description"></textarea>
-                                <button class="site-btn btn-sm">Submit</button>
+                                <button id="gameUpdateSbmtBtn" class="site-btn btn-sm">Submit</button>
                             </div>
                         </div>
                     </form>

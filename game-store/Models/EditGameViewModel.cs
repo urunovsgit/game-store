@@ -2,9 +2,8 @@
 
 namespace game_store.Models
 {
-    public class SingleGameViewModel : Game
+    public class EditGameViewModel : Game
     {
-        public List<GenreNode> GenreNodes { get; set; }
         public IFormFile UploadedImage
         {
             get
@@ -30,16 +29,15 @@ namespace game_store.Models
             }
         }
 
-        public SingleGameViewModel()
+        public EditGameViewModel()
         {
 
         }
 
-        public SingleGameViewModel(Game game, List<GenreNode> allGenres)
+        public EditGameViewModel(Game game)
         {
             Id = game.Id;
             CopyFrom(game);
-            GenreNodes = allGenres;
         }
     }
 }
