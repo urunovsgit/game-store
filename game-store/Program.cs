@@ -1,10 +1,11 @@
-using game_store.Infrastructure;
 using game_store_domain;
 using game_store_domain.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using game_store;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("GameStoreDbContextConnection") ?? throw new InvalidOperationException("Connection string 'GameStoreDbContextConnection' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<GameStoreDbContext>(opts => {
 });
 
 builder.Services.AddScoped<IGameServices, GameServiceProvider>();
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<GameStoreDbContext>();
 
 var app = builder.Build();
 
@@ -29,6 +31,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

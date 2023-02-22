@@ -1,5 +1,7 @@
 ﻿using game_store_domain.Entities;
 using game_store_domain.Services.Infrastrucure;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace game_store_domain
 {
-    public class GameStoreDbContext : DbContext
+    public class GameStoreDbContext : IdentityDbContext<IdentityUser>
     {
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<GenreNode> GenreNodes { get; set; }
@@ -24,6 +26,8 @@ namespace game_store_domain
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Game>()
                 .Property(game => game.Genres)
                 .HasConversion(new GameGenreConverter())
