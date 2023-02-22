@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using game_store;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("GameStoreDbContextConnection") ?? throw new InvalidOperationException("Connection string 'GameStoreDbContextConnection' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
