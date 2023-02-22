@@ -44,6 +44,24 @@ namespace game_store_domain.Services
             return gameInstance.Entity;
         }
 
+        public IEnumerable<Game> GetAllGames()
+        {
+            return _storeDbContext.Set<Game>().ToList();
+        }
+
+        public IEnumerable<Game> GetGamesByGenres(IEnumerable<Genre> genres)
+        {
+            return _storeDbContext.Set<Game>().FilterByGenres(genres);
+        }
+
+        public IEnumerable<Game> GetGamesByTitle(string title)
+        {
+            return _storeDbContext.Set<Game>().ToList()
+                                              .Where(game => game.Title
+                                                .Contains(title, StringComparison.InvariantCultureIgnoreCase))
+                                              .ToList();
+        }
+
         public void DeleteGame(int id)
         {
             var game = _storeDbContext.Set<Game>().Find(id);
@@ -193,24 +211,6 @@ namespace game_store_domain.Services
 
                 _storeDbContext.SaveChanges();
             }
-        }
-
-        public IEnumerable<Game> GetAllGames()
-        {
-            return _storeDbContext.Set<Game>().ToList();
-        }
-
-        public IEnumerable<Game> GetGamesByGenres(IEnumerable<Genre> genres)
-        {
-            return _storeDbContext.Set<Game>().FilterByGenres(genres);
-        }
-
-        public IEnumerable<Game> GetGamesByTitle(string title)
-        {
-            return _storeDbContext.Set<Game>().ToList()
-                                              .Where(game => game.Title
-                                                .Contains(title, StringComparison.InvariantCultureIgnoreCase))
-                                              .ToList();
         }
     }
 }

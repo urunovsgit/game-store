@@ -1,7 +1,7 @@
 ﻿@model Game
 @{
     string imgDataUrl;
-    if (Model.Image.Length != 0)
+    if (Model.Image != null && Model.Image.Length != 0)
     {
         var gameImage = Convert.ToBase64String(Model.Image);
         imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);

@@ -29,27 +29,32 @@ namespace game_store_domain.Entities
 
         public void CopyFrom(Game game)
         {
-            if(Title != game.Title)
-            { 
-                Title = game.Title; 
+            if (Title != game.Title)
+            {
+                Title = game.Title;
             }
 
-            if(Description != game.Description)
+            if (Description != game.Description)
             {
                 Description = game.Description;
             }
 
-            if(Price != game.Price)
+            if (Price != game.Price)
             {
                 Price = game.Price;
             }
 
-            if(Genres != null && game.Genres != null && !Genres.SequenceEqual(game.Genres))
+            if (game.Genres != null && !game.Genres.SequenceEqual(Genres))
             {
                 Genres = game.Genres;
             }
 
-            if(Image != null && game.Image != null && !Image.SequenceEqual(game.Image))
+            if (Genres != game.Genres)
+            {
+                Genres = game.Genres;
+            }
+
+            if (Image != game.Image)
             {
                 Image = game.Image;
             }
