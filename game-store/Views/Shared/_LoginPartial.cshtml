@@ -40,7 +40,7 @@
                     @{
                         var user = await UserManager.GetUserAsync(User);
                     }
-                    Hello @(user?.FirstName)!
+                        Hello @(user?.FirstName) @(user?.LastName)!
                     </a>
                 </li>
             }
