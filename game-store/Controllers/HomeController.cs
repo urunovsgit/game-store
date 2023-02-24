@@ -2,6 +2,7 @@
 using game_store_domain.Entities;
 using game_store_domain.Services;
 using game_store_domain.Services.Infrastrucure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -55,6 +56,7 @@ namespace game_store.Controllers
             return RedirectToAction("Index", new {titleKey = titleToFind });
         }
 
+        [Authorize]
         public ActionResult AddGame()
         {
             return RedirectToAction(nameof(AddGame), nameof(GameController));
