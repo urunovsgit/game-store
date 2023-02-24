@@ -4,6 +4,11 @@
 <div class="row">
     <div class="col-lg-5 col-md-6">
         <div class="widget-item">
+            <a class="site-btn btn-sm" asp-controller="Game" asp-action="NewGamePage">Add game</a>
+        </div>
+    </div>
+    <div class="col-lg-5 col-md-6">
+        <div class="widget-item">
             <form class="search-widget" id="filterByTitleForm" asp-action="FindByGameTitle" asp-controller="Home">
                 <input type="text" placeholder="Search" name="titleToFind" value="@Model.TitleKey">
                 <button type="submit"><i class="fa fa-search"></i></button>
