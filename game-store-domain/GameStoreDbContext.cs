@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace game_store_domain
 {
-    public class GameStoreDbContext : IdentityDbContext<IdentityUser>
+    public class GameStoreDbContext : IdentityDbContext<GameStoreUser>
     {
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<GenreNode> GenreNodes { get; set; }
