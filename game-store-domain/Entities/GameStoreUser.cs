@@ -10,5 +10,7 @@ namespace game_store_domain.Entities
 
         [Required, StringLength(20)]
         public string LastName { get; set; }
+
+        public byte[] AvatarImage { get; set; }
     }
 }
