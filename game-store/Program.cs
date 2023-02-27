@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using game_store;
 using game_store_domain.Entities;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,14 @@ builder.Services.AddDbContext<GameStoreDbContext>(opts => {
 });
 
 builder.Services.AddScoped<IGameServices, GameServiceProvider>();
-builder.Services.AddIdentity<GameStoreUser, IdentityRole>(opt => { opt.User.RequireUniqueEmail = true; })
+builder.Services.AddIdentity<GameStoreUser, IdentityRole>(opt => {
+    opt.User.RequireUniqueEmail = true;
+    opt.Password.RequireDigit = false;
+    opt.Password.RequiredLength = 4;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequireLowercase = false;
+})
                 .AddEntityFrameworkStores<GameStoreDbContext>()
                 .AddDefaultTokenProviders();
 

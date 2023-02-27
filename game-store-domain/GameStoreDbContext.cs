@@ -28,6 +28,10 @@ namespace game_store_domain
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<GameStoreUser>()
+                .Property(user => user.AvatarImage)
+                .IsRequired(false);
+
             modelBuilder.Entity<Game>()
                 .Property(game => game.Genres)
                 .HasConversion(new GameGenreConverter())
