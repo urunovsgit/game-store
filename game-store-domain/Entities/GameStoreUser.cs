@@ -12,5 +12,7 @@ namespace game_store_domain.Entities
         public string LastName { get; set; }
 
         public byte[] AvatarImage { get; set; }
+
+        virtual public List<Comment> Comments { get; set; }
     }
 }

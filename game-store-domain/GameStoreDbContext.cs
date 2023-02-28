@@ -48,6 +48,24 @@ namespace game_store_domain
                     .OnDelete(DeleteBehavior.NoAction);
             });
 
+            modelBuilder.Entity<Comment>(entity =>
+            {
+                entity.HasKey(node => node.Id);
+                entity.Property(node => node.Text);
+
+                entity.HasOne(x => x.RelatedTo)
+                    .WithMany(x => x.SubComments)
+                    .HasForeignKey(x => x.ParentId)
+                    .IsRequired(false)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(x => x.User)
+                    .WithMany(u => u.Comments)
+                    .HasForeignKey(x => x.UserId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<GenreNode>()
                 .HasIndex(gNode => gNode.Genre)
                 .IsUnique();
