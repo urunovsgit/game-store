@@ -113,6 +113,23 @@ function addCommentEvent(username) {
         commentsList.appendChild(commentItem);
         commentText.value = '';
         commentForm.classList.add('hidden');
+
+        const form = $('#commentForm')[0];
+        const formData = new FormData(form);
+        formData.append('comment', comment);
+
+        $.ajax({
+            url: '/Game/AddComment',
+            data: formData,
+            contentType: false,
+            processData: false,
+            async: false,
+            type: 'POST'
+            //success: function (result) {
+            //    window.location.href = result;
+            //}
+        });
+
     } else {
         alert('Comment must be between 1 and 600 characters.');
     }

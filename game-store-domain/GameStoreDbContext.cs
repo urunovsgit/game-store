@@ -64,6 +64,12 @@ namespace game_store_domain
                     .HasForeignKey(x => x.UserId)
                     .IsRequired(true)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(x => x.Game)
+                    .WithMany(g => g.Comments)
+                    .HasForeignKey(x => x.GameId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<GenreNode>()

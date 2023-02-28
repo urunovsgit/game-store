@@ -4,7 +4,8 @@
 @inject UserManager<GameStoreUser> UserManager
 
 @{
-    ViewData["username"] = (await UserManager.GetUserAsync(User))?.UserName;
+    var user = await UserManager.GetUserAsync(User);
+    ViewData["username"] = user?.UserName;
 
     string imgDataUrl;
     if (Model.Image != null && Model.Image.Length != 0)
@@ -65,7 +66,14 @@
                     </form>
                 </div>
                 <div class="comment-warp">
-                    <partial name="_CommentForm"/>
+                    <form id="commentForm">
+                        <input type="hidden" name="gameId" value="@Model.Id" />
+                        <input type="hidden" name="userId" value="@user?.Id" />
+                        <input type="hidden" name="parrentId" value="@null" />
+
+                    </form>
+                    <button class="comment-button" onclick="beginCommentEvent()">Comment</button>
+                    <h4 class="comment-title">Coments</h4>
                     <ul class="comment-list">
                         <li>
                             <div class="comment">
@@ -86,6 +94,7 @@
                             </div>
                         </li>
                     </ul>
+                    <partial name="_CommentForm" model="@Model" />
                 </div>
             </div>
         </div>

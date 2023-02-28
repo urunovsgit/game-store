@@ -16,9 +16,17 @@ namespace game_store_domain.Entities
         public string Text{ get; set; }
 
         [Required]
+        public DateTime DateTime { get; set; } = DateTime.Now;
+
+        [Required]
         virtual public GameStoreUser User { get; set; }
 
         virtual public string UserId { get; set; }
+
+        [Required]
+        virtual public Game Game { get; set; }
+
+        virtual public int GameId { get; set; }
 
 
         [AllowNull]

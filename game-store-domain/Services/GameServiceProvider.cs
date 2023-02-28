@@ -91,6 +91,15 @@ namespace game_store_domain.Services
             return _storeDbContext.Set<GenreNode>().ToList();
         }
 
+        public Comment AddComment(Comment comment)
+        {
+            if (comment == null) return null;
+
+            var newComment = _storeDbContext.Set<Comment>().Add(comment);
+
+            return newComment.Entity as Comment;
+        }
+
         private void EnsureCreatedGameGenres()
         {
             if (!_storeDbContext.Set<GenreNode>().Any())

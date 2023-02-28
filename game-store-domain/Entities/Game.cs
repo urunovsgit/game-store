@@ -27,6 +27,8 @@ namespace game_store_domain.Entities
 
         virtual public List<Genre> Genres { get; set; } = new List<Genre>();
 
+        virtual public List<Comment> Comments { get; set; }
+
         public void CopyFrom(Game game)
         {
             if (Title != game.Title)

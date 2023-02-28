@@ -63,5 +63,17 @@ namespace game_store.Controllers
 
             return RedirectToAction(nameof(Index), "Home");
         }
+
+        public void AddComment([FromForm] string userId, int gameId, int? parrentId, string comment)
+        {
+            _gameServicesProvider.AddComment(
+                new Comment
+                {
+                    UserId = userId,
+                    ParentId = parrentId,
+                    GameId = gameId,
+                    Text = comment
+                });
+        }
     }
 }
