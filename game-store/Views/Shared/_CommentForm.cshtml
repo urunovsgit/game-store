@@ -1,0 +1,25 @@
+﻿
+<style>
+    .comment-form,
+    .comments {
+        margin-top: 20px;
+    }
+
+    .comment-buttons {
+        margin-top: 10px;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+<h4 class="comment-title">Top Coments</h4>
+<button class="comment-button" onclick="beginCommentEvent()">Comment</button>
+<div class="comment-form hidden">
+    <textarea id="comment-text" placeholder="Enter your comment (max 600 characters)"></textarea>
+    <div class="comment-buttons">
+        <button id="comment-save" onclick="addCommentEvent('@ViewData["username"]')">Save</button>
+        <button id="comment-cancel" onclick="cancelCommentEvent()">Cancel</button>
+    </div>
+</div>

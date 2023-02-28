@@ -39,40 +39,6 @@ function gameUpdateHandler(event) {
     });
 }
 
-//const filterGenresBtn = $('#applyGenresFilterBtn');
-//filterGenresBtn.click(applyGenres);
-
-//function applyGenres() {
-//    //stop submit the form, we will post it manually.
-//    //event.preventDefault();
-
-//    const genres = []
-//    $('#genres input[type=checkbox]:checked').each(function () {
-//        const genre = $(this).val();
-//        genres.push(genre)
-//    });
-
-//    const filterOptions = {
-//        Page: $("#Page").val(),
-//        PageSize: $("#PageSize").val(),
-//        OrderOption: $("#OrderOption").val(),
-//        FilterOption: 'Genre',//$("#FilterOption").val(),
-//        FilterValue: genres
-//    };
-
-//    const DTO = JSON.stringify(filterOptions);
-
-//    $.ajax({
-//        url: '/Home/ApplyGenreFilterOptions',
-//        cache: false,
-//        type: 'POST',
-//        contentType: 'application/json; charset=utf-8',
-//        data: genres,
-//        async: false,
-//        dataType: "json"
-//    });
-//}
-
 const filterGenresBtn = $('#applyGenresFilterBtn');
 filterGenresBtn.click(applyGenresFilter);
 
@@ -108,5 +74,55 @@ function applyGenresFilter(event) {
         //    window.location.href = result;
         //}
     });
+}
+
+function beginCommentEvent() {
+    const commentForm = document.querySelector('.comment-form');
+
+    commentForm.classList.remove('hidden');
+}
+
+function addCommentEvent(username) {
+    const commentForm = document.querySelector('.comment-form');
+    const commentText = document.querySelector('#comment-text');
+    const commentsList = document.querySelector('.comment-list');
+
+    const comment = commentText.value;
+    if (comment.length > 0 && comment.length <= 600) {
+        const commentTextEl = document.createElement('p');
+        commentTextEl.textContent = comment;
+
+        const commentDateTime = document.createElement('span');
+        commentDateTime.textContent = new Date().toLocaleString();
+
+        const usernameHeader = document.createElement('h5');
+        usernameHeader.textContent = username + ' ';
+        usernameHeader.appendChild(commentDateTime);
+
+        const commentContentDiv = document.createElement('div');
+        commentContentDiv.classList.add('comment-content');
+        commentContentDiv.appendChild(usernameHeader);
+        commentContentDiv.appendChild(commentTextEl);
+
+        const commentItemDiv = document.createElement('div');
+        commentItemDiv.classList.add('comment');
+        commentItemDiv.appendChild(commentContentDiv);
+
+        const commentItem = document.createElement('li');
+        commentItem.appendChild(commentItemDiv);
+        commentsList.appendChild(commentItem);
+        commentText.value = '';
+        commentForm.classList.add('hidden');
+    } else {
+        alert('Comment must be between 1 and 600 characters.');
+    }
+}
+
+function cancelCommentEvent() {
+    const commentForm = document.querySelector('.comment-form');
+    const commentText = document.querySelector('#comment-text');
+
+    commentText.value = '';
+    commentForm.classList.add('hidden');
 }
 

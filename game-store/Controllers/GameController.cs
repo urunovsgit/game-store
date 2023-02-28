@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace game_store.Controllers
 {
-    [Authorize]
     public class GameController : Controller
     {
         private readonly ILogger<HomeController> _logger;
