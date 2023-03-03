@@ -1,4 +1,5 @@
-﻿
+﻿@model string
+
 <style>
     .comment-form,
     .comments {
@@ -15,10 +16,10 @@
 </style>
 
 
-<div class="comment-form hidden">
-    <textarea id="comment-text" placeholder="Enter your comment (max 600 characters)"></textarea>
+<div class="comment-form hidden" id="commentForm@(Model)">
+    <textarea id="commentText@(Model)" placeholder="Enter your comment (max 600 characters)"></textarea>
     <div class="comment-buttons">
         <button id="comment-save" onclick="addCommentEvent('@ViewData["username"]')">Save</button>
-        <button id="comment-cancel" onclick="cancelCommentEvent()">Cancel</button>
+        <button id="comment-cancel" onclick="cancelCommentEvent('@Model')">Cancel</button>
     </div>
 </div>

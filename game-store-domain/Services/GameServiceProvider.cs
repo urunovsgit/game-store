@@ -33,7 +33,9 @@ namespace game_store_domain.Services
 
         public Game GetGameById(int id)
         {
-            return _storeDbContext.Set<Game>().Find(id);
+            var game = _storeDbContext.Set<Game>().First(g => g.Id == id);
+
+            return game;
         }
 
         public Game AddNewGame(Game game)
@@ -96,8 +98,9 @@ namespace game_store_domain.Services
             if (comment == null) return null;
 
             var newComment = _storeDbContext.Set<Comment>().Add(comment);
+            _storeDbContext.SaveChanges();
 
-            return newComment.Entity as Comment;
+            return newComment.Entity;
         }
 
         private void EnsureCreatedGameGenres()

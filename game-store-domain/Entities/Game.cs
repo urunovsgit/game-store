@@ -60,6 +60,11 @@ namespace game_store_domain.Entities
             {
                 Image = game.Image;
             }
+
+            if(Comments != game.Comments)
+            {
+                Comments = game.Comments;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace game_store.Controllers
         public IActionResult ViewGame(int gameId)
         {
             var game = _gameServicesProvider.GetGameById(gameId);
-            return View(game);
+            return View(new GameViewModel(game));
         }
 
         public IActionResult NewGamePage()
@@ -64,9 +64,9 @@ namespace game_store.Controllers
             return RedirectToAction(nameof(Index), "Home");
         }
 
-        public void AddComment([FromForm] string userId, int gameId, int? parrentId, string comment)
+        public int AddComment([FromForm] string userId, int gameId, int? parrentId, string comment)
         {
-            _gameServicesProvider.AddComment(
+            var instance = _gameServicesProvider.AddComment(
                 new Comment
                 {
                     UserId = userId,
@@ -74,6 +74,8 @@ namespace game_store.Controllers
                     GameId = gameId,
                     Text = comment
                 });
+
+            return instance.Id;
         }
     }
 }
