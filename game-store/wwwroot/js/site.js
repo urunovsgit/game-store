@@ -42,7 +42,7 @@ function gameUpdateHandler(event) {
 const filterGenresBtn = $('#applyGenresFilterBtn');
 filterGenresBtn.click(applyGenresFilter);
 
-function applyGenresFilter(event) {
+function applyGenresFilter() {
     //stop submit the form, we will post it manually.
     //event.preventDefault();
 
@@ -76,26 +76,62 @@ function applyGenresFilter(event) {
     });
 }
 
-function beginCommentEvent(formIdEnd) {
-    const commentForm = document.querySelector('#commentForm' + formIdEnd);
+function beginCommentEvent(element, username, commentId, listItemIndex, itemLevel) {
+    const commentTextbox = document.createElement('textarea');
+    commentTextbox.id = 'commentText';
+    commentTextbox.placeholder = 'Enter your comment (max 600 characters)';
 
-    commentForm.classList.remove('hidden');
+    const saveBtn = document.createElement('button');
+    saveBtn.innerText = 'Save';
+    saveBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        addCommentEvent(username, commentId, listItemIndex, itemLevel);
+    });
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.innerText = 'Cancel';
+    cancelBtn.onclick = function (e) {
+        e.stopPropagation();
+        cancelCommentEvent(commentId);
+    }
+
+    const commentBtnsDiv = document.createElement('div');
+    commentBtnsDiv.classList.add('comment-buttons');
+    commentBtnsDiv.appendChild(saveBtn);
+    commentBtnsDiv.appendChild(cancelBtn);
+
+    const commentForm = document.createElement('div');
+    commentForm.classList.add('comment-form');
+    commentForm.id = 'commentForm' + commentId;
+    commentForm.appendChild(commentTextbox);
+    commentForm.appendChild(commentBtnsDiv);
+
+    const parrentElement = element.parentElement;
+    if (commentId == 0) {
+        parrentElement.insertBefore(commentForm, element.nextSibling)
+    }
+    else {
+        parrentElement.appendChild(commentForm);
+    }
+
 }
 
 function editCommentEvent(formIdEnd) {
     const commentForm = document.querySelector('#commentForm' + formIdEnd);
     const commentText = document.querySelector('#textContent' + formIdEnd);
-    const textBox = commentForm.getElementsByTagName('textbox');
 
+    const textBox = commentForm.getElementsByTagName('textbox');
     textBox.val = commentText.textContent;
+
+    const saveBtn = document.querySelector('#comment-save' + formIdEnd);
+    const cancelBtn = document.querySelector('#comment-cancel' + formIdEnd);
+
 
     commentForm.classList.remove('hidden');
 }
 
 function addCommentEvent(username, formIdEnd, listItemIndex, itemLevel) {
-    const commentForm = document.querySelector('#commentForm' + formIdEnd);
-    const commentText = document.querySelector('#commentText' + formIdEnd);
-
+    const commentText = document.querySelector('#commentText');
 
     const comment = commentText.value;
     if (comment.length > 0 && comment.length <= 600) {
@@ -127,48 +163,16 @@ function addCommentEvent(username, formIdEnd, listItemIndex, itemLevel) {
                 replyBtn.classList.add('comment-button', 'btn-sm', 'btn-link');
                 replyBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
-                    beginCommentEvent(commentId);
+                    beginCommentEvent(this, username, commentId, listItemIndex, itemLevel);
                 });
                 replyBtn.innerText = 'Reply';
 
-                const commentTextbox = document.createElement('textarea');
-                commentTextbox.id = 'commentText' + commentId;
-                commentTextbox.placeholder = 'Enter your comment (max 600 characters)';
-
-                const saveBtn = document.createElement('button');
-                saveBtn.id = 'comment-save' + commentId;
-                saveBtn.innerText = 'Save';
-                saveBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    addCommentEvent(username, commentId, listItemIndex, itemLevel+1);
-                });
-
-                const cancelBtn = document.createElement('button');
-                cancelBtn.id = 'comment-cancel' + commentId;
-                cancelBtn.innerText = 'Cancel';
-                cancelBtn.onclick = function (e) {
-                    e.stopPropagation();
-                    cancelCommentEvent(commentId);
-                }
-
-                const commentBtnsDiv = document.createElement('div');
-                commentBtnsDiv.classList.add('comment-buttons');
-                commentBtnsDiv.appendChild(saveBtn);
-                commentBtnsDiv.appendChild(cancelBtn);
-
-                const commentForm = document.createElement('div');
-                commentForm.classList.add('comment-form');
-                commentForm.classList.add('hidden');
-                commentForm.id = 'commentForm' + commentId;
-                commentForm.appendChild(commentTextbox);
-                commentForm.appendChild(commentBtnsDiv);
-
                 const commentContentDiv = document.createElement('div');
+                commentContentDiv.id = 'comment-content' + commentId;
                 commentContentDiv.classList.add('comment-content');
                 commentContentDiv.appendChild(usernameHeader);
                 commentContentDiv.appendChild(commentTextEl);
                 commentContentDiv.appendChild(replyBtn);
-                commentContentDiv.appendChild(commentForm);
 
                 const commentItemDiv = document.createElement('div');
                 commentItemDiv.classList.add('comment');
@@ -176,96 +180,41 @@ function addCommentEvent(username, formIdEnd, listItemIndex, itemLevel) {
 
                 const commentItem = document.createElement('li');
                 commentItem.appendChild(commentItemDiv);
-                commentItem.style.cssText = `margin-left: ${(itemLevel+1) * 20}px;`;
+
+                if (itemLevel == 0)
+                    commentItem.classList.add('comment-first-level');
+                else if (itemLevel == 1)
+                    commentItem.classList.add('comment-second-level');
+                else if (itemLevel == 2)
+                    commentItem.classList.add('comment-third-level');
+                else if(itemLevel >= 3)
+                    commentItem.classList.add('comment-fourth-level');
+
+                //commentItem.style.cssText = `margin-left: ${(itemLevel + 1) * 20}px;`;
 
                 const commentsList = document.querySelector('.comment-list');
 
                 if (listItemIndex != -1) {
-                    const existingNode = commentsList.children[listItemIndex];
-                    existingNode.parentNode.insertBefore(commentItem, existingNode.nextSibling);
+                    const currentNode = commentsList.children[listItemIndex];
+                    currentNode.parentNode.insertBefore(commentItem, currentNode.nextSibling);
+
+                    document.getelem
                 }
                 else {
                     commentsList.appendChild(commentItem);
                 }
 
+                cancelCommentEvent();
             }
         });
-
-        commentForm.classList.add('hidden');
-        commentText.value = '';
     } else {
         alert('Comment must be between 1 and 600 characters.');
     }
 }
 
-//function createCommentPostForm(commentId, username, listItemIndex) {
-//    const commentDateTime = document.createElement('span');
-//    commentDateTime.textContent = new Date().toLocaleString();
-
-//    const usernameHeader = document.createElement('h5');
-//    usernameHeader.textContent = username + ' ';
-//    usernameHeader.appendChild(commentDateTime);
-
-//    const commentTextEl = document.createElement('p');
-//    commentTextEl.textContent = '';
-
-//    const commentTextbox = document.createElement('textarea');
-//    commentTextbox.id = 'commentText' + commentId;
-//    commentTextbox.placeholder = 'Enter your comment (max 600 characters)';
-
-//    const saveBtn = document.createElement('button');
-//    saveBtn.addEventListener('click', function (e) {
-//        e.stopPropagation();
-//        addCommentEvent(username, commentId, listItemIndex);
-//    })
-//    //saveBtn.id = 'comment-save';
-//    // saveBtn.onclick = addCommentEvent(username, commentId, listItemIndex);
-
-//    const cancelBtn = document.createElement('button');
-//    //cancelBtn.id = 'comment-cancel';
-//    saveBtn.onclick = function (e) {
-//        e.stopPropagation();
-//        cancelCommentEvent(commentId);
-//    }
-
-//    const commentBtnsDiv = document.createElement('div');
-//    commentBtnsDiv.classList.add('comment-buttons');
-//    commentBtnsDiv.appendChild(saveBtn);
-//    commentBtnsDiv.appendChild(cancelBtn);
-
-//    const commentForm = document.createElement('div');
-//    commentForm.classList.add('comment-form');
-//    commentForm.classList.add('hidden');
-//    commentForm.id = 'commentForm' + commentId;
-//    commentForm.appendChild(commentTextbox);
-//    commentForm.appendChild(commentBtnsDiv);
-
-//    const commentContentDiv = document.createElement('div');
-//    commentContentDiv.classList.add('comment-content');
-//    commentContentDiv.appendChild(usernameHeader);
-//    commentContentDiv.appendChild(commentTextEl);
-//    commentContentDiv.appendChild(commentForm);
-
-//    const commentItemDiv = document.createElement('div');
-//    commentItemDiv.classList.add('comment');
-//    commentItemDiv.appendChild(commentContentDiv);
-
-//    const commentItem = document.createElement('li');
-//    commentItem.appendChild(commentItemDiv);
-//    commentsList.appendChild(commentItem);
-
-//    return commentItem;
-//}
-
-function cancelCommentEvent(formIdEnd) {
-    if (formIdEnd == null) {
-        formIdEnd = '';
-    }
-
-    const commentForm = document.querySelector('#commentForm' + formIdEnd);
-    const commentText = document.querySelector('#commentText' + formIdEnd);
-
-    commentText.value = '';
-    commentForm.classList.add('hidden');
+function cancelCommentEvent() {
+    const commentForm = document.querySelector('.comment-form');
+    const parrentElement = commentForm.parentElement;
+    parrentElement.removeChild(commentForm);
 }
 
