@@ -8,15 +8,16 @@ namespace game_store.Models
 
         public CommentViewModel(Comment comment)
         {
+            Id = comment.Id;
             Text = comment.Text;
-            this.DateTime = comment.DateTime;
-            this.User = comment.User;
-            this.UserId = comment.UserId;
-            this.ParentId = comment.ParentId;
-            this.RelatedTo = comment.RelatedTo;
-            this.SubComments = comment.SubComments;
-            this.GameId = comment.GameId;
-            this.Game = comment.Game;
+            DateTime = comment.DateTime;
+            User = comment.User;
+            UserId = comment.UserId;
+            ParentId = comment.ParentId;
+            RelatedTo = comment.RelatedTo;
+            SubComments = comment.SubComments;
+            GameId = comment.GameId;
+            Game = comment.Game;
         }
         public int CommentLevel { get; set; }
     }

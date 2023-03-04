@@ -64,13 +64,13 @@ namespace game_store.Controllers
             return RedirectToAction(nameof(Index), "Home");
         }
 
-        public int AddComment([FromForm] string userId, int gameId, int? parrentId, string comment)
+        public int AddComment([FromForm] string userId, int gameId, int parrentId, string comment)
         {
             var instance = _gameServicesProvider.AddComment(
                 new Comment
                 {
                     UserId = userId,
-                    ParentId = parrentId,
+                    ParentId = parrentId != 0 ? parrentId : null,
                     GameId = gameId,
                     Text = comment
                 });

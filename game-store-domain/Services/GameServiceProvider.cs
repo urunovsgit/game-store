@@ -103,6 +103,19 @@ namespace game_store_domain.Services
             return newComment.Entity;
         }
 
+        public Comment EditComment(Comment comment)
+        {
+            var commentEntity = _storeDbContext.Set<Comment>().Find(comment.Id);
+
+            if (commentEntity != null)
+            {
+                commentEntity.Text = comment.Text;
+                _storeDbContext.SaveChanges();
+            }
+
+            return commentEntity;
+        }
+
         private void EnsureCreatedGameGenres()
         {
             if (!_storeDbContext.Set<GenreNode>().Any())

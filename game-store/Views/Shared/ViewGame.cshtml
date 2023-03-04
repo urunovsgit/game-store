@@ -82,17 +82,17 @@
                     </form>
                 </div>
                 <div class="comment-warp">
-                    <form id="commentForm">
+                    <form id="commentDataForm">
                         <input type="hidden" name="gameId" value="@(Model.Id)" />
                         <input type="hidden" name="userId" value="@(user?.Id)" />
-                        <input type="hidden" name="parrentId" value="@null" />
+                        @*<input type="hidden" name="parrentId" value="@null" />*@
                     </form>
-                    <button class="comment-button" onclick="beginCommentEvent('Main')">Comment</button>
-                    <div class="comment-form hidden" id="commentForm@("Main")">
-                        <textarea id="commentText@("Main")" placeholder="Enter your comment (max 600 characters)"></textarea>
+                    <button class="comment-button" onclick="beginCommentEvent('@(null)')">Comment</button>
+                    <div class="comment-form hidden" id="commentForm@(null)">
+                        <textarea id="commentText@(null)" placeholder="Enter your comment (max 600 characters)"></textarea>
                         <div class="comment-buttons">
-                            <button id="comment-save" onclick="addCommentEvent('@(user?.UserName)', 'Main', '-1')">Save</button>
-                            <button id="comment-cancel" onclick="cancelCommentEvent('@("Main")')">Cancel</button>
+                            <button id="comment-save" onclick="addCommentEvent('@(user?.UserName)', '@(null)', '-1', '-1')">Save</button>
+                            <button id="comment-cancel" onclick="cancelCommentEvent('@(null)')">Cancel</button>
                         </div>
                     </div>
                     <h4 class="comment-title">Coments</h4>
@@ -101,16 +101,17 @@
                         {
                             var currentComment = leveledComments[i];
 
-                            <li>
+                            <li style="margin-left: @(currentComment.CommentLevel * 20)px;">
                                 <div class="comment">
                                     <div class="comment-content">
                                         <h5>@(user?.UserName) <span>@(currentComment.DateTime)</span></h5>
                                         <p>@(currentComment.Text)</p>
-                                        <button type="button" class="comment-button btn btn-link" onclick="beginCommentEvent('@(currentComment.Id)')">Reply</button>
+                                            <button type="button" class="comment-button btn btn-link" onclick="beginCommentEvent('@(currentComment.Id)')">Reply</button>
+                                            <button type="button" class="comment-button btn btn-link" onclick="beginCommentEvent('@(currentComment.Id)')">Edit</button>
                                         <div class="comment-form hidden" id="commentForm@(currentComment.Id)">
                                             <textarea id="commentText@(currentComment.Id)" placeholder="Enter your comment (max 600 characters)"></textarea>
                                             <div class="comment-buttons">
-                                                <button id="comment-save" onclick="addCommentEvent('@(user?.UserName)', '@(currentComment.Id)', '@i')">Save</button>
+                                                <button id="comment-save" onclick="addCommentEvent('@(user?.UserName)', '@(currentComment.Id)', '@i', '@(currentComment.CommentLevel)')">Save</button>
                                                 <button id="comment-cancel" onclick="cancelCommentEvent('@(currentComment.Id)')">Cancel</button>
                                             </div>
                                         </div>
@@ -118,56 +119,56 @@
                                 </div>
                             </li>
                         }
-                        
+
                         @*<li>
-                            <div class="comment">
-                                <div class="comment-content">
-                                    <h5>James Smith <span>June 21, 2018</span></h5>
-                                    <p>Donec venenatis at eros sit amet aliquam. Donec vel orci efficitur, dictum nisl vitae, scelerisque nibh. Curabitur eget ipsum pulvinar nunc gravida interdum. </p>
-                                    <a href="" class="reply">Reply</a>
-                                </div>
-                            </div>
+                        <div class="comment">
+                        <div class="comment-content">
+                        <h5>James Smith <span>June 21, 2018</span></h5>
+                        <p>Donec venenatis at eros sit amet aliquam. Donec vel orci efficitur, dictum nisl vitae, scelerisque nibh. Curabitur eget ipsum pulvinar nunc gravida interdum. </p>
+                        <a href="" class="reply">Reply</a>
+                        </div>
+                        </div>
                         </li>*@
                     </ul>
 
                     @*<div class="post-comments">
-                        <div class="row">
+                    <div class="row">
 
-                            <div class="media">
-                                <!-- first comment -->
-                                @for (var i = 0; i < leveledComments.Count; ++i)
-                                {
-                                    <div class="media-heading">
-                                        <span class="label label-info">@(leveledComments[i].User.UserName)</span>
-                                        @(leveledComments[i].DateTime)
-                                    </div>
+                    <div class="media">
+                    <!-- first comment -->
+                    @for (var i = 0; i < leveledComments.Count; ++i)
+                    {
+                    <div class="media-heading">
+                    <span class="label label-info">@(leveledComments[i].User.UserName)</span>
+                    @(leveledComments[i].DateTime)
+                    </div>
 
-                                    <div class="panel-collapse collapse in" id="collapseOne">
+                    <div class="panel-collapse collapse in" id="collapseOne">
 
 
-                                        <div class="media-body">
-                                            <p>@(leveledComments[i].Text)</p>
-                                            <div class="comment-meta">
-                                                <span><a href="#">delete</a></span>
-                                                <span>
-                                                    <a class="" role="button" data-toggle="collapse" href="#replyCommentT" aria-expanded="false" aria-controls="collapseExample">reply</a>
-                                                </span>
-                                                <div class="collapse" id="replyCommentT">
-                                                    <form id="innerCommentForm">
-                                                        <input type="hidden" name="gameId" value="@Model.Id" />
-                                                        <input type="hidden" name="userId" value="@user?.Id" />
-                                                        <input type="hidden" name="parrentId" value="@(leveledComments[i].ParentId)" />
+                    <div class="media-body">
+                    <p>@(leveledComments[i].Text)</p>
+                    <div class="comment-meta">
+                    <span><a href="#">delete</a></span>
+                    <span>
+                    <a class="" role="button" data-toggle="collapse" href="#replyCommentT" aria-expanded="false" aria-controls="collapseExample">reply</a>
+                    </span>
+                    <div class="collapse" id="replyCommentT">
+                    <form id="innerCommentForm">
+                    <input type="hidden" name="gameId" value="@Model.Id" />
+                    <input type="hidden" name="userId" value="@user?.Id" />
+                    <input type="hidden" name="parrentId" value="@(leveledComments[i].ParentId)" />
 
-                                                    </form>
-                                                    <button class="comment-button" onclick="beginCommentEvent()">Comment</button>
-                                                    <partial name="_CommentForm" model="@(leveledComments[i].Id)" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
+                    </form>
+                    <button class="comment-button" onclick="beginCommentEvent()">Comment</button>
+                    <partial name="_CommentForm" model="@(leveledComments[i].Id)" />
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    }
+                    </div>
+                    </div>
                     </div>*@
                 </div>
             </div>

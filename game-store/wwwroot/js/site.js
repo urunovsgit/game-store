@@ -82,16 +82,27 @@ function beginCommentEvent(formIdEnd) {
     commentForm.classList.remove('hidden');
 }
 
-function addCommentEvent(username, formIdEnd, listItemIndex) {
+function editCommentEvent(formIdEnd) {
+    const commentForm = document.querySelector('#commentForm' + formIdEnd);
+    const commentText = document.querySelector('#textContent' + formIdEnd);
+    const textBox = commentForm.getElementsByTagName('textbox');
+
+    textBox.val = commentText.textContent;
+
+    commentForm.classList.remove('hidden');
+}
+
+function addCommentEvent(username, formIdEnd, listItemIndex, itemLevel) {
     const commentForm = document.querySelector('#commentForm' + formIdEnd);
     const commentText = document.querySelector('#commentText' + formIdEnd);
 
 
     const comment = commentText.value;
     if (comment.length > 0 && comment.length <= 600) {
-        const form = $('#commentForm')[0];
+        const form = $('#commentDataForm')[0];
         const formData = new FormData(form);
         formData.append('comment', comment);
+        formData.append('parrentId', formIdEnd);
 
         $.ajax({
             url: '/Game/AddComment',
@@ -110,9 +121,10 @@ function addCommentEvent(username, formIdEnd, listItemIndex) {
 
                 const commentTextEl = document.createElement('p');
                 commentTextEl.textContent = comment;
+                commentTextEl.id = 'textContent' + commentId;
 
                 const replyBtn = document.createElement('button');
-                replyBtn.classList.add('comment-button', 'btn', 'btn-link');
+                replyBtn.classList.add('comment-button', 'btn-sm', 'btn-link');
                 replyBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
                     beginCommentEvent(commentId);
@@ -124,13 +136,15 @@ function addCommentEvent(username, formIdEnd, listItemIndex) {
                 commentTextbox.placeholder = 'Enter your comment (max 600 characters)';
 
                 const saveBtn = document.createElement('button');
+                saveBtn.id = 'comment-save' + commentId;
                 saveBtn.innerText = 'Save';
                 saveBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
-                    addCommentEvent(username, commentId, listItemIndex);
+                    addCommentEvent(username, commentId, listItemIndex, itemLevel+1);
                 });
 
                 const cancelBtn = document.createElement('button');
+                cancelBtn.id = 'comment-cancel' + commentId;
                 cancelBtn.innerText = 'Cancel';
                 cancelBtn.onclick = function (e) {
                     e.stopPropagation();
@@ -162,10 +176,11 @@ function addCommentEvent(username, formIdEnd, listItemIndex) {
 
                 const commentItem = document.createElement('li');
                 commentItem.appendChild(commentItemDiv);
+                commentItem.style.cssText = `margin-left: ${(itemLevel+1) * 20}px;`;
 
                 const commentsList = document.querySelector('.comment-list');
 
-                if (listItemIndex != -1) {                    
+                if (listItemIndex != -1) {
                     const existingNode = commentsList.children[listItemIndex];
                     existingNode.parentNode.insertBefore(commentItem, existingNode.nextSibling);
                 }
@@ -243,6 +258,10 @@ function addCommentEvent(username, formIdEnd, listItemIndex) {
 //}
 
 function cancelCommentEvent(formIdEnd) {
+    if (formIdEnd == null) {
+        formIdEnd = '';
+    }
+
     const commentForm = document.querySelector('#commentForm' + formIdEnd);
     const commentText = document.querySelector('#commentText' + formIdEnd);
 
