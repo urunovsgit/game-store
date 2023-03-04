@@ -77,5 +77,17 @@ namespace game_store.Controllers
 
             return instance.Id;
         }
+
+        public void EditComment([FromForm] string userId, int gameId, int parrentId, string comment)
+        {
+            _gameServicesProvider.EditComment(
+                new Comment
+                {
+                    UserId = userId,
+                    ParentId = parrentId != 0 ? parrentId : null,
+                    GameId = gameId,
+                    Text = comment
+                });
+        }
     }
 }

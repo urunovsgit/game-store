@@ -76,35 +76,23 @@ function applyGenresFilter() {
     });
 }
 
-function beginCommentEvent(element, username, commentId, listItemIndex, itemLevel) {
-    const commentTextbox = document.createElement('textarea');
-    commentTextbox.id = 'commentText';
-    commentTextbox.placeholder = 'Enter your comment (max 600 characters)';
+function beginCommentEventHandler(element, username, commentId, listItemIndex, itemLevel) {
+    let commentForm = document.querySelector('.comment-form');
 
-    const saveBtn = document.createElement('button');
-    saveBtn.innerText = 'Save';
+    if (commentForm != null) return;
+
+    commentForm = createCommentForm();
+    const saveBtn = commentForm.querySelector('#saveBtn');
+    const cancelBtn = commentForm.querySelector('#cancelBtn');
+
     saveBtn.addEventListener('click', function (e) {
         e.stopPropagation();
-        addCommentEvent(username, commentId, listItemIndex, itemLevel);
+        addCommentEventHandler(username, commentId, listItemIndex, itemLevel);
     });
-
-    const cancelBtn = document.createElement('button');
-    cancelBtn.innerText = 'Cancel';
-    cancelBtn.onclick = function (e) {
+    cancelBtn.addEventListener('click', function (e) {
         e.stopPropagation();
-        cancelCommentEvent(commentId);
-    }
-
-    const commentBtnsDiv = document.createElement('div');
-    commentBtnsDiv.classList.add('comment-buttons');
-    commentBtnsDiv.appendChild(saveBtn);
-    commentBtnsDiv.appendChild(cancelBtn);
-
-    const commentForm = document.createElement('div');
-    commentForm.classList.add('comment-form');
-    commentForm.id = 'commentForm' + commentId;
-    commentForm.appendChild(commentTextbox);
-    commentForm.appendChild(commentBtnsDiv);
+        cancelCommentEventHandler(commentId);
+    });
 
     const parrentElement = element.parentElement;
     if (commentId == 0) {
@@ -113,24 +101,65 @@ function beginCommentEvent(element, username, commentId, listItemIndex, itemLeve
     else {
         parrentElement.appendChild(commentForm);
     }
-
 }
 
-function editCommentEvent(formIdEnd) {
-    const commentForm = document.querySelector('#commentForm' + formIdEnd);
-    const commentText = document.querySelector('#textContent' + formIdEnd);
+function editCommentEventHandler(element, formIdEnd, text) {
+    let commentForm = document.querySelector('.comment-form');
 
-    const textBox = commentForm.getElementsByTagName('textbox');
-    textBox.val = commentText.textContent;
+    if (commentForm != null) return;
 
-    const saveBtn = document.querySelector('#comment-save' + formIdEnd);
-    const cancelBtn = document.querySelector('#comment-cancel' + formIdEnd);
+    commentForm = createCommentForm();
+    const textbox = commentForm.querySelector('#commentText');
+    textbox.value = text;
 
+    const saveBtn = commentForm.querySelector('#saveBtn');
+    const cancelBtn = commentForm.querySelector('#cancelBtn');
 
-    commentForm.classList.remove('hidden');
+    saveBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const commentText = document.querySelector('#commentText');
+        const comment = commentText.value;
+
+        if (comment.length > 0 && comment.length <= 600) {
+            const form = $('#commentDataForm')[0];
+            const formData = new FormData(form);
+            formData.append('comment', comment);
+            formData.append('parrentId', formIdEnd);
+
+            $.ajax({
+                url: '/Game/EditComment',
+                data: formData,
+                contentType: false,
+                processData: false,
+                async: false,
+                type: 'POST',
+                success: function () {
+                    const commentTextEl = document.querySelector('#textContent' + formIdEnd);
+                    commentTextEl.textContent = comment;
+                }
+            });
+
+            cancelCommentEventHandler();
+        } else {
+            alert('Comment must be between 1 and 600 characters.');
+        }
+    });
+
+    cancelBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        cancelCommentEventHandler(formIdEnd);
+    });
+
+    const parrentElement = element.parentElement;
+    if (formIdEnd == 0) {
+        parrentElement.insertBefore(commentForm, element.nextSibling)
+    }
+    else {
+        parrentElement.appendChild(commentForm);
+    }
 }
 
-function addCommentEvent(username, formIdEnd, listItemIndex, itemLevel) {
+function addCommentEventHandler(username, formIdEnd, listItemIndex, itemLevel) {
     const commentText = document.querySelector('#commentText');
 
     const comment = commentText.value;
@@ -187,7 +216,7 @@ function addCommentEvent(username, formIdEnd, listItemIndex, itemLevel) {
                     commentItem.classList.add('comment-second-level');
                 else if (itemLevel == 2)
                     commentItem.classList.add('comment-third-level');
-                else if(itemLevel >= 3)
+                else if (itemLevel >= 3)
                     commentItem.classList.add('comment-fourth-level');
 
                 //commentItem.style.cssText = `margin-left: ${(itemLevel + 1) * 20}px;`;
@@ -204,7 +233,7 @@ function addCommentEvent(username, formIdEnd, listItemIndex, itemLevel) {
                     commentsList.appendChild(commentItem);
                 }
 
-                cancelCommentEvent();
+                cancelCommentEventHandler();
             }
         });
     } else {
@@ -212,9 +241,35 @@ function addCommentEvent(username, formIdEnd, listItemIndex, itemLevel) {
     }
 }
 
-function cancelCommentEvent() {
+function cancelCommentEventHandler() {
     const commentForm = document.querySelector('.comment-form');
     const parrentElement = commentForm.parentElement;
     parrentElement.removeChild(commentForm);
 }
 
+function createCommentForm() {
+    const commentTextbox = document.createElement('textarea');
+    commentTextbox.id = 'commentText';
+    commentTextbox.placeholder = 'Enter your comment (max 600 characters)';
+
+    const saveBtn = document.createElement('button');
+    saveBtn.id = 'saveBtn';
+    saveBtn.innerText = 'Save';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.innerText = 'Cancel';
+    cancelBtn.id = 'cancelBtn';
+
+    const commentBtnsDiv = document.createElement('div');
+    commentBtnsDiv.classList.add('comment-buttons');
+    commentBtnsDiv.appendChild(saveBtn);
+    commentBtnsDiv.appendChild(cancelBtn);
+
+    const commentForm = document.createElement('div');
+    commentForm.classList.add('comment-form');
+    //commentForm.id = 'commentForm' + commentId;
+    commentForm.appendChild(commentTextbox);
+    commentForm.appendChild(commentBtnsDiv);
+
+    return commentForm;
+}
