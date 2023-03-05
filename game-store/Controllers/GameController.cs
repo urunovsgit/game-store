@@ -89,5 +89,17 @@ namespace game_store.Controllers
                     Text = comment
                 });
         }
+
+        [HttpPost]
+        public void DeleteComment(int commentId)
+        {
+            _gameServicesProvider.DeleteComment(commentId);
+        }
+
+        [HttpPost]
+        public void RestoreComment(int commentId)
+        {
+            _gameServicesProvider.RestoreComment(commentId);
+        }
     }
 }

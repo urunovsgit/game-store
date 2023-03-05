@@ -70,9 +70,6 @@ function applyGenresFilter() {
         processData: false,
         async: false,
         type: 'POST'
-        //success: function (result) {
-        //    window.location.href = result;
-        //}
     });
 }
 
@@ -189,12 +186,40 @@ function addCommentEventHandler(username, formIdEnd, listItemIndex, itemLevel) {
                 commentTextEl.id = 'textContent' + commentId;
 
                 const replyBtn = document.createElement('button');
-                replyBtn.classList.add('comment-button', 'btn-sm', 'btn-link');
+                replyBtn.id = 'replyBtn' + commentId;
+                replyBtn.classList.add('comment-button', 'btn', 'btn-link');
                 replyBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
-                    beginCommentEvent(this, username, commentId, listItemIndex, itemLevel);
+                    beginCommentEventHandler(this, username, commentId, listItemIndex, itemLevel);
                 });
                 replyBtn.innerText = 'Reply';
+
+                const editBtn = document.createElement('button');
+                editBtn.id = 'editBtn' + commentId;
+                editBtn.classList.add('comment-button', 'btn', 'btn-link');
+                editBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    editCommentEventHandler(this, commentId, comment);
+                });
+                editBtn.innerText = 'Edit';
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.id = 'deleteBtn' + commentId;
+                deleteBtn.classList.add('comment-button', 'btn', 'btn-link');
+                deleteBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    deleteCommentEventHandler(commentId);
+                });
+                deleteBtn.innerText = 'Delete';
+
+                const restoreBtn = document.createElement('button');
+                restoreBtn.id = 'restoreBtn' + commentId;
+                restoreBtn.classList.add('comment-button', 'btn', 'btn-link', 'hidden');
+                restoreBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    restoreCommentEventHandler(commentId, comment);
+                });
+                restoreBtn.innerText = 'Restore';
 
                 const commentContentDiv = document.createElement('div');
                 commentContentDiv.id = 'comment-content' + commentId;
@@ -202,6 +227,9 @@ function addCommentEventHandler(username, formIdEnd, listItemIndex, itemLevel) {
                 commentContentDiv.appendChild(usernameHeader);
                 commentContentDiv.appendChild(commentTextEl);
                 commentContentDiv.appendChild(replyBtn);
+                commentContentDiv.appendChild(editBtn);
+                commentContentDiv.appendChild(deleteBtn);
+                commentContentDiv.appendChild(restoreBtn);
 
                 const commentItemDiv = document.createElement('div');
                 commentItemDiv.classList.add('comment');
@@ -218,8 +246,6 @@ function addCommentEventHandler(username, formIdEnd, listItemIndex, itemLevel) {
                     commentItem.classList.add('comment-third-level');
                 else if (itemLevel >= 3)
                     commentItem.classList.add('comment-fourth-level');
-
-                //commentItem.style.cssText = `margin-left: ${(itemLevel + 1) * 20}px;`;
 
                 const commentsList = document.querySelector('.comment-list');
 
@@ -267,9 +293,64 @@ function createCommentForm() {
 
     const commentForm = document.createElement('div');
     commentForm.classList.add('comment-form');
-    //commentForm.id = 'commentForm' + commentId;
     commentForm.appendChild(commentTextbox);
     commentForm.appendChild(commentBtnsDiv);
 
     return commentForm;
+}
+
+function deleteCommentEventHandler(commentId) {
+    const textElement = document.querySelector('#textContent' + commentId)
+    textElement.textContent = "This review has been removed.";
+    textElement.classList.add('comment-removed');
+
+    const replyBtn = document.querySelector('#replyBtn' + commentId);
+    replyBtn.classList.add('hidden');
+
+    const editBtn = document.querySelector('#editBtn' + commentId);
+    editBtn.classList.add('hidden');
+
+    const deleteBtn = document.querySelector('#deleteBtn' + commentId);
+    deleteBtn.classList.add('hidden');
+
+    const restoreBtn = document.querySelector('#restoreBtn' + commentId);
+    restoreBtn.classList.remove('hidden');
+
+    const data = { commentId: commentId };
+
+    $.ajax({
+        url: '/Game/DeleteComment',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        async: false,
+        type: 'POST'
+    });
+}
+
+function restoreCommentEventHandler(commentId, commentText) {
+    const textElement = document.querySelector('#textContent' + commentId)
+    textElement.textContent = commentText;
+    textElement.classList.remove('comment-removed');
+
+    const replyBtn = document.querySelector('#replyBtn' + commentId);
+    replyBtn.classList.remove('hidden');
+
+    const editBtn = document.querySelector('#editBtn' + commentId);
+    editBtn.classList.remove('hidden');
+
+    const deleteBtn = document.querySelector('#deleteBtn' + commentId);
+    deleteBtn.classList.remove('hidden');
+
+    const restoreBtn = document.querySelector('#restoreBtn' + commentId);
+    restoreBtn.classList.add('hidden');
+
+    const data = { commentId: commentId };
+
+    $.ajax({
+        url: '/Game/RestoreComment',
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        async: false,
+        type: 'POST'
+    });
 }

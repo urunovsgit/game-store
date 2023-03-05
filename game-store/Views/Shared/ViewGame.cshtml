@@ -49,6 +49,10 @@
     .comment-fourth-level {
         margin-left: 80px;
     }
+
+    .comment-removed {
+        color: darkgray
+    }
 </style>
 
 <!-- Page section -->
@@ -102,7 +106,7 @@
                         <input type="hidden" name="gameId" value="@(Model.Id)" />
                         <input type="hidden" name="userId" value="@(user?.Id)" />
                     </form>
-                    <button class="comment-button" onclick="beginCommentEventHandler(this, '@(user?.UserName)', '0', '-1', '0')">Comment</button>
+                    <button class="comment-button" onclick="beginCommentEventHandler(this, '@(user?.UserName)', '0', '-1', '-1')">Comment</button>
                     <h4 class="comment-title">Coments</h4>
                     <ul class="comment-list">
                         @for (var i = 0; i < leveledComments.Count; ++i)
@@ -120,8 +124,10 @@
                                     <div class="comment-content">
                                         <h5>@(user?.UserName) <span>@(currentComment.DateTime)</span></h5>
                                         <p id="textContent@(currentComment.Id)">@(currentComment.Text)</p>
-                                        <button type="button" class="comment-button btn btn-link" onclick="beginCommentEventHandler(this, '@(user?.UserName)', '@(currentComment.Id)', '@i', '@(currentComment.CommentLevel)')">Reply</button>
-                                        <button type="button" class="comment-button btn btn-link" onclick="editCommentEventHandler(this, '@(currentComment.Id)', '@(currentComment.Text)')">Edit</button>
+                                        <button id="replyBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="beginCommentEventHandler(this, '@(user?.UserName)', '@(currentComment.Id)', '@i', '@(currentComment.CommentLevel)')">Reply</button>
+                                        <button id="editBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="editCommentEventHandler(this, '@(currentComment.Id)', '@(currentComment.Text)')">Edit</button>
+                                        <button id="deleteBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="deleteCommentEventHandler('@(currentComment.Id)')">Delete</button>
+                                        <button id="restoreBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link hidden" onclick="restoreCommentEventHandler('@(currentComment.Id)', '@(currentComment.Text)')">Restore</button>
                                     </div>
                                 </div>
                             </li>

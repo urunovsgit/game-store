@@ -20,6 +20,8 @@ namespace game_store_domain.Services
         public void DeleteGame(int id);
         public Comment AddComment(Comment comment);
         public Comment EditComment(Comment comment);
+        public void DeleteComment(int id);
+        public Comment RestoreComment(int id);
 
         public List<GenreNode> GetAllGenreNodes();
     }

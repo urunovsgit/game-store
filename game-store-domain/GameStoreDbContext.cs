@@ -57,7 +57,7 @@ namespace game_store_domain
                     .WithMany(x => x.SubComments)
                     .HasForeignKey(x => x.ParentId)
                     .IsRequired(false)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasOne(x => x.User)
                     .WithMany(u => u.Comments)

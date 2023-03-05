@@ -20,6 +20,8 @@ namespace game_store_domain.Entities
         [Required]
         public DateTime DateTime { get; set; } = DateTime.Now;
 
+        public bool IsDeleted { get; set; } = false;
+
         [Required]
         virtual public GameStoreUser User { get; set; }
 

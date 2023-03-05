@@ -34,6 +34,13 @@ namespace game_store_domain.Services
         public Game GetGameById(int id)
         {
             var game = _storeDbContext.Set<Game>().First(g => g.Id == id);
+            var deletedComments = game.Comments.Where(c => c.IsDeleted).ToList();
+
+            if(deletedComments.Count > 0)
+            {
+                _storeDbContext.Set<Comment>().RemoveRange(deletedComments);
+                _storeDbContext.SaveChanges();
+            }
 
             return game;
         }
@@ -114,6 +121,24 @@ namespace game_store_domain.Services
             }
 
             return commentEntity;
+        }
+
+        public void DeleteComment(int id)
+        {
+            var comment = _storeDbContext.Set<Comment>().Find(id);
+            comment.IsDeleted = true;
+
+            _storeDbContext.SaveChanges();
+        }
+
+        public Comment RestoreComment(int id)
+        {
+            var comment = _storeDbContext.Set<Comment>().Find(id);
+            comment.IsDeleted = false;
+
+            _storeDbContext.SaveChanges();
+
+            return comment;
         }
 
         private void EnsureCreatedGameGenres()
