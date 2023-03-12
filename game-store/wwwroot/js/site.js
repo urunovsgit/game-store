@@ -100,7 +100,7 @@ function beginCommentEventHandler(element, username, commentId, listItemIndex, i
     }
 }
 
-function editCommentEventHandler(element, formIdEnd, text) {
+function editCommentEventHandler(element, commentId, text) {
     let commentForm = document.querySelector('.comment-form');
 
     if (commentForm != null) return;
@@ -120,8 +120,8 @@ function editCommentEventHandler(element, formIdEnd, text) {
         if (comment.length > 0 && comment.length <= 600) {
             const form = $('#commentDataForm')[0];
             const formData = new FormData(form);
+            formData.append('id', commentId);
             formData.append('comment', comment);
-            formData.append('parrentId', formIdEnd);
 
             $.ajax({
                 url: '/Game/EditComment',
@@ -131,7 +131,7 @@ function editCommentEventHandler(element, formIdEnd, text) {
                 async: false,
                 type: 'POST',
                 success: function () {
-                    const commentTextEl = document.querySelector('#textContent' + formIdEnd);
+                    const commentTextEl = document.querySelector('#textContent' + commentId);
                     commentTextEl.textContent = comment;
                 }
             });
@@ -144,11 +144,11 @@ function editCommentEventHandler(element, formIdEnd, text) {
 
     cancelBtn.addEventListener('click', function (e) {
         e.stopPropagation();
-        cancelCommentEventHandler(formIdEnd);
+        cancelCommentEventHandler(commentId);
     });
 
     const parrentElement = element.parentElement;
-    if (formIdEnd == 0) {
+    if (commentId == 0) {
         parrentElement.insertBefore(commentForm, element.nextSibling)
     }
     else {

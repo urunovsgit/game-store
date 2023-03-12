@@ -64,6 +64,7 @@ namespace game_store.Controllers
             return RedirectToAction(nameof(Index), "Home");
         }
 
+        [HttpPost]
         public int AddComment([FromForm] string userId, int gameId, int parrentId, string comment)
         {
             var instance = _gameServicesProvider.AddComment(
@@ -78,14 +79,13 @@ namespace game_store.Controllers
             return instance.Id;
         }
 
-        public void EditComment([FromForm] string userId, int gameId, int parrentId, string comment)
+        [HttpPost]
+        public void EditComment([FromForm]int id, string comment)
         {
             _gameServicesProvider.EditComment(
                 new Comment
                 {
-                    UserId = userId,
-                    ParentId = parrentId != 0 ? parrentId : null,
-                    GameId = gameId,
+                    Id = id,
                     Text = comment
                 });
         }

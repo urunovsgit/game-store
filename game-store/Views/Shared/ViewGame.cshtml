@@ -4,7 +4,7 @@
 @inject UserManager<GameStoreUser> UserManager
 
 @{
-    var user = await UserManager.GetUserAsync(User);
+    var currentUser = await UserManager.GetUserAsync(User);
     var leveledComments = Model.LeveledComments;
 
     string imgDataUrl;
@@ -104,9 +104,9 @@
                 <div class="comment-warp">
                     <form id="commentDataForm">
                         <input type="hidden" name="gameId" value="@(Model.Id)" />
-                        <input type="hidden" name="userId" value="@(user?.Id)" />
+                        <input type="hidden" name="userId" value="@(currentUser?.Id)" />
                     </form>
-                    <button class="comment-button" onclick="beginCommentEventHandler(this, '@(user?.UserName)', '0', '-1', '-1')">Comment</button>
+                    <button class="comment-button" onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '0', '-1', '-1')">Comment</button>
                     <h4 class="comment-title">Coments</h4>
                     <ul class="comment-list">
                         @for (var i = 0; i < leveledComments.Count; ++i)
@@ -122,17 +122,19 @@
                             <li class="@levelStyle">
                                 <div class="comment">
                                     <div class="comment-content">
-                                        <h5>@(user?.UserName) <span>@(currentComment.DateTime)</span></h5>
+                                        <h5>@(currentComment.User.UserName) <span>@(currentComment.DateTime)</span></h5>
                                         <p id="textContent@(currentComment.Id)">@(currentComment.Text)</p>
-                                        <button id="replyBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="beginCommentEventHandler(this, '@(user?.UserName)', '@(currentComment.Id)', '@i', '@(currentComment.CommentLevel)')">Reply</button>
-                                        <button id="editBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="editCommentEventHandler(this, '@(currentComment.Id)', '@(currentComment.Text)')">Edit</button>
-                                        <button id="deleteBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="deleteCommentEventHandler('@(currentComment.Id)')">Delete</button>
-                                        <button id="restoreBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link hidden" onclick="restoreCommentEventHandler('@(currentComment.Id)', '@(currentComment.Text)')">Restore</button>
+                                        <button id="replyBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '@(currentComment.Id)', '@i', '@(currentComment.CommentLevel)')">Reply</button>
+                                        @if (currentUser?.Id == currentComment.User.Id)
+                                        {
+                                            <button id="editBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="editCommentEventHandler(this, '@(currentComment.Id)', '@(currentComment.Text)')">Edit</button>
+                                            <button id="deleteBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="deleteCommentEventHandler('@(currentComment.Id)')">Delete</button>
+                                            <button id="restoreBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link hidden" onclick="restoreCommentEventHandler('@(currentComment.Id)', '@(currentComment.Text)')">Restore</button>
+                                        }
                                     </div>
                                 </div>
                             </li>
                         }
-
                     </ul>
                 </div>
             </div>
