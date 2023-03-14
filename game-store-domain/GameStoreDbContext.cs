@@ -15,6 +15,9 @@ namespace game_store_domain
     {
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<GenreNode> GenreNodes { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {

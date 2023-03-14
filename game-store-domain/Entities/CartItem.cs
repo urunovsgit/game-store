@@ -7,19 +7,12 @@ using System.Threading.Tasks;
 
 namespace game_store_domain.Entities
 {
-    public class CartItem
+    public class CartItem : OrderItem
     {
-        public int Id { get; set; }
         public int CartId { get; set; }
-        public int GameId { get; set; }
-        public int Quantity { get; set; } = 1;
         virtual public Cart Cart { get; set; }
-        virtual public Game Game { get; set; }
 
-        [NotMapped]
-        public decimal Sum
-        {
-            get { return Quantity * Game.Price; }
-        }
+        public CartItem() { }
+        public CartItem(Game game) :base(game) { }
     }
 }

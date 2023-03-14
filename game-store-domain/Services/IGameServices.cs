@@ -22,6 +22,11 @@ namespace game_store_domain.Services
         public Comment EditComment(Comment comment);
         public void DeleteComment(int id);
         public Comment RestoreComment(int id);
+        public void AddGameToCart(int gameId, int cartId);
+        public void RemoveGameFromCart(int gameId, int cartId);
+        public void IncreaseGameQuantity(int gameId, int cartId);
+        public void DecreaseGameQuantity(int gameId, int cartId);
+        public void ConfirmOrder(Order order);
 
         public List<GenreNode> GetAllGenreNodes();
     }
