@@ -57,7 +57,7 @@ namespace game_store_domain
                     .WithMany(x => x.SubComments)
                     .HasForeignKey(x => x.ParentId)
                     .IsRequired(false)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasOne(x => x.User)
                     .WithMany(u => u.Comments)
@@ -75,6 +75,36 @@ namespace game_store_domain
             modelBuilder.Entity<GenreNode>()
                 .HasIndex(gNode => gNode.Genre)
                 .IsUnique();
+
+            modelBuilder.Entity<CartItem>(entity =>
+            {
+                entity.HasKey(node => node.Id);
+                entity.Property(x => x.Quantity)
+                    .IsRequired(true);
+
+                entity.HasOne(x => x.Cart)
+                    .WithMany(x => x.Items)
+                    .HasForeignKey(x => x.CartId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(x => x.Game)
+                    .WithMany(x => x.Purchases)
+                    .HasForeignKey(x => x.GameId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.HasKey(node => node.Id);
+
+                entity.HasOne(x => x.User)
+                    .WithOne(x => x.Cart)
+                    .HasForeignKey<Cart>(x => x.UserId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }

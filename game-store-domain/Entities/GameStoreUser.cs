@@ -14,5 +14,7 @@ namespace game_store_domain.Entities
         public byte[] AvatarImage { get; set; }
 
         virtual public List<Comment> Comments { get; set; }
+
+        virtual public Cart Cart { get; set; }
     }
 }
