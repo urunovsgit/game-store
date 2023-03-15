@@ -13,6 +13,6 @@ namespace game_store_domain.Entities
         virtual public Cart Cart { get; set; }
 
         public CartItem() { }
-        public CartItem(Game game) :base(game) { }
+        public CartItem(Game game) : base(game) { }
     }
 }

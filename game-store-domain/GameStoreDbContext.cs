@@ -79,21 +79,30 @@ namespace game_store_domain
                 .HasIndex(gNode => gNode.Genre)
                 .IsUnique();
 
-            modelBuilder.Entity<CartItem>(entity =>
+            modelBuilder.Entity<OrderItem>(entity =>
             {
                 entity.HasKey(node => node.Id);
                 entity.Property(x => x.Quantity)
                     .IsRequired(true);
 
-                entity.HasOne(x => x.Cart)
-                    .WithMany(x => x.Items)
-                    .HasForeignKey(x => x.CartId)
-                    .IsRequired(true)
-                    .OnDelete(DeleteBehavior.Cascade);
-
                 entity.HasOne(x => x.Game)
                     .WithMany(x => x.Purchases)
                     .HasForeignKey(x => x.GameId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(x => x.Order)
+                    .WithMany(x => x.Items)
+                    .HasForeignKey(x => x.OrderId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<CartItem>(entity =>
+            {
+                entity.HasOne(x => x.Cart)
+                    .WithMany(x => x.Items)
+                    .HasForeignKey(x => x.CartId)
                     .IsRequired(true)
                     .OnDelete(DeleteBehavior.Cascade);
             });

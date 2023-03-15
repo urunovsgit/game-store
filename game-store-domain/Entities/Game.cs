@@ -29,7 +29,7 @@ namespace game_store_domain.Entities
 
         virtual public List<Comment> Comments { get; set; }
 
-        virtual public List<CartItem> Purchases { get; set; }
+        virtual public List<OrderItem> Purchases { get; set; }
 
         public void CopyFrom(Game game)
         {

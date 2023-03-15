@@ -22,7 +22,7 @@ namespace game_store_domain.Entities
         public string PhoneNumber { get; set; }
         public string Comment { get; set; }
         public PaymentType PaymentType { get; set; }
-        public List<OrderItem> Items { get; set; }
+        virtual public List<OrderItem> Items { get; set; }
         virtual public GameStoreUser User { get; set; }
     }
 }
