@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace game_store_domain.Entities
 {
-    public class CartItem : OrderItem
+    public class CartItem : GameItem
     {
         public int CartId { get; set; }
         virtual public Cart Cart { get; set; }

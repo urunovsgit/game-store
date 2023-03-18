@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using game_store_domain;
 
@@ -11,9 +12,11 @@ using game_store_domain;
 namespace gamestoredomain.Migrations
 {
     [DbContext(typeof(GameStoreDbContext))]
-    partial class GameStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230316062610_CreateOrderEntities")]
+    partial class CreateOrderEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,32 +179,6 @@ namespace gamestoredomain.Migrations
                         .IsUnique();
 
                     b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("game_store_domain.Entities.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("CartItem");
                 });
 
             modelBuilder.Entity("game_store_domain.Entities.Comment", b =>
@@ -431,6 +408,10 @@ namespace gamestoredomain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
@@ -447,6 +428,22 @@ namespace gamestoredomain.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItem");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("OrderItem");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("game_store_domain.Entities.CartItem", b =>
+                {
+                    b.HasBaseType("game_store_domain.Entities.OrderItem");
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("CartId");
+
+                    b.HasDiscriminator().HasValue("CartItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -509,25 +506,6 @@ namespace gamestoredomain.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("game_store_domain.Entities.CartItem", b =>
-                {
-                    b.HasOne("game_store_domain.Entities.Cart", "Cart")
-                        .WithMany("Items")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("game_store_domain.Entities.Game", "Game")
-                        .WithMany("CartItems")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("game_store_domain.Entities.Comment", b =>
@@ -594,6 +572,17 @@ namespace gamestoredomain.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("game_store_domain.Entities.CartItem", b =>
+                {
+                    b.HasOne("game_store_domain.Entities.Cart", "Cart")
+                        .WithMany("Items")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+                });
+
             modelBuilder.Entity("game_store_domain.Entities.Cart", b =>
                 {
                     b.Navigation("Items");
@@ -606,8 +595,6 @@ namespace gamestoredomain.Migrations
 
             modelBuilder.Entity("game_store_domain.Entities.Game", b =>
                 {
-                    b.Navigation("CartItems");
-
                     b.Navigation("Comments");
 
                     b.Navigation("Purchases");

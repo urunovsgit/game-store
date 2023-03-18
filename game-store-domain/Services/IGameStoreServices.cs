@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace game_store_domain.Services
 {
-    public interface IGameServices
+    public interface IGameStoreServices
     {
         public (IEnumerable<Game>, int) GetGames(FilterPageOptions options);
         public IEnumerable<Game> GetAllGames();
@@ -22,10 +22,10 @@ namespace game_store_domain.Services
         public Comment EditComment(Comment comment);
         public void DeleteComment(int id);
         public Comment RestoreComment(int id);
-        public void AddGameToCart(int gameId, int cartId);
-        public void RemoveGameFromCart(int gameId, int cartId);
-        public void IncreaseGameQuantity(int gameId, int cartId);
-        public void DecreaseGameQuantity(int gameId, int cartId);
+        public Cart AddGameToCart(int gameId, string userId);
+        public Cart RemoveGameFromCart(int cartId, int itemId);
+        public (int quantity, decimal itemSum, decimal totalSum) IncreaseGameQuantity(int cartId, int cartItemId);
+        public (int quantity, decimal itemSum, decimal totalSum) DecreaseGameQuantity(int cartId, int cartItemId);
         public void ConfirmOrder(Order order);
 
         public List<GenreNode> GetAllGenreNodes();

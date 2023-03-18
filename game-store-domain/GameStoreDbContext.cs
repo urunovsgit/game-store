@@ -85,6 +85,10 @@ namespace game_store_domain
                 entity.Property(x => x.Quantity)
                     .IsRequired(true);
 
+                entity.HasKey(node => node.Id);
+                entity.Property(x => x.Quantity)
+                    .IsRequired(true);
+
                 entity.HasOne(x => x.Game)
                     .WithMany(x => x.Purchases)
                     .HasForeignKey(x => x.GameId)
@@ -100,6 +104,16 @@ namespace game_store_domain
 
             modelBuilder.Entity<CartItem>(entity =>
             {
+                entity.HasKey(node => node.Id);
+                entity.Property(x => x.Quantity)
+                    .IsRequired(true);
+
+                entity.HasOne(x => x.Game)
+                    .WithMany(x => x.CartItems)
+                    .HasForeignKey(x => x.GameId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Cascade);
+
                 entity.HasOne(x => x.Cart)
                     .WithMany(x => x.Items)
                     .HasForeignKey(x => x.CartId)

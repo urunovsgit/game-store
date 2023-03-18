@@ -12,35 +12,35 @@ namespace game_store.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IGameServices _gameServicesProvider;
+        private readonly IGameStoreServices _storeServicesProvider;
 
-        public HomeController(ILogger<HomeController> logger, IGameServices gameServices)
+        public HomeController(ILogger<HomeController> logger, IGameStoreServices gameServices)
         {
             _logger = logger;
-            _gameServicesProvider = gameServices;
+            _storeServicesProvider = gameServices;
         }
 
 
         public IActionResult Index(string titleKey = "")
         {
             
-            ViewBag.GenreNodes = _gameServicesProvider.GetAllGenreNodes();
+            ViewBag.GenreNodes = _storeServicesProvider.GetAllGenreNodes();
             List<Game> games;
 
             if(!string.IsNullOrEmpty(titleKey)) 
             {
-                games = _gameServicesProvider.GetGamesByTitle(titleKey).ToList();
+                games = _storeServicesProvider.GetGamesByTitle(titleKey).ToList();
                 ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
             }
             else if (TempData.ContainsKey("SelectedGenres"))
             {
                 var genres = JsonConvert.DeserializeObject<List<Genre>>((string)TempData["SelectedGenres"]);
-                games = _gameServicesProvider.GetGamesByGenres(genres).ToList();
+                games = _storeServicesProvider.GetGamesByGenres(genres).ToList();
                 ViewBag.SelectedGenres = genres;
             }
             else
             {
-                games = _gameServicesProvider.GetAllGames().ToList();
+                games = _storeServicesProvider.GetAllGames().ToList();
                 ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
             }
 

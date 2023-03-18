@@ -10,14 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddMvc();
-builder.Services.AddHealthChecks();
-
-builder.Services.AddDbContext<GameStoreDbContext>(opts => {
-    opts.UseSqlServer(builder.Configuration["ConnectionStrings:GAMESTORE_DB_CONN_STR"]);
-});
-
-builder.Services.AddScoped<IGameServices, GameServiceProvider>();
 builder.Services.AddIdentity<GameStoreUser, IdentityRole>(opt => {
     opt.User.RequireUniqueEmail = true;
     opt.Password.RequireDigit = false;
@@ -26,8 +18,18 @@ builder.Services.AddIdentity<GameStoreUser, IdentityRole>(opt => {
     opt.Password.RequireUppercase = false;
     opt.Password.RequireLowercase = false;
 })
-                .AddEntityFrameworkStores<GameStoreDbContext>()
-                .AddDefaultTokenProviders();
+.AddEntityFrameworkStores<GameStoreDbContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.AddMvc();
+builder.Services.AddHealthChecks();
+
+builder.Services.AddDbContext<GameStoreDbContext>(opts => {
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:GAMESTORE_DB_CONN_STR"]);
+});
+
+builder.Services.AddScoped<IGameStoreServices, GameStoreServiceProvider>();
+
 
 var app = builder.Build();
 

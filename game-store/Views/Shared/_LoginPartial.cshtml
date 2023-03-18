@@ -1,9 +1,5 @@
-﻿
-
-@inject SignInManager<GameStoreUser> SignInManager
+﻿@inject SignInManager<GameStoreUser> SignInManager
 @inject UserManager<GameStoreUser> UserManager
-
-
 
 <style>
     .avatar {
@@ -13,6 +9,10 @@
         height: 50px;
     }
 </style>
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
 <div class="container">
     <!-- logo -->
@@ -37,21 +37,18 @@
         <div class="user-panel">
             <div class="row">
                 <div class="col-auto">
-                    <a id="manage"  asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    <a id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                         <img src="@imgDataUrl" alt="Avatar" class="avatar">
                     </a>
                 </div>
                 <div class="col-auto">
-                    @{
-                        var user = await UserManager.GetUserAsync(User);
-                    }
+
                     Hello @(user?.FirstName) @(user?.LastName)!
                 </div>
             </div>
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button id="logout" type="submit" class="site-btn btn-sm">Logout</button>
             </form>
-
         </div>
     }
     else
@@ -68,24 +65,20 @@
     <nav class="main-menu">
         <ul>
             <li><a asp-controller="Home" asp-action="Index">Games</a></li>
-            <li><a href="categories.html">Blog</a></li>
-            <li><a href="community.html">Forums</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            @if (SignInManager.IsSignedIn(User))
+
+            @if (!SignInManager.IsSignedIn(User))
             {
                 <li class="nav-item">
-                    @*<a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                @{
-                var user = await UserManager.GetUserAsync(User);
-                }
-                Hello @(user?.FirstName) @(user?.LastName)!
-                </a>*@
+                    <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
                 </li>
             }
             else
             {
-                <li class="nav-item">
-                    <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                <li>
+                    <a id="cartLink" asp-controller="Cart" asp-action="Index">
+                        <img src="/img/cart.jpg" width="30" class="rounded me-2" alt="">
+                        @(user?.Cart.Items.Count())
+                    </a>
                 </li>
             }
         </ul>

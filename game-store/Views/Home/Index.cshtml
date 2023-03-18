@@ -1,6 +1,13 @@
 ﻿@using game_store_domain.Services.Infrastrucure;
 @model GamesViewModel
 
+@inject SignInManager<GameStoreUser> SignInManager
+@inject UserManager<GameStoreUser> UserManager
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+
 <div class="row">
     <div class="col-lg-5 col-md-6">
         <div class="widget-item">
@@ -80,14 +87,34 @@
                         <div class="cata racing">@genresAsString</div>
                     }
                 </div>
-                <div class="rgi-content">
+                <div id="rgi@(game.Id)" class="rgi-content">
                     <a asp-controller="Game" asp-action="ViewGame" asp-route-gameId="@game.Id"><h5>@game.Title</h5></a>
-                    <a href="#" class="comment">3 Comments</a>
+                    <p class="comment">@(game.Comments?.Count) Comments</p>
                     <div class="rgi-extra">
                         <p>$@game.Price</p>
                     </div>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (currentUser.Cart.Items.Any(i => i.GameId == game.Id))
+                        {
+                            <a class="site-btn btn-sm" asp-controller="Cart" asp-action="Index">View in cart</a>
+                        }
+                        else
+                        {
+                            <form id="gameDataForm@(game.Id)" onsubmit="addGameIntoCart('@(game.Id)')">
+                                <input name="gameId" type="hidden" value="@(game.Id)">
+                                <input name="userId" type="hidden" value="@(currentUser?.Id)">
+                                <button id="buyBtn@(game.Id)" type="submit" class="site-btn btn-sm">Buy</button>
+                            </form>
+                        }
+                    }
+                    else
+                    {
+                        <a type="submit" class="site-btn btn-sm" asp-area="Identity" asp-page="/Account/Login">Buy</a>
+                    }
                 </div>
             </div>
         </div>
     }
+    <partial name="_AddedIntoCartToastForm" />
 </div>

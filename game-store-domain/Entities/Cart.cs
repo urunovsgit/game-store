@@ -12,7 +12,7 @@ namespace game_store_domain.Entities
         public int Id { get; set; }
         public string UserId { get; set; }
         virtual public GameStoreUser User { get; set; }
-        virtual public List<CartItem> Items { get; set; }
+        virtual public List<CartItem> Items { get; set; } = new List<CartItem>();
 
         [NotMapped]
         public decimal TotalSum

@@ -10,29 +10,29 @@ namespace game_store.Controllers
     public class GameController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IGameServices _gameServicesProvider;
+        private readonly IGameStoreServices _storeServicesProvider;
 
-        public GameController(ILogger<HomeController> logger, IGameServices gameServices)
+        public GameController(ILogger<HomeController> logger, IGameStoreServices gameServices)
         {
             _logger = logger;
-            _gameServicesProvider = gameServices;
+            _storeServicesProvider = gameServices;
         }
 
         public IActionResult ViewGame(int gameId)
         {
-            var game = _gameServicesProvider.GetGameById(gameId);
+            var game = _storeServicesProvider.GetGameById(gameId);
             return View(new GameViewModel(game));
         }
 
         public IActionResult NewGamePage()
         {
-            ViewBag.GenreNodes = _gameServicesProvider.GetAllGenreNodes();
+            ViewBag.GenreNodes = _storeServicesProvider.GetAllGenreNodes();
             return View(new EditGameViewModel(new Game()));
         }
 
         public ActionResult AddGame(EditGameViewModel gameViewModel)
         {
-            _gameServicesProvider.AddNewGame(gameViewModel);
+            _storeServicesProvider.AddNewGame(gameViewModel);
 
             return RedirectToAction(nameof(Index), "Home");
         }
@@ -44,13 +44,13 @@ namespace game_store.Controllers
 
         public IActionResult EditGamePage(int gameId)
         {
-            ViewBag.GenreNodes = _gameServicesProvider.GetAllGenreNodes();
-            return View(new EditGameViewModel(_gameServicesProvider.GetGameById(gameId)));
+            ViewBag.GenreNodes = _storeServicesProvider.GetAllGenreNodes();
+            return View(new EditGameViewModel(_storeServicesProvider.GetGameById(gameId)));
         }
 
         public string UpdateGameData(EditGameViewModel gameViewModel)
         {
-            _gameServicesProvider.UpdateGame(gameViewModel);
+            _storeServicesProvider.UpdateGame(gameViewModel);
 
             var redirectUrl = Url.ActionLink("ViewGame", "Game", new { gameId = gameViewModel.Id });
 
@@ -59,7 +59,7 @@ namespace game_store.Controllers
 
         public ActionResult DeleteGame(int gameId)
         {
-            _gameServicesProvider.DeleteGame(gameId);
+            _storeServicesProvider.DeleteGame(gameId);
 
             return RedirectToAction(nameof(Index), "Home");
         }
@@ -67,7 +67,7 @@ namespace game_store.Controllers
         [HttpPost]
         public int AddComment([FromForm] string userId, int gameId, int parrentId, string comment)
         {
-            var instance = _gameServicesProvider.AddComment(
+            var instance = _storeServicesProvider.AddComment(
                 new Comment
                 {
                     UserId = userId,
@@ -82,7 +82,7 @@ namespace game_store.Controllers
         [HttpPost]
         public void EditComment([FromForm]int id, string comment)
         {
-            _gameServicesProvider.EditComment(
+            _storeServicesProvider.EditComment(
                 new Comment
                 {
                     Id = id,
@@ -93,13 +93,13 @@ namespace game_store.Controllers
         [HttpPost]
         public void DeleteComment(int commentId)
         {
-            _gameServicesProvider.DeleteComment(commentId);
+            _storeServicesProvider.DeleteComment(commentId);
         }
 
         [HttpPost]
         public void RestoreComment(int commentId)
         {
-            _gameServicesProvider.RestoreComment(commentId);
+            _storeServicesProvider.RestoreComment(commentId);
         }
     }
 }

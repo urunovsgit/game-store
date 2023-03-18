@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace game_store_domain.Services
 {
-    public class GameServiceProvider : IGameServices
+    public class GameStoreServiceProvider : IGameStoreServices
     {
         private readonly DbContext _storeDbContext;
 
-        public GameServiceProvider(GameStoreDbContext storeDbContext)
+        public GameStoreServiceProvider(GameStoreDbContext storeDbContext)
         {
             _storeDbContext = storeDbContext;
             EnsureCreatedGameGenres();
@@ -36,7 +36,7 @@ namespace game_store_domain.Services
             var game = _storeDbContext.Set<Game>().First(g => g.Id == id);
             var deletedComments = game.Comments.Where(c => c.IsDeleted).ToList();
 
-            if(deletedComments.Count > 0)
+            if (deletedComments.Count > 0)
             {
                 _storeDbContext.Set<Comment>().RemoveRange(deletedComments);
                 _storeDbContext.SaveChanges();
@@ -141,35 +141,59 @@ namespace game_store_domain.Services
             return comment;
         }
 
-        public void AddGameToCart(int gameId, int cartId)
+        public Cart AddGameToCart(int gameId, string userId)
         {
-            var cart = _storeDbContext.Set<Cart>().Find(cartId);
+            var user = _storeDbContext.Set<GameStoreUser>().Find(userId);
             var game = _storeDbContext.Set<Game>().Find(gameId);
 
-            if(cart == null)
+            if (user == null)
             {
-                throw new ArgumentException("No such cart.");
+                throw new ArgumentException("No such user.");
             }
 
-            if(game == null)
+            if (game == null)
             {
                 throw new ArgumentException("No such game.");
             }
 
-            cart.Items.Add(new CartItem(game));
+            if (user.Cart == null)
+            {
+                user.Cart = new Cart { UserId = user.Id };
+            }
+
+            var cartItem = user.Cart.Items.FirstOrDefault(i => i.GameId == gameId);
+
+            if(cartItem != null)
+            {
+                cartItem.Quantity++;
+                _storeDbContext.Entry(cartItem).State = EntityState.Modified;
+            }
+            else
+            {
+                var newCartItem = new CartItem
+                {
+                    Cart = user.Cart,
+                    GameId = gameId,
+                };
+
+                user.Cart.Items.Add(newCartItem);
+            }
+            
             _storeDbContext.SaveChanges();
+
+            return user.Cart;
         }
 
-        public void RemoveGameFromCart(int gameId, int cartId)
+        public Cart RemoveGameFromCart(int cartId, int itemId)
         {
             var cart = _storeDbContext.Set<Cart>().Find(cartId);
-            
+
             if (cart == null)
             {
                 throw new ArgumentException("No such cart.");
             }
 
-            var cartItem = cart.Items.FirstOrDefault(i => i.GameId == gameId);
+            var cartItem = cart.Items.FirstOrDefault(i => i.Id == itemId);
 
             if (cartItem == null)
             {
@@ -178,9 +202,11 @@ namespace game_store_domain.Services
 
             cart.Items.Remove(cartItem);
             _storeDbContext.SaveChanges();
+
+            return cart;
         }
 
-        public void IncreaseGameQuantity(int gameId, int cartId)
+        public (int quantity, decimal itemSum, decimal totalSum) IncreaseGameQuantity(int cartId, int cartItemId)
         {
             var cart = _storeDbContext.Set<Cart>().Find(cartId);
 
@@ -189,7 +215,7 @@ namespace game_store_domain.Services
                 throw new ArgumentException("No such cart.");
             }
 
-            var cartItem = cart.Items.FirstOrDefault(i => i.GameId == gameId);
+            var cartItem = cart.Items.FirstOrDefault(i => i.Id == cartItemId);
 
             if (cartItem == null)
             {
@@ -200,9 +226,11 @@ namespace game_store_domain.Services
 
             _storeDbContext.Entry(cartItem).State = EntityState.Modified;
             _storeDbContext.SaveChanges();
+
+            return (cartItem.Quantity, cartItem.Sum, cart.TotalSum);
         }
 
-        public void DecreaseGameQuantity(int gameId, int cartId)
+        public (int quantity, decimal itemSum, decimal totalSum) DecreaseGameQuantity(int cartId, int cartItemId)
         {
             var cart = _storeDbContext.Set<Cart>().Find(cartId);
 
@@ -211,17 +239,23 @@ namespace game_store_domain.Services
                 throw new ArgumentException("No such cart.");
             }
 
-            var cartItem = cart.Items.FirstOrDefault(i => i.GameId == gameId);
+            var cartItem = cart.Items.FirstOrDefault(i => i.Id == cartItemId);
 
             if (cartItem == null)
             {
                 throw new ArgumentException("No such cart item.");
             }
 
-            cartItem.Quantity--;
+
+            if(cartItem.Quantity > 1)
+            {
+                cartItem.Quantity--;
+            }
 
             _storeDbContext.Entry(cartItem).State = EntityState.Modified;
             _storeDbContext.SaveChanges();
+
+            return (cartItem.Quantity, cartItem.Sum, cart.TotalSum);
         }
 
         public void ConfirmOrder(Order order)
