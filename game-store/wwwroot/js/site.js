@@ -458,8 +458,18 @@ function removeGameFromCart(itemId) {
             textEl.remove();
             upperCartLink.innerHTML += (parseInt(textEl.textContent) - 1);
 
-            const totalSumEl = document.querySelector('#totalSum');
-            totalSumEl.innerText = 'Cart total sum: $' + result.toFixed(2);
+            if (result == 0) {
+                const makeOrderForm = document.querySelector('#makeOrderForm');
+                const p = document.createElement('p');
+                p.innerText = "There is no games."
+                p.classList.add('game-title');
+                makeOrderForm.after(p);
+                makeOrderForm.remove();
+            }
+            else {
+                const totalSumEl = document.querySelector('#totalSum');
+                totalSumEl.innerText = 'Cart total sum: $' + result.toFixed(2);
+            }
         }
     });
 }

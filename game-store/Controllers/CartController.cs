@@ -52,5 +52,29 @@ namespace game_store.Controllers
 
             return cart.TotalSum;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MoveToOrder(string userId, int cartId)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            return View(new Order
+            {
+                UserId = userId,
+                CartId = cartId,
+                FirstName = currentUser.FirstName,
+                LastName = currentUser.LastName,
+                Email = currentUser.Email,
+                PhoneNumber = currentUser.PhoneNumber
+            });
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmOrder(Order order)
+        {
+            _storeServicesProvider.ConfirmOrder(order);
+
+            return View("OrderSucceed");
+        }
     }
 }

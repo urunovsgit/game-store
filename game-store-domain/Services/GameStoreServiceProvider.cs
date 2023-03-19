@@ -143,7 +143,10 @@ namespace game_store_domain.Services
 
         public Cart AddGameToCart(int gameId, string userId)
         {
-            var user = _storeDbContext.Set<GameStoreUser>().Find(userId);
+            var user = _storeDbContext.Set<GameStoreUser>()
+                .Include(u => u.Cart)
+                .FirstOrDefault(u => u.Id == userId);
+
             var game = _storeDbContext.Set<Game>().Find(gameId);
 
             if (user == null)
@@ -159,6 +162,7 @@ namespace game_store_domain.Services
             if (user.Cart == null)
             {
                 user.Cart = new Cart { UserId = user.Id };
+                _storeDbContext.SaveChanges();
             }
 
             var cartItem = user.Cart.Items.FirstOrDefault(i => i.GameId == gameId);
@@ -172,11 +176,11 @@ namespace game_store_domain.Services
             {
                 var newCartItem = new CartItem
                 {
-                    Cart = user.Cart,
+                    CartId = user.Cart.Id,
                     GameId = gameId,
                 };
 
-                user.Cart.Items.Add(newCartItem);
+                _storeDbContext.Set<CartItem>().Add(newCartItem);
             }
             
             _storeDbContext.SaveChanges();
@@ -260,6 +264,15 @@ namespace game_store_domain.Services
 
         public void ConfirmOrder(Order order)
         {
+            var cart = _storeDbContext.Set<Cart>().Find(order.CartId);
+
+            if (cart == null)
+            {
+                throw new ArgumentException("No such cart.");
+            }
+
+            cart.Items.Clear();
+            _storeDbContext.Entry(cart).State = EntityState.Modified;
             _storeDbContext.Set<Order>().Add(order);
             _storeDbContext.SaveChanges();
         }

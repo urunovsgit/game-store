@@ -92,10 +92,21 @@
         }
 </style>
 
-<div id="totalSum" class="total-sum">Cart total sum: $@(Model.TotalSum)</div>
+
 
 @if (Model.Items.Any())
 {
+    <form id="makeOrderForm" asp-controller="Cart" asp-action="MoveToOrder">
+        <input type="hidden" name="userId" value="@Model.UserId"/>
+        <input type="hidden" name="cartId" value="@Model.Id" />
+        <div class="form-group row">
+            <div id="totalSum" class="total-sum col-sm-10 col-form-label">Cart total sum: $@(Model.TotalSum)</div>
+            <div class="col-sm-2">
+                <button class="site-btn btn-sm" type="submit">Proceed</button>
+            </div>
+        </div>
+    </form>
+
     foreach (var item in Model.Items)
     {
         string imgDataUrl;
@@ -134,5 +145,5 @@
 }
 else
 {
-    <p>There is no games yet.</p>
+    <p class="game-title">There is no games yet.</p>
 }

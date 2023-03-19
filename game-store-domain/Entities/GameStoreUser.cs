@@ -16,5 +16,6 @@ namespace game_store_domain.Entities
         virtual public List<Comment> Comments { get; set; }
 
         virtual public Cart Cart { get; set; }
+        virtual public List<Order> Orders { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace game_store_domain
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<GenreNode> GenreNodes { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<CartItem> CartItems { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
 
 
@@ -79,25 +80,19 @@ namespace game_store_domain
                 .HasIndex(gNode => gNode.Genre)
                 .IsUnique();
 
-            modelBuilder.Entity<OrderItem>(entity =>
+            modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(node => node.Id);
-                entity.Property(x => x.Quantity)
-                    .IsRequired(true);
 
-                entity.HasKey(node => node.Id);
-                entity.Property(x => x.Quantity)
-                    .IsRequired(true);
-
-                entity.HasOne(x => x.Game)
-                    .WithMany(x => x.Purchases)
-                    .HasForeignKey(x => x.GameId)
+                entity.HasOne(x => x.User)
+                    .WithMany(x => x.Orders)
+                    .HasForeignKey(x => x.UserId)
                     .IsRequired(true)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(x => x.Order)
-                    .WithMany(x => x.Items)
-                    .HasForeignKey(x => x.OrderId)
+                entity.HasOne(x => x.Cart)
+                    .WithOne(x => x.Order)
+                    .HasForeignKey<Order>(x => x.CartId)
                     .IsRequired(true)
                     .OnDelete(DeleteBehavior.Cascade);
             });
@@ -130,6 +125,12 @@ namespace game_store_domain
                     .HasForeignKey<Cart>(x => x.UserId)
                     .IsRequired(true)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(x => x.Order)
+                    .WithOne(x => x.Cart)
+                    .HasForeignKey<Cart>(x => x.OrderId)
+                    .IsRequired(false)
+                    .OnDelete(DeleteBehavior.NoAction);
             });
         }
     }
