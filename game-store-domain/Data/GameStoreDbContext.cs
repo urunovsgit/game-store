@@ -1,5 +1,5 @@
 ﻿using game_store_domain.Entities;
-using game_store_domain.Services.Infrastrucure;
+using game_store_domain.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace game_store_domain
+namespace game_store_domain.Data
 {
-    public class GameStoreDbContext : IdentityDbContext<GameStoreUser>
+    public class GameStoreDbContext : IdentityDbContext<GameStoreUser, IdentityRole<int>, int>
     {
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<GenreNode> GenreNodes { get; set; }
@@ -36,15 +36,22 @@ namespace game_store_domain
                 .Property(user => user.AvatarImage)
                 .IsRequired(false);
 
-            modelBuilder.Entity<Game>()
-                .Property(game => game.Genres)
-                .HasConversion(new GameGenreConverter())
-                .IsRequired(false);
+            modelBuilder.Entity<Game>(entity =>
+            {
+                entity.Property(game => game.Genres)
+                    .HasConversion(new GameGenreConverter())
+                    .IsRequired(false);
+
+                entity.Property(game => game.Image)
+                    .IsRequired(false);
+            });
+
 
             modelBuilder.Entity<GenreNode>(entity =>
             {
-                entity.HasKey(node => node.Id);
-                entity.Property(node => node.Genre);
+                entity.Property(genre => genre.Genre)
+                    .IsRequired(true);
+
                 entity.HasOne(x => x.ParentGenre)
                     .WithMany(x => x.SubGenres)
                     .HasForeignKey(x => x.ParentId)
@@ -54,8 +61,8 @@ namespace game_store_domain
 
             modelBuilder.Entity<Comment>(entity =>
             {
-                entity.HasKey(node => node.Id);
-                entity.Property(node => node.Text);
+                entity.Property(node => node.Text)
+                    .IsRequired(true);
 
                 entity.HasOne(x => x.RelatedTo)
                     .WithMany(x => x.SubComments)
@@ -97,6 +104,23 @@ namespace game_store_domain
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.HasKey(node => node.Id);
+
+                entity.HasOne(x => x.User)
+                    .WithOne(x => x.Cart)
+                    .HasForeignKey<Cart>(x => x.UserId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(x => x.Order)
+                    .WithOne(x => x.Cart)
+                    .HasForeignKey<Cart>(x => x.OrderId)
+                    .IsRequired(false)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
             modelBuilder.Entity<CartItem>(entity =>
             {
                 entity.HasKey(node => node.Id);
@@ -114,23 +138,6 @@ namespace game_store_domain
                     .HasForeignKey(x => x.CartId)
                     .IsRequired(true)
                     .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<Cart>(entity =>
-            {
-                entity.HasKey(node => node.Id);
-
-                entity.HasOne(x => x.User)
-                    .WithOne(x => x.Cart)
-                    .HasForeignKey<Cart>(x => x.UserId)
-                    .IsRequired(true)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(x => x.Order)
-                    .WithOne(x => x.Cart)
-                    .HasForeignKey<Cart>(x => x.OrderId)
-                    .IsRequired(false)
-                    .OnDelete(DeleteBehavior.NoAction);
             });
         }
     }

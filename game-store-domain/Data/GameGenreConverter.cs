@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace game_store_domain.Services.Infrastrucure
+namespace game_store_domain.Data
 {
     public class GameGenreConverter : ValueConverter<List<Genre>, string>
     {
-        public GameGenreConverter() : base(le => GenresToString(le), (s => StringToGenres(s)))
+        public GameGenreConverter() : base(le => GenresToString(le), s => StringToGenres(s))
         {
 
         }

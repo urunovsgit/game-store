@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\game-store-domain\game-store-domain.csproj" />
+    <ProjectReference Include="..\game-store-business\game-store-business.csproj" />
   </ItemGroup>
 
 </Project>

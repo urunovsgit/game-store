@@ -11,10 +11,9 @@ namespace game_store_domain.Entities
         Card = 2
     }
 
-    public class Order
+    public class Order : BaseEntity
     {
-        public int Id { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public int CartId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

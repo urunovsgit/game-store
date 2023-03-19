@@ -10,35 +10,17 @@ using System.Xml.Linq;
 
 namespace game_store_domain.Entities
 {
-    public class Comment
+    public class Comment : BaseEntity
     {
-        public int Id { get; set; }
-
-        [Required]
         public string Text{ get; set; }
-
-        [Required]
         public DateTime DateTime { get; set; } = DateTime.Now;
-
         public bool IsDeleted { get; set; } = false;
-
-        [Required]
         virtual public GameStoreUser User { get; set; }
-
         virtual public string UserId { get; set; }
-
-        [Required]
         virtual public Game Game { get; set; }
-
         virtual public int GameId { get; set; }
-
-
-        [AllowNull]
-        virtual public Comment RelatedTo { get; set; }
-
         virtual public int? ParentId { get; set; }
-
-        [AllowNull]
+        virtual public Comment RelatedTo { get; set; }
         virtual public List<Comment> SubComments { get; set; }
     }
 }

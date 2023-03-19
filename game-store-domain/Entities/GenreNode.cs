@@ -50,19 +50,11 @@ namespace game_store_domain.Entities
         Other
     }
 
-    public class GenreNode
+    public class GenreNode : BaseEntity
     {
-        public int Id { get; set; }
-
-        [Required]
         public Genre Genre { get; set; }
-
-        [AllowNull]
         virtual public GenreNode ParentGenre { get; set; }
-
         virtual public int? ParentId { get; set; }
-
-        [AllowNull]
         virtual public List<GenreNode> SubGenres { get; set; }
     }
 }
