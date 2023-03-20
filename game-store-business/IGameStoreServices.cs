@@ -4,7 +4,7 @@ namespace game_store_domain.Services
 {
     public interface IGameStoreServices
     {
-        public Task<IEnumerable<GameModel>> GetGamesAsync(FilterOptionsModel options);
+        public Task<IEnumerable<GameModel>> GetGamesAsync(GamesFilterOptions options);
         public Task<GameModel> GetGameByIdAsync(int id);
         public Task<GameModel> AddNewGameAsync(GameModel gameDTO);
         public Task<GameModel> UpdateGame(GameModel gameDTO);
@@ -18,6 +18,6 @@ namespace game_store_domain.Services
         public Task<CartItemUpdateResponse> IncreaseGameQuantityAsync(int cartItemId);
         public Task<CartItemUpdateResponse> DecreaseGameQuantityAsync(int cartItemId);
         public Task ConfirmOrderAsync(OrderModel orderDTO);
-        public Task<IEnumerable<GenreNodeModel>> GetAllGenreNodesAsync();
+        public Task<IEnumerable<GenreNodeModel>> GetAllGenreNodesModelsAsync();
     }
 }

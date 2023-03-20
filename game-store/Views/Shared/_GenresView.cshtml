@@ -1,24 +1,23 @@
-﻿<div id="genres" class="form-group">
+﻿@model IEnumerable<GenreNodeViewModel>
+
+<div id="genres" class="form-group">
     Select genres: <br />
     @{
-        var parrentGenres = (ViewBag.GenreNodes as List<GenreNode>)?.Where(g => g.ParentGenre == null);
-        var selectedGenres = ViewBag.SelectedGenres as List<Genre> ?? new List<Genre>();
-
-        if (parrentGenres != null)
+        if (Model != null)
         {
-            foreach (var genreNode in parrentGenres)
+            foreach (var genreNode in Model)
             {
-                <input type="checkbox" value="@((int)genreNode.Genre)"
-                    @(Html.Raw(selectedGenres.Contains(genreNode.Genre) ? "checked=\"checked\"" : "")) />
-                @((genreNode.Genre).GetAttribute<DisplayAttribute>().Name)  <br />
+                <input type="checkbox" value="@(genreNode.GenreNodeId)"
+                    @(genreNode.Checked ? "checked=\"checked\"" : "")) />
+                @(genreNode.GenreName)  <br />
 
-                if (genreNode.SubGenres != null)
+                if (genreNode.SubGenreModels != null)
                 {
-                    foreach (var sgenre in genreNode.SubGenres)
+                    foreach (var sgenre in genreNode.SubGenreModels)
                     {
-                        <input type="checkbox" value="@((int)sgenre.Genre)" style="margin-left: 15px"
-                            @(Html.Raw(selectedGenres.Contains(sgenre.Genre) ? "checked=\"checked\"" : "")) />
-                        @((sgenre.Genre).GetAttribute<DisplayAttribute>().Name)  <br />
+                        <input type="checkbox" value="@(sgenre.GenreName)" style="margin-left: 15px"
+                            @(sgenre.Checked ? "checked=\"checked\"" : "")) />
+                        @(sgenre.GenreName)  <br />
                     }
                 }
             }

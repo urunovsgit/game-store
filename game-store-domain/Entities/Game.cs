@@ -6,8 +6,8 @@
         public string Description { get; set; }
         public decimal Price { get; set; }
         public byte[] Image { get; set; }
-        virtual public List<Genre> Genres { get; set; }
-        virtual public List<Comment> Comments { get; set; }
-        virtual public List<CartItem> CartItems { get; set; }
+        virtual public IEnumerable<Genre> Genres { get; set; }
+        virtual public IEnumerable<Comment> Comments { get; set; }
+        virtual public IEnumerable<CartItem> CartItems { get; set; }
     }
 }

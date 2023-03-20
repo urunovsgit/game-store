@@ -1,17 +1,19 @@
 ﻿using AutoMapper;
 using game_store_business.Models;
 using game_store_domain.Entities;
+using System.Text;
 
 namespace Business
 {
-    public class AutomapperProfile : Profile
+    public class GSMapperProfile : Profile
     {
-        public AutomapperProfile()
+        public GSMapperProfile()
         {
             CreateMap<Game, GameModel>()
                 .ForMember(gm => gm.CommentsIds, opt => opt.MapFrom(g => g.Comments.Select(c => c.Id)))
                 .ForMember(gm => gm.Image, opt => opt.MapFrom(g => Convert.ToBase64String(g.Image)))
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(g => g.Image, opt => opt.MapFrom(gm => Encoding.ASCII.GetBytes(gm.Image)));
 
             CreateMap<CartItem, CartItemModel>()
                 .ReverseMap();
@@ -25,7 +27,7 @@ namespace Business
                 .ReverseMap();
 
             CreateMap<GenreNode, GenreNodeModel>()
-                .ForMember(gnm => gnm.SubGenresIds, opt => opt.MapFrom(gn => gn.SubGenres.Select(sg => sg.Id)))
+                //.ForMember(gnm => gnm.SubGenresIds, opt => opt.MapFrom(gn => gn.SubGenres.Select(sg => sg.Id)))
                 .ReverseMap();
 
             CreateMap<GameStoreUser, GameStoreUserModel>()

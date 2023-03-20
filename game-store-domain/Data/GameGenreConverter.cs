@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace game_store_domain.Data
 {
-    public class GameGenreConverter : ValueConverter<List<Genre>, string>
+    public class GameGenreConverter : ValueConverter<IEnumerable<Genre>, string>
     {
         public GameGenreConverter() : base(le => GenresToString(le), s => StringToGenres(s))
         {
 
         }
 
-        public static string GenresToString(List<Genre> genres)
+        public static string GenresToString(IEnumerable<Genre> genres)
         {
             if (genres == null)
             {
@@ -18,7 +18,7 @@ namespace game_store_domain.Data
             }
 
             string genresAsString = "";
-            genres.ForEach(gen => { genresAsString += (int)gen + " "; });
+            genres.ToList().ForEach(gen => { genresAsString += (int)gen + " "; });
 
             return genresAsString.TrimEnd();
         }

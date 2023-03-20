@@ -1,4 +1,5 @@
 ﻿using game_store.Models;
+using game_store_business.Models;
 using game_store_domain.Entities;
 using game_store_domain.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -10,46 +11,61 @@ namespace game_store.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IGameStoreServices _storeServicesProvider;
 
-        public HomeController(ILogger<HomeController> logger, IGameStoreServices gameServices)
+        public HomeController(IGameStoreServices gameServices)
         {
-            _logger = logger;
             _storeServicesProvider = gameServices;
         }
 
-
-        public IActionResult Index(string titleKey = "")
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            
-            ViewBag.GenreNodes = _storeServicesProvider.GetAllGenreNodes();
-            List<Game> games;
+            //ViewBag.GenreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync();
+            var options = new GamesFilterOptions();
 
-            if(!string.IsNullOrEmpty(titleKey)) 
+            return View(new GamesListViewModel
             {
-                games = _storeServicesProvider.GetGamesByTitle(titleKey).ToList();
-                ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
-            }
-            else if (TempData.ContainsKey("SelectedGenres"))
-            {
-                var genres = JsonConvert.DeserializeObject<List<Genre>>((string)TempData["SelectedGenres"]);
-                games = _storeServicesProvider.GetGamesByGenres(genres).ToList();
-                ViewBag.SelectedGenres = genres;
-            }
-            else
-            {
-                games = _storeServicesProvider.GetAllGames().ToList();
-                ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
-            }
+                Games = await _storeServicesProvider.GetGamesAsync(options),
+                FilterOptions = options,
+                AllGenreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync()
+            });
 
-            return View(new GamesViewModel { Games = games, TitleKey = titleKey });
+            //if(!string.IsNullOrEmpty(titleKey)) 
+            //{
+            //    games = _storeServicesProvider.GetGamesByTitle(titleKey).ToList();
+            //    ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
+            //}
+            //else if (TempData.ContainsKey("SelectedGenres"))
+            //{
+            //    var genres = JsonConvert.DeserializeObject<List<Genre>>((string)TempData["SelectedGenres"]);
+            //    games = _storeServicesProvider.GetGamesByGenres(genres).ToList();
+            //    ViewBag.SelectedGenres = genres;
+            //}
+            //else
+            //{
+            //    games = _storeServicesProvider.GetAllGames().ToList();
+            //    ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
+            //}
+
+            //return View(new GamesViewModel { Games = games, TitleKey = titleKey });
         }
 
         [HttpPost]
-        public void ApplyGenreFilterOptions(List<Genre> genres)
+        public async Task<IActionResult> Index(GamesFilterOptions options)
         {
-            TempData["SelectedGenres"] = JsonConvert.SerializeObject(genres);
+            return View(new GamesListViewModel
+            {
+                Games = await _storeServicesProvider.GetGamesAsync(options),
+                FilterOptions = options,
+                AllGenreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync()
+            });
+        }
+
+            [HttpPost]
+        public void ApplyFilterOptions(GamesFilterOptions options)
+        {
+            RedirectToAction(nameof(Index), new { options.AppliedGenresIds, options.TitleSubstring });
         }
 
         [HttpPost]
@@ -58,11 +74,11 @@ namespace game_store.Controllers
             return RedirectToAction("Index", new {titleKey = titleToFind });
         }
 
-        [Authorize]
-        public ActionResult AddGame()
-        {
-            return RedirectToAction(nameof(AddGame), nameof(GameController));
-        }
+        //[Authorize]
+        //public ActionResult AddGame()
+        //{
+        //    return RedirectToAction(nameof(AddGame), nameof(GameController));
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

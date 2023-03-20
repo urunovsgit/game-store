@@ -92,9 +92,9 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         @*if (currentUser.Cart == null)
-                        {
-                            currentUser.Cart = new Cart { UserId = currentUser.Id };
-                        }*@
+                {
+                currentUser.Cart = new Cart { UserId = currentUser.Id };
+                }*@
 
                         @if (currentUser.Cart.Items.Any(i => i.GameId == game.Id))
                         {

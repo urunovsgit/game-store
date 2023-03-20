@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using game_store_domain.Entities;
 using game_store_domain.Data;
+using Data.Interfaces;
+using AutoMapper;
+using Business;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,9 @@ builder.Services.AddIdentity<GameStoreUser, IdentityRole<int>>(opt => {
 })
 .AddEntityFrameworkStores<GameStoreDbContext>()
 .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IUnitOfWork, GSUnitOfWork>();
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(GSMapperProfile)));
 
 builder.Services.AddMvc();
 builder.Services.AddHealthChecks();
@@ -46,6 +53,10 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "games",
+    pattern: "{controller=Game}/{action=Index}/{FilterOptions?}");
 
 app.MapControllerRoute(
     name: "default",

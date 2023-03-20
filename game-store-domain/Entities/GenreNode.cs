@@ -49,6 +49,6 @@ namespace game_store_domain.Entities
         public Genre Genre { get; set; }
         virtual public GenreNode ParentGenre { get; set; }
         virtual public int? ParentId { get; set; }
-        virtual public List<GenreNode> SubGenres { get; set; }
+        virtual public ICollection<GenreNode> SubGenres { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace game_store_business.Models
         public decimal Price { get; set; }
         public string Image { get; set; }
         public IEnumerable<Genre> Genres { get; set; }
-        public ICollection<int> CommentsIds { get; set; }
+        public IEnumerable<int> CommentsIds { get; set; }
     }
 }

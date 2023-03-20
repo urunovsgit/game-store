@@ -11,6 +11,6 @@
         virtual public int GameId { get; set; }
         virtual public int? ParentId { get; set; }
         virtual public Comment RelatedTo { get; set; }
-        virtual public List<Comment> SubComments { get; set; }
+        virtual public IEnumerable<Comment> SubComments { get; set; }
     }
 }

@@ -8,6 +8,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Cart\**" />
+    <Compile Remove="Views\Game\**" />
+    <Content Remove="Views\Cart\**" />
+    <Content Remove="Views\Game\**" />
+    <EmbeddedResource Remove="Views\Cart\**" />
+    <EmbeddedResource Remove="Views\Game\**" />
+    <None Remove="Views\Cart\**" />
+    <None Remove="Views\Game\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\CartController.cs" />
+    <Compile Remove="Models\CommentViewModel.cs" />
+    <Compile Remove="Models\EditGameViewModel.cs" />
+    <Compile Remove="Models\GameViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Shared\ViewGame.cshtml" />
+    <Content Remove="Views\Shared\_CommentForm.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Game\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
     <PackageReference Include="microsoft.EntityFrameworkCore.Design" Version="7.0.3">

@@ -39,15 +39,15 @@ function gameUpdateHandler(event) {
     });
 }
 
-const filterGenresBtn = $('#applyGenresFilterBtn');
-filterGenresBtn.click(applyGenresFilter);
+/*const filterGenresBtn = $('#applyGenresFilterBtn');*/
+/*filterGenresBtn.click(applyGenresFilter);*/
 
-function applyGenresFilter() {
-    //stop submit the form, we will post it manually.
-    //event.preventDefault();
+function applyGamesFilter() {
+    // stop submit the form, we will post it manually.
+    /*event.preventDefault();*/
 
     // Get form
-    const form = $('#genresFilterForm')[0];
+    const form = $('#gamesFilterForm')[0];
 
     // Create an FormData object
     const formData = new FormData(form);
@@ -60,11 +60,11 @@ function applyGenresFilter() {
 
     // If you want to add an extra field for the FormData
     for (let i = 0; i < genres.length; i++) {
-        formData.append('genres[]', genres[i]);
+        formData.append('AppliedGenresIds[]', genres[i]);
     }
 
     $.ajax({
-        url: '/Home/ApplyGenreFilterOptions',
+        url: '/Game/Index',
         data: formData,
         contentType: false,
         processData: false,
