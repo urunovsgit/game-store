@@ -1,12 +1,7 @@
 ﻿using game_store_domain.Entities;
 using game_store_domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace game_store_domain.Repositories
 {
@@ -17,10 +12,12 @@ namespace game_store_domain.Repositories
         public RepositoryBase(DbContext storeDbContext)
             => _storeDbContext = storeDbContext;
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             CheckInstanceWithKeyForNull(entity, entity);
-            await _storeDbContext.Set<TEntity>().AddAsync(entity);
+            var instance = await _storeDbContext.Set<TEntity>().AddAsync(entity);
+
+            return instance.Entity;
         }
 
         public void Delete(TEntity entity)

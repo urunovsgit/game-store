@@ -1,9 +1,7 @@
 using game_store_domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using game_store;
 using game_store_domain.Entities;
-using Microsoft.Extensions.Options;
 using game_store_domain.Data;
 
 var builder = WebApplication.CreateBuilder(args);

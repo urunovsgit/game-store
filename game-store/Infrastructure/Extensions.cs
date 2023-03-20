@@ -1,8 +1,4 @@
-﻿using game_store_domain;
-using game_store_domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace game_store.Infrastructure

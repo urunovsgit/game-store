@@ -1,9 +1,4 @@
 ﻿using game_store_domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace game_store_domain.Interfaces
 {
@@ -13,7 +8,7 @@ namespace game_store_domain.Interfaces
 
         Task<TEntity> GetByIdAsync(int id);
 
-        Task AddAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
 
         void Delete(TEntity entity);
 

@@ -1,9 +1,7 @@
 ﻿using game_store.Models;
 using game_store_domain.Entities;
 using game_store_domain.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace game_store.Controllers
 {

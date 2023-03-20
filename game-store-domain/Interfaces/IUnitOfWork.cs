@@ -1,6 +1,5 @@
 ﻿using game_store_domain.Entities;
 using game_store_domain.Repositories;
-using System.Threading.Tasks;
 
 namespace Data.Interfaces
 {
@@ -11,6 +10,7 @@ namespace Data.Interfaces
         RepositoryBase<CartItem> CartItemRepository { get; }
         RepositoryBase<Order> OrderRepository { get; }
         RepositoryBase<Comment> CommentRepository { get; }
+        RepositoryBase<GenreNode> GenreNodeRepository { get; }
 
         Task SaveAsync();
     }
