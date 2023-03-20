@@ -8,10 +8,9 @@
     var leveledComments = Model.LeveledComments;
 
     string imgDataUrl;
-    if (Model.Image != null && Model.Image.Length != 0)
+    if (Model.GameModel.Image != null && Model.GameModel.Image.Length != 0)
     {
-        var gameImage = Convert.ToBase64String(Model.Image);
-        imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
+        imgDataUrl = string.Format("data:image/jpg;base64,{0}", Model.GameModel.Image);
     }
     else
     {
@@ -63,16 +62,11 @@
                 <div class="blog-thumb set-bg" data-setbg="@imgDataUrl">
                     @{
                         string genresAsString = "";
-                        @foreach (var genre in Model.Genres)
+                        @foreach (var genre in Model.GenreNames)
                         {
-                            if (string.IsNullOrEmpty(genresAsString))
-                            {
-                                genresAsString += genre.GetAttribute<DisplayAttribute>().Name;
-                            }
-                            else
-                            {
-                                genresAsString += " / " + genre.GetAttribute<DisplayAttribute>().Name;
-                            }
+                            genresAsString += string.IsNullOrEmpty(genresAsString)
+                                                    ? genresAsString += genre
+                                                    : genresAsString += " / " + genre;
                         }
                     }
                     @if (!string.IsNullOrEmpty(genresAsString))
@@ -81,17 +75,16 @@
                     }
                 </div>
                 <div class="blog-content">
-                    <h3>@Model.Title</h3>
-                    <a href="" class="meta-comment">3 comment</a>
-                    <p>@Model.Description</p>
+                    <h3>@Model.GameModel.Title</h3>
+                    <p>@Model.GameModel.Description</p>
                     <form asp-action="EditGameData" asp-controller="Game" method="post">
-                        <input type="hidden" asp-for="Id" name="gameId" />
+                        <input type="hidden" asp-for="GameModel.Id" name="gameId" />
                         <button class="btn btn-primary btn-sm">
                             Edit data
                         </button>
                     </form>
                     <form asp-action="DeleteGame" asp-controller="Game" method="post">
-                        <input type="hidden" asp-for="Id" name="gameId" />
+                        <input type="hidden" asp-for="GameModel.Id" name="gameId" />
                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#removeGameModal" type="button">
                             Delete game
@@ -103,7 +96,7 @@
                 </div>
                 <div class="comment-warp">
                     <form id="commentDataForm">
-                        <input type="hidden" name="gameId" value="@(Model.Id)" />
+                        <input type="hidden" name="gameId" value="@(Model.GameModel.Id)" />
                         <input type="hidden" name="userId" value="@(currentUser?.Id)" />
                     </form>
                     <button class="comment-button" onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '0', '-1', '-1')">Comment</button>
@@ -122,14 +115,17 @@
                             <li class="@levelStyle">
                                 <div class="comment">
                                     <div class="comment-content">
-                                        <h5>@(currentComment.User.UserName) <span>@(currentComment.DateTime)</span></h5>
-                                        <p id="textContent@(currentComment.Id)">@(currentComment.Text)</p>
-                                        <button id="replyBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '@(currentComment.Id)', '@i', '@(currentComment.CommentLevel)')">Reply</button>
-                                        @if (currentUser?.Id == currentComment.User.Id)
+                                        <h5>@(currentComment.CommentModel.Username) <span>@(currentComment.CommentModel.DateTime)</span></h5>
+                                        <p id="textContent@(currentComment.CommentModel.Id)">@(currentComment.CommentModel.Text)</p>
+                                        <button id="replyBtn@(currentComment.CommentModel.Id)" type="button" class="comment-button btn btn-link" 
+                                                onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '@(currentComment.CommentModel.Id)', '@i', '@(currentComment.CommentLevel)')">
+                                                Reply
+                                        </button>
+                                        @if (currentUser?.Id == currentComment.CommentModel.UserId)
                                         {
-                                            <button id="editBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="editCommentEventHandler(this, '@(currentComment.Id)', '@(currentComment.Text)')">Edit</button>
-                                            <button id="deleteBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="deleteCommentEventHandler('@(currentComment.Id)')">Delete</button>
-                                            <button id="restoreBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link hidden" onclick="restoreCommentEventHandler('@(currentComment.Id)', '@(currentComment.Text)')">Restore</button>
+                                            <button id="editBtn@(currentComment.CommentModel.Id)" type="button" class="comment-button btn btn-link" onclick="editCommentEventHandler(this, '@(currentComment.CommentModel.Id)', '@(currentComment.CommentModel.Text)')">Edit</button>
+                                            <button id="deleteBtn@(currentComment.CommentModel.Id)" type="button" class="comment-button btn btn-link" onclick="deleteCommentEventHandler('@(currentComment.CommentModel.Id)')">Delete</button>
+                                            <button id="restoreBtn@(currentComment.CommentModel.Id)" type="button" class="comment-button btn btn-link hidden" onclick="restoreCommentEventHandler('@(currentComment.CommentModel.Id)', '@(currentComment.CommentModel.Text)')">Restore</button>
                                         }
                                     </div>
                                 </div>

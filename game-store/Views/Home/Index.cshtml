@@ -16,8 +16,8 @@
     <form id="gamesFilterForm" onsubmit="applyGamesFilter()">
         <div class="col-lg-5 col-md-6">
             <div class="widget-item">
-                <input type="text" placeholder="Search" asp-for="FilterOptions.TitleSubstring">
-                @*<button type="submit"><i class="fa fa-search"></i></button>*@
+                <input type="text" placeholder="Search" name="TitleSubstring" value="@(Model.FilterOptions.TitleSubstring)">
+                <button type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
         <div class="col-md-6">
@@ -85,7 +85,7 @@
                 </div>
                 <div id="rgi@(game.Id)" class="rgi-content">
                     <a asp-controller="Game" asp-action="ViewGame" asp-route-gameId="@game.Id"><h5>@game.Title</h5></a>
-                    <p class="comment">@(game.CommentsIds.Count()) Comments</p>
+                    <p class="comment">@(game.CommentModels.Count()) Comments</p>
                     <div class="rgi-extra">
                         <p>$@game.Price</p>
                     </div>

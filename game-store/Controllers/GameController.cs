@@ -15,21 +15,15 @@ namespace game_store.Controllers
             _storeServicesProvider = gameServices;
         }
 
-        public async Task<IActionResult> Index(GamesFilterOptions options)
+        public IActionResult ViewGame(int gameId)
         {
-            return View(new GamesListViewModel
+            var game = _storeServicesProvider.GetGameByIdAsync(gameId).Result;
+
+            return View(new GameViewModel
             {
-                Games = await _storeServicesProvider.GetGamesAsync(options),
-                FilterOptions = options,
-                AllGenreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync()
+                GameModel = game
             });
         }
-
-        //public IActionResult ViewGame(int gameId)
-        //{
-        //    var game = _storeServicesProvider.GetGameById(gameId);
-        //    return View(new GameViewModel(game));
-        //}
 
         //public IActionResult NewGamePage()
         //{

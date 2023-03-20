@@ -1,22 +1,31 @@
-﻿using game_store_domain.Entities;
+﻿using game_store.Infrastructure;
+using game_store_business.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace game_store.Models
 {
-    public class GameViewModel : Game
+    public class GameViewModel
     {
-        public GameViewModel() { }
+        public GameModel GameModel { get; set; }
+        public IEnumerable<string> GenreNames { 
+            get 
+            {
+                var genreNames = new List<string>();
 
-        public GameViewModel(Game game)
-        {
-            this.CopyFrom(game);
-            Id = game.Id;
+                foreach (var genre in GameModel.Genres)
+                {
+                    genreNames.Add(genre.GetAttribute<DisplayAttribute>().Name);
+                }
+
+                return genreNames;
+            } 
         }
 
         public List<CommentViewModel> LeveledComments { 
             get
             {
                 var leveledComments = new List<CommentViewModel>();
-                var comments = Comments?.Where(c => c.ParentId == null);
+                var comments = GameModel.CommentModels?.Where(c => c.ParentId == null);
                 var currentLevel = 0;
 
                 if(comments == null) return leveledComments;
@@ -30,18 +39,18 @@ namespace game_store.Models
             }
         }
 
-        private void LevelComments(Comment current, int currentLevel, List<CommentViewModel> comments)
+        private void LevelComments(CommentModel current, int currentLevel, List<CommentViewModel> comments)
         {
             var commentVm = new CommentViewModel(current);
             commentVm.CommentLevel = currentLevel;
             comments.Add(commentVm);
-            var subcomments = current.SubComments.AsEnumerable();
+            var subcomments = GameModel.CommentModels.Where(cm => current.SubCommentsIds.Any(id => id == cm.Id));
 
             if(subcomments != null)
             {
                 currentLevel++;
 
-                foreach(Comment comment in subcomments) 
+                foreach(var comment in subcomments) 
                 {
                     LevelComments(comment, currentLevel, comments);
                 }

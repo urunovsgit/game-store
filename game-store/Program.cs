@@ -54,9 +54,9 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "games",
-    pattern: "{controller=Game}/{action=Index}/{FilterOptions?}");
+//app.MapControllerRoute(
+//    name: "games",
+//    pattern: "{controller=Game}/{action=Index}/{FilterOptions?}");
 
 app.MapControllerRoute(
     name: "default",

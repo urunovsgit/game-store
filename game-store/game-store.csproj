@@ -20,18 +20,12 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\CartController.cs" />
-    <Compile Remove="Models\CommentViewModel.cs" />
     <Compile Remove="Models\EditGameViewModel.cs" />
-    <Compile Remove="Models\GameViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Views\Shared\ViewGame.cshtml" />
     <Content Remove="Views\Shared\_CommentForm.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Game\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +47,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\game-store-business\game-store-business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Game\ViewGame.cshtml" />
   </ItemGroup>
 
 </Project>

@@ -64,7 +64,7 @@ function applyGamesFilter() {
     }
 
     $.ajax({
-        url: '/Game/Index',
+        url: '/Home/ApplyFilterOptions',
         data: formData,
         contentType: false,
         processData: false,

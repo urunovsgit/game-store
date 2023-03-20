@@ -10,8 +10,8 @@ namespace Business
         public GSMapperProfile()
         {
             CreateMap<Game, GameModel>()
-                .ForMember(gm => gm.CommentsIds, opt => opt.MapFrom(g => g.Comments.Select(c => c.Id)))
                 .ForMember(gm => gm.Image, opt => opt.MapFrom(g => Convert.ToBase64String(g.Image)))
+                .ForMember(gm => gm.CommentModels, opt => opt.MapFrom(g => g.Comments))
                 .ReverseMap()
                 .ForMember(g => g.Image, opt => opt.MapFrom(gm => Encoding.ASCII.GetBytes(gm.Image)));
 
@@ -24,6 +24,7 @@ namespace Business
 
             CreateMap<Comment, CommentModel>()
                 .ForMember(cm => cm.SubCommentsIds, opt => opt.MapFrom(c => c.SubComments.Select(sc => sc.Id)))
+                .ForMember(cm => cm.Username, opt => opt.MapFrom(c => c.User.UserName))
                 .ReverseMap();
 
             CreateMap<GenreNode, GenreNodeModel>()
