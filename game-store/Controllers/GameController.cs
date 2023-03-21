@@ -23,8 +23,8 @@ namespace game_store.Controllers
 
         public async Task<IActionResult> NewGame()
         {
-            return View(new EditGameViewModel(new GameModel(),
-                await _storeServicesProvider.GetAllGenreNodesModelsAsync()));
+            var genreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync();
+            return View(new EditGameViewModel(new GameModel(), genreNodes));
         }
 
         [HttpPost]
@@ -36,11 +36,7 @@ namespace game_store.Controllers
             return redirectUrl;
         }
 
-        //public ActionResult EditGameData(int gameId)
-        //{
-        //    return RedirectToAction(nameof(EditGamePage), new { gameId });
-        //}
-
+        [HttpGet]
         public async Task<IActionResult> EditGame(int gameId)
         {
             var gameModel = await _storeServicesProvider.GetGameByIdAsync(gameId);
@@ -49,6 +45,7 @@ namespace game_store.Controllers
             return View(new EditGameViewModel(gameModel, genreNodes));
         }
 
+        [HttpPost]
         public string UpdateGameData(EditGameViewModel gameViewModel)
         {
             _storeServicesProvider.UpdateGame(gameViewModel).Wait();
@@ -57,12 +54,12 @@ namespace game_store.Controllers
             return redirectUrl;
         }
 
-        //public ActionResult DeleteGame(int gameId)
-        //{
-        //    _storeServicesProvider.DeleteGame(gameId);
+        public async Task<ActionResult> DeleteGame(int gameId)
+        {
+            await _storeServicesProvider.DeleteGameAsync(gameId);
 
-        //    return RedirectToAction(nameof(Index), "Home");
-        //}
+            return RedirectToAction(nameof(Index), "Home");
+        }
 
         //[HttpPost]
         //public int AddComment([FromForm] string userId, int gameId, int parrentId, string comment)
