@@ -1,22 +1,9 @@
 ﻿@model EditGameViewModel
 
-@{
-    string imgDataUrl;
-    if (Model.Image != null)
-    {
-        var gameImage = Convert.ToBase64String(Model.Image);
-        imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
-    }
-    else
-    {
-        imgDataUrl = "/img/default-game-image.jpeg";
-    }
-}
-
 <div class="comment-form-warp">
     <h4 class="comment-title">Add new game</h4>
     <form class="comment-form" asp-controller="Game" asp-action="AddGame" enctype="multipart/form-data">
-        <div class="blog-thumb set-bg" data-setbg="@imgDataUrl">
+        <div class="blog-thumb set-bg" data-setbg="@(Model.GameImageUrl)">
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -27,11 +14,32 @@
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
                     Add / remove genre
                 </button>
-                <partial name="_GenresView"/>
+                <div class="modal fade" id="editGenres" tabindex="-1" aria-labelledby="gameGenresEditLbl" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="gameGenresEditLbl">Edit game genres</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <div class="row g-3 align-items-end">
+                                        <partial name="_GenresView" model="@(Model.GenreModels)" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-dark" data-bs-dismiss="modal">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <input asp-for="Price" type="number" step="0.01" placeholder="Price" required>
             </div>
             <div class="col-lg-12">
-                @*<input type="text" placeholder="Subject" disabled="disabled"> @*Here should be Genres input*@
-                <textarea asp-for="Description" placeholder="Description"></textarea>
+                <textarea asp-for="Description" placeholder="Description" required></textarea>
                 <button type="submit" class="site-btn btn-sm">Submit</button>
             </div>
         </div>

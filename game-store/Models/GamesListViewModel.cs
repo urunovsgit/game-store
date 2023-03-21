@@ -8,11 +8,23 @@ namespace game_store.Models
 {
     public class GamesListViewModel
     {
-        public IEnumerable<GameModel> Games { get; set; }
-        public IEnumerable<GenreNodeModel> AllGenreNodes { get; set; }
+        public GamesListViewModel(IEnumerable<GameModel> games,
+                                  IEnumerable<GenreNodeModel> allGenreNodes,
+                                  GamesFilterOptions filterOptions)
+        {
+            Games = new List<SingleGameViewModel>();
+            games.ToList().ForEach(game => Games.Add(new SingleGameViewModel(game)));
+
+            AllGenreNodes = allGenreNodes.ToList();
+            FilterOptions = filterOptions;
+        }
+
+        public List<SingleGameViewModel> Games { get; set; }
+        public List<GenreNodeModel> AllGenreNodes { get; set; }
         public GamesFilterOptions FilterOptions { get; set; }
-        public IEnumerable<GenreNodeViewModel> GenreModels { 
-            get 
+        public IEnumerable<GenreNodeViewModel> GenreModels
+        {
+            get
             {
                 var genreModels = new List<GenreNodeViewModel>();
                 var parrentNodes = AllGenreNodes.Where(gnm => gnm.ParentId == null);

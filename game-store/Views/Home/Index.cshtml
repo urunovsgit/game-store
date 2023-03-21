@@ -51,41 +51,17 @@
 <div class="row">
     @foreach (var game in Model.Games)
     {
-        string imgDataUrl;
-        if (game.Image != null)
-        {
-            imgDataUrl = string.Format("data:image/jpg;base64,{0}", game.Image);
-        }
-        else
-        {
-            imgDataUrl = "/img/default-game-image.jpeg";
-        }
-
         <div class="col-lg-4 col-md-6">
             <div class="recent-game-item">
-                <div class="rgi-thumb set-bg" data-setbg="@imgDataUrl">
-                    @{
-                        string genresAsString = "";
-                        @foreach (var genre in game.Genres)
-                        {
-                            if (string.IsNullOrEmpty(genresAsString))
-                            {
-                                genresAsString += (genre).GetAttribute<DisplayAttribute>().Name;
-                            }
-                            else
-                            {
-                                genresAsString += " / " + (genre).GetAttribute<DisplayAttribute>().Name;
-                            }
-                        }
-                    }
-                    @if (!string.IsNullOrEmpty(genresAsString))
+                <div class="rgi-thumb set-bg" data-setbg="@(game.GameImageUrl)">
+                    @if (!string.IsNullOrEmpty(game.GenresAsString))
                     {
-                        <div class="cata racing">@genresAsString</div>
+                        <div class="cata racing">@(game.GenresAsString)</div>
                     }
                 </div>
                 <div id="rgi@(game.Id)" class="rgi-content">
                     <a asp-controller="Game" asp-action="ViewGame" asp-route-gameId="@game.Id"><h5>@game.Title</h5></a>
-                    <p class="comment">@(game.CommentModels.Count()) Comments</p>
+                    <p class="comment">@(game.LeveledComments.Count()) Comments</p>
                     <div class="rgi-extra">
                         <p>$@game.Price</p>
                     </div>

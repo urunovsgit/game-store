@@ -1,39 +1,12 @@
 ﻿@model EditGameViewModel
 
-@{
-    string imgDataUrl;
-    if (Model.Image != null && Model.Image.Length != 0)
-    {
-        var gameImage = Convert.ToBase64String(Model.Image);
-        imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
-    }
-    else
-    {
-        imgDataUrl = "/img/default-game-image.jpeg";
-    }
-
-}
 <!-- Page section -->
 <section class="page-section single-blog-page spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="blog-thumb set-bg" data-setbg="@imgDataUrl">
-                    @{
-                        string genresAsString = "";
-                        @foreach (var genre in Model.Genres)
-                        {
-                            if (string.IsNullOrEmpty(genresAsString))
-                            {
-                                genresAsString += genre.GetAttribute<DisplayAttribute>().Name;
-                            }
-                            else
-                            {
-                                genresAsString += " / " + genre.GetAttribute<DisplayAttribute>().Name;
-                            }
-                        }
-                    }
-                    @if (!string.IsNullOrEmpty(genresAsString))
+                <div class="blog-thumb set-bg" data-setbg="@(Model.GameImageUrl)">
+                    @if (!string.IsNullOrEmpty(Model.GenresAsString))
                     {
                         <div class="cata racing">@genresAsString</div>
                     }

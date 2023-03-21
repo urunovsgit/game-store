@@ -1,4 +1,4 @@
-﻿@model GameViewModel
+﻿@model SingleGameViewModel
 
 @inject SignInManager<GameStoreUser> SignInManager
 @inject UserManager<GameStoreUser> UserManager
@@ -6,16 +6,6 @@
 @{
     var currentUser = await UserManager.GetUserAsync(User);
     var leveledComments = Model.LeveledComments;
-
-    string imgDataUrl;
-    if (Model.GameModel.Image != null && Model.GameModel.Image.Length != 0)
-    {
-        imgDataUrl = string.Format("data:image/jpg;base64,{0}", Model.GameModel.Image);
-    }
-    else
-    {
-        imgDataUrl = "/img/default-game-image.jpeg";
-    }
 }
 
 
@@ -59,32 +49,23 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="blog-thumb set-bg" data-setbg="@imgDataUrl">
-                    @{
-                        string genresAsString = "";
-                        @foreach (var genre in Model.GenreNames)
-                        {
-                            genresAsString += string.IsNullOrEmpty(genresAsString)
-                                                    ? genresAsString += genre
-                                                    : genresAsString += " / " + genre;
-                        }
-                    }
-                    @if (!string.IsNullOrEmpty(genresAsString))
+                <div class="blog-thumb set-bg" data-setbg="@(Model.GameImageUrl)">
+                    @if (!string.IsNullOrEmpty(Model.GenresAsString))
                     {
-                        <div class="cata racing">@genresAsString</div>
+                        <div class="cata racing">@Model.GenresAsString</div>
                     }
                 </div>
                 <div class="blog-content">
-                    <h3>@Model.GameModel.Title</h3>
-                    <p>@Model.GameModel.Description</p>
+                    <h3>@Model.Title</h3>
+                    <p>@Model.Description</p>
                     <form asp-action="EditGameData" asp-controller="Game" method="post">
-                        <input type="hidden" asp-for="GameModel.Id" name="gameId" />
+                        <input type="hidden" asp-for="Id" name="gameId" />
                         <button class="btn btn-primary btn-sm">
                             Edit data
                         </button>
                     </form>
                     <form asp-action="DeleteGame" asp-controller="Game" method="post">
-                        <input type="hidden" asp-for="GameModel.Id" name="gameId" />
+                        <input type="hidden" asp-for="Id" name="gameId" />
                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#removeGameModal" type="button">
                             Delete game
@@ -96,7 +77,7 @@
                 </div>
                 <div class="comment-warp">
                     <form id="commentDataForm">
-                        <input type="hidden" name="gameId" value="@(Model.GameModel.Id)" />
+                        <input type="hidden" name="gameId" value="@(Model.Id)" />
                         <input type="hidden" name="userId" value="@(currentUser?.Id)" />
                     </form>
                     <button class="comment-button" onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '0', '-1', '-1')">Comment</button>
@@ -117,9 +98,9 @@
                                     <div class="comment-content">
                                         <h5>@(currentComment.CommentModel.Username) <span>@(currentComment.CommentModel.DateTime)</span></h5>
                                         <p id="textContent@(currentComment.CommentModel.Id)">@(currentComment.CommentModel.Text)</p>
-                                        <button id="replyBtn@(currentComment.CommentModel.Id)" type="button" class="comment-button btn btn-link" 
-                                                onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '@(currentComment.CommentModel.Id)', '@i', '@(currentComment.CommentLevel)')">
-                                                Reply
+                                        <button id="replyBtn@(currentComment.CommentModel.Id)" type="button" class="comment-button btn btn-link"
+                                            onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '@(currentComment.CommentModel.Id)', '@i', '@(currentComment.CommentLevel)')">
+                                            Reply
                                         </button>
                                         @if (currentUser?.Id == currentComment.CommentModel.UserId)
                                         {

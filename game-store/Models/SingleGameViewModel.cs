@@ -4,31 +4,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace game_store.Models
 {
-    public class GameViewModel
+    public class SingleGameViewModel : GameViewModelBase
     {
-        public GameModel GameModel { get; set; }
-        public IEnumerable<string> GenreNames { 
-            get 
-            {
-                var genreNames = new List<string>();
+        public SingleGameViewModel(GameModel model) : base(model) { }
 
-                foreach (var genre in GameModel.Genres)
-                {
-                    genreNames.Add(genre.GetAttribute<DisplayAttribute>().Name);
-                }
-
-                return genreNames;
-            } 
-        }
-
-        public List<CommentViewModel> LeveledComments { 
+        public List<CommentViewModel> LeveledComments
+        {
             get
             {
                 var leveledComments = new List<CommentViewModel>();
-                var comments = GameModel.CommentModels?.Where(c => c.ParentId == null);
+                var comments = CommentModels?.Where(c => c.ParentId == null);
                 var currentLevel = 0;
 
-                if(comments == null) return leveledComments;
+                if (comments == null) return leveledComments;
 
                 foreach (var comment in comments)
                 {
@@ -44,13 +32,13 @@ namespace game_store.Models
             var commentVm = new CommentViewModel(current);
             commentVm.CommentLevel = currentLevel;
             comments.Add(commentVm);
-            var subcomments = GameModel.CommentModels.Where(cm => current.SubCommentsIds.Any(id => id == cm.Id));
+            var subcomments = CommentModels.Where(cm => current.SubCommentsIds.Any(id => id == cm.Id));
 
-            if(subcomments != null)
+            if (subcomments != null)
             {
                 currentLevel++;
 
-                foreach(var comment in subcomments) 
+                foreach (var comment in subcomments)
                 {
                     LevelComments(comment, currentLevel, comments);
                 }

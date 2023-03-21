@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\CartController.cs" />
-    <Compile Remove="Models\EditGameViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +50,11 @@
 
   <ItemGroup>
     <Content Include="Views\Game\ViewGame.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Game\EditGamePage.cshtml" />
+    <Content Include="Views\Game\NewGamePage.cshtml" />
   </ItemGroup>
 
 </Project>

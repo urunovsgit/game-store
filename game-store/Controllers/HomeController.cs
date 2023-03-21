@@ -28,12 +28,10 @@ namespace game_store.Controllers
                 options = JsonConvert.DeserializeObject<GamesFilterOptions>(Convert.ToString(TempData["FilterOptions"]));
             }
 
-            return View(new GamesListViewModel
-            {
-                Games = await _storeServicesProvider.GetGamesAsync(options),
-                FilterOptions = options,
-                AllGenreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync()
-            });
+            return View(new GamesListViewModel(
+                await _storeServicesProvider.GetGamesAsync(options),
+                await _storeServicesProvider.GetAllGenreNodesModelsAsync(),
+                options));
         }
 
         [HttpPost]

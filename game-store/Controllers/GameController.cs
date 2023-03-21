@@ -15,28 +15,23 @@ namespace game_store.Controllers
             _storeServicesProvider = gameServices;
         }
 
-        public IActionResult ViewGame(int gameId)
+        public async Task<IActionResult> ViewGame(int gameId)
         {
-            var game = _storeServicesProvider.GetGameByIdAsync(gameId).Result;
-
-            return View(new GameViewModel
-            {
-                GameModel = game
-            });
+            var game = await _storeServicesProvider.GetGameByIdAsync(gameId);
+            return View(new SingleGameViewModel(game));
         }
 
-        //public IActionResult NewGamePage()
-        //{
-        //    ViewBag.GenreNodes = _storeServicesProvider.GetAllGenreNodes();
-        //    return View(new EditGameViewModel(new Game()));
-        //}
+        public async Task<IActionResult> NewGamePage()
+        {
+            return View(new EditGameViewModel(new GameModel(),
+                await _storeServicesProvider.GetAllGenreNodesModelsAsync()));
+        }
 
-        //public ActionResult AddGame(EditGameViewModel gameViewModel)
-        //{
-        //    _storeServicesProvider.AddNewGame(gameViewModel);
-
-        //    return RedirectToAction(nameof(Index), "Home");
-        //}
+        public async Task<ActionResult> AddGame(EditGameViewModel gameModel)
+        {
+            await _storeServicesProvider.AddNewGameAsync(gameModel);
+            return RedirectToAction(nameof(Index), "Home");
+        }
 
         //public ActionResult EditGameData(int gameId)
         //{
@@ -45,7 +40,6 @@ namespace game_store.Controllers
 
         //public IActionResult EditGamePage(int gameId)
         //{
-        //    ViewBag.GenreNodes = _storeServicesProvider.GetAllGenreNodes();
         //    return View(new EditGameViewModel(_storeServicesProvider.GetGameById(gameId)));
         //}
 
