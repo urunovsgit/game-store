@@ -20,6 +20,7 @@ namespace game_store_domain.Repositories
             game.Price = entity.Price;
             game.Description = entity.Description;
             game.Image = entity.Image;
+            game.Genres = entity.Genres;
 
             _storeDbContext.Entry(game).State = EntityState.Modified;
         }

@@ -10,10 +10,8 @@ namespace Business
         public GSMapperProfile()
         {
             CreateMap<Game, GameModel>()
-                .ForMember(gm => gm.Image, opt => opt.MapFrom(g => Convert.ToBase64String(g.Image)))
                 .ForMember(gm => gm.CommentModels, opt => opt.MapFrom(g => g.Comments))
-                .ReverseMap()
-                .ForMember(g => g.Image, opt => opt.MapFrom(gm => Encoding.ASCII.GetBytes(gm.Image)));
+                .ReverseMap();
 
             CreateMap<CartItem, CartItemModel>()
                 .ReverseMap();

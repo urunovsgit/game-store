@@ -2,7 +2,7 @@
 {
     public class GamesFilterOptions
     {
-        public ICollection<int>? AppliedGenresIds { get; set; }
+        public ICollection<int>? AppliedGenres { get; set; }
         public string? TitleSubstring { get; set; }
     }
 }

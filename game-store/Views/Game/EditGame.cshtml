@@ -8,12 +8,12 @@
                 <div class="blog-thumb set-bg" data-setbg="@(Model.GameImageUrl)">
                     @if (!string.IsNullOrEmpty(Model.GenresAsString))
                     {
-                        <div class="cata racing">@genresAsString</div>
+                        <div class="cata racing">@(Model.GenresAsString)</div>
                     }
                 </div>
                 <div class="comment-form-warp">
                     <h4 class="comment-title">Edit game data</h4>
-                    <form id="gameDataForm" enctype="multipart/form-data">
+                    <form id="gameDataForm" class="comment-form" enctype="multipart/form-data">
                         <input type="hidden" asp-for="Id"/>
                         <input type="hidden" asp-for="Image" />
                         <div class="row">
@@ -38,7 +38,7 @@
                                             <div class="modal-body">
                                                 <div class="mb-3">
                                                     <div class="row g-3 align-items-end">
-                                                        <partial name="_GenresView" model="Model.Genres" />
+                                                        <partial name="_GenresView" model="@(Model.GenreModels)" />
                                                     </div>
                                                 </div>
                                             </div>

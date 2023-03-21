@@ -7,6 +7,7 @@ namespace game_store.Models
 {
     public class GameViewModelBase : GameModel
     {
+        public GameViewModelBase() { }
         public GameViewModelBase(GameModel model)
         {
             Id = model.Id;
@@ -23,7 +24,7 @@ namespace game_store.Models
             {
                 if (Image != null && Image.Length != 0)
                 {
-                    return string.Format("data:image/jpg;base64,{0}", Image);
+                    return string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Image));
                 }
                 else
                 {
@@ -42,8 +43,8 @@ namespace game_store.Models
                 {
                     var genreName = genre.GetAttribute<DisplayAttribute>().Name;
                     genresAsString += string.IsNullOrEmpty(genresAsString)
-                                                    ? genresAsString += genreName
-                                                    : genresAsString += " / " + genreName;
+                                                    ? genreName
+                                                    : " / " + genreName;
                 }
 
                 return genresAsString;

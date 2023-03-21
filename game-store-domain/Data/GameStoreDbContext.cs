@@ -46,6 +46,9 @@ namespace game_store_domain.Data
                 entity.Property(genre => genre.Genre)
                     .IsRequired(true);
 
+                entity.HasIndex(gNode => gNode.Genre)
+                    .IsUnique();
+
                 entity.HasOne(x => x.ParentGenre)
                     .WithMany(x => x.SubGenres)
                     .HasForeignKey(x => x.ParentId)
@@ -76,10 +79,6 @@ namespace game_store_domain.Data
                     .IsRequired(true)
                     .OnDelete(DeleteBehavior.Cascade);
             });
-
-            modelBuilder.Entity<GenreNode>()
-                .HasIndex(gNode => gNode.Genre)
-                .IsUnique();
 
             modelBuilder.Entity<Order>(entity =>
             {

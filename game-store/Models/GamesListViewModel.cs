@@ -40,8 +40,9 @@ namespace game_store.Models
                             subGenres.Add(new GenreNodeViewModel
                             {
                                 GenreNodeId = sgenre.Id,
+                                Genre = sgenre.Genre,
                                 GenreName = sgenre.Genre.GetAttribute<DisplayAttribute>().Name,
-                                Checked = FilterOptions.AppliedGenresIds?.Contains(sgenre.Id) ?? false
+                                Checked = FilterOptions.AppliedGenres?.Contains((int)sgenre.Genre) ?? false
                             });
                         }
                     }
@@ -49,8 +50,9 @@ namespace game_store.Models
                     genreModels.Add(new GenreNodeViewModel
                     {
                         GenreNodeId = node.Id,
+                        Genre = node.Genre,
                         GenreName = node.Genre.GetAttribute<DisplayAttribute>().Name,
-                        Checked = FilterOptions.AppliedGenresIds?.Contains(node.Id) ?? false,
+                        Checked = FilterOptions.AppliedGenres?.Contains((int)node.Genre) ?? false,
                         SubGenreModels = subGenres
                     });
                 }

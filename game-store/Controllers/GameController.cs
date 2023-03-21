@@ -21,16 +21,19 @@ namespace game_store.Controllers
             return View(new SingleGameViewModel(game));
         }
 
-        public async Task<IActionResult> NewGamePage()
+        public async Task<IActionResult> NewGame()
         {
             return View(new EditGameViewModel(new GameModel(),
                 await _storeServicesProvider.GetAllGenreNodesModelsAsync()));
         }
 
-        public async Task<ActionResult> AddGame(EditGameViewModel gameModel)
+        [HttpPost]
+        public string AddGame(EditGameViewModel gameModel)
         {
-            await _storeServicesProvider.AddNewGameAsync(gameModel);
-            return RedirectToAction(nameof(Index), "Home");
+            _storeServicesProvider.AddNewGameAsync(gameModel).Wait();
+            var redirectUrl = Url.ActionLink("Index", "Home");
+
+            return redirectUrl;
         }
 
         //public ActionResult EditGameData(int gameId)
@@ -38,19 +41,21 @@ namespace game_store.Controllers
         //    return RedirectToAction(nameof(EditGamePage), new { gameId });
         //}
 
-        //public IActionResult EditGamePage(int gameId)
-        //{
-        //    return View(new EditGameViewModel(_storeServicesProvider.GetGameById(gameId)));
-        //}
+        public async Task<IActionResult> EditGame(int gameId)
+        {
+            var gameModel = await _storeServicesProvider.GetGameByIdAsync(gameId);
+            var genreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync();
 
-        //public string UpdateGameData(EditGameViewModel gameViewModel)
-        //{
-        //    _storeServicesProvider.UpdateGame(gameViewModel);
+            return View(new EditGameViewModel(gameModel, genreNodes));
+        }
 
-        //    var redirectUrl = Url.ActionLink("ViewGame", "Game", new { gameId = gameViewModel.Id });
+        public string UpdateGameData(EditGameViewModel gameViewModel)
+        {
+            _storeServicesProvider.UpdateGame(gameViewModel).Wait();
 
-        //    return redirectUrl;
-        //}
+            var redirectUrl = Url.ActionLink("ViewGame", "Game", new { gameId = gameViewModel.Id });
+            return redirectUrl;
+        }
 
         //public ActionResult DeleteGame(int gameId)
         //{

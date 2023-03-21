@@ -53,8 +53,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Game\EditGamePage.cshtml" />
-    <Content Include="Views\Game\NewGamePage.cshtml" />
+    <Content Include="Views\Game\EditGame.cshtml" />
+    <Content Include="Views\Game\NewGame.cshtml" />
   </ItemGroup>
 
 </Project>

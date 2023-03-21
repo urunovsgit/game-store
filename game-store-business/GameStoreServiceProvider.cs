@@ -123,10 +123,10 @@ namespace game_store_domain.Services
         {
             var games = await _gsUnitOfWork.GameRepository.GetAllAsync();
 
-            if(options.AppliedGenresIds != null)
+            if(options.AppliedGenres != null)
             {
                 var genresNodes = await _gsUnitOfWork.GenreNodeRepository.GetAllAsync();
-                var genres = genresNodes.Where(gn => options.AppliedGenresIds.Contains(gn.Id)).Select(gn => gn.Genre);
+                var genres = genresNodes.Where(gn => options.AppliedGenres.Contains((int)gn.Genre)).Select(gn => gn.Genre);
 
                 games = games.Where(game => game.Genres
                                  .Any(genre => genres
@@ -278,7 +278,11 @@ namespace game_store_domain.Services
                     new Game
                     {
                         Title = "World Of Warcraft",
-                        Genres = new List<Genre> { Genre.RPG, Genre.Strategy },
+                        Genres = new List<Genre> 
+                        { 
+                            Genre.RPG,
+                            Genre.Strategy
+                        },
                         Price = 42,
                         Description = "WOW Game"
                     },
@@ -286,7 +290,11 @@ namespace game_store_domain.Services
                     new Game
                     {
                         Title = "Prince Of Persia",
-                        Genres = new List<Genre> { Genre.Action, Genre.Adventure },
+                        Genres = new List<Genre>
+                        {
+                            Genre.Action,
+                            Genre.Adventure
+                        },
                         Price = 34,
                         Description = "Sand Of Time"
                     },

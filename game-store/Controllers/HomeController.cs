@@ -21,17 +21,21 @@ namespace game_store.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            var genreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync();
             var options = new GamesFilterOptions();
 
             if (TempData.ContainsKey("FilterOptions"))
             {
                 options = JsonConvert.DeserializeObject<GamesFilterOptions>(Convert.ToString(TempData["FilterOptions"]));
             }
+            else
+            {
+                options.AppliedGenres = genreNodes.Select(gn => (int)gn.Genre).ToList();
+            }
 
-            return View(new GamesListViewModel(
-                await _storeServicesProvider.GetGamesAsync(options),
-                await _storeServicesProvider.GetAllGenreNodesModelsAsync(),
-                options));
+            var games = await _storeServicesProvider.GetGamesAsync(options);
+
+            return View(new GamesListViewModel(games, genreNodes, options));
         }
 
         [HttpPost]
@@ -40,11 +44,6 @@ namespace game_store.Controllers
             TempData["FilterOptions"] = JsonConvert.SerializeObject(options);
         }
 
-        //[Authorize]
-        //public ActionResult AddGame()
-        //{
-        //    return RedirectToAction(nameof(AddGame), nameof(GameController));
-        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

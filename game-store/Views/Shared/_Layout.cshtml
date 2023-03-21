@@ -33,7 +33,7 @@
     </header>
 
     <!-- Header section end -->
-    <section class="recent-game-section spad set-bg" data-setbg="img/recent-game-bg.png">
+    <section class="recent-game-section spad" >
         <div class="container">
             
             @RenderBody()
@@ -57,14 +57,14 @@
     <!-- Footer section end -->
 
     <!--====== Javascripts & Jquery ======-->
-    <script src="@Url.Content("~/js/jquery-3.2.1.min.js")"></script>
-    <script src="@Url.Content("~/js/bootstrap.min.js")"></script>
-    <script src="@Url.Content("~/js/owl.carousel.min.js")"></script>
-    <script src="@Url.Content("~/js/jquery.marquee.min.js")"></script>
-    <script src="@Url.Content("~/js/main.js")"></script>
-    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
-    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.js")"></script>
-    <script src="@Url.Content("~/js/site.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/jquery-3.2.1.min.js")"></script>
+    <script src="@Url.Content("/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("/js/owl.carousel.min.js")"></script>
+    <script src="@Url.Content("/js/jquery.marquee.min.js")"></script>
+    <script src="@Url.Content("/js/main.js")"></script>
+    <script src="@Url.Content("/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("/lib/bootstrap/dist/js/bootstrap.js")"></script>
+    <script src="@Url.Content("/js/site.js")" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

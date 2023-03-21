@@ -7,7 +7,7 @@
         {
             foreach (var genreNode in Model)
             {
-                <input type="checkbox" value="@(genreNode.GenreNodeId)"
+                <input type="checkbox" value="@((int)genreNode.Genre)"
                     @(genreNode.Checked ? "checked=\"checked\"" : "")) />
                 @(genreNode.GenreName)  <br />
 
@@ -15,7 +15,7 @@
                 {
                     foreach (var sgenre in genreNode.SubGenreModels)
                     {
-                        <input type="checkbox" value="@(sgenre.GenreName)" style="margin-left: 15px"
+                        <input type="checkbox" value="@((int)sgenre.Genre)" style="margin-left: 15px"
                             @(sgenre.Checked ? "checked=\"checked\"" : "")) />
                         @(sgenre.GenreName)  <br />
                     }

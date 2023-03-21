@@ -58,7 +58,7 @@
                 <div class="blog-content">
                     <h3>@Model.Title</h3>
                     <p>@Model.Description</p>
-                    <form asp-action="EditGameData" asp-controller="Game" method="post">
+                    <form asp-action="EditGame" asp-controller="Game" method="post">
                         <input type="hidden" asp-for="Id" name="gameId" />
                         <button class="btn btn-primary btn-sm">
                             Edit data

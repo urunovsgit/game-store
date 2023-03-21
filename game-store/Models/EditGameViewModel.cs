@@ -9,7 +9,7 @@ namespace game_store.Models
 {
     public class EditGameViewModel : GameViewModelBase
     {
-        public EditGameViewModel() : base(new GameModel()) { }
+        public EditGameViewModel() { }
         public EditGameViewModel(GameModel model, IEnumerable<GenreNodeModel> allGenreNodes) : base(model)
         {
             AllGenreNodes = allGenreNodes;
@@ -32,7 +32,7 @@ namespace game_store.Models
                     var memStream = new MemoryStream();
 
                     value.CopyTo(memStream);
-                    Image = Convert.ToBase64String(memStream.ToArray());
+                    Image = memStream.ToArray();
 
                     memStream.Close();
                     memStream.Dispose();
@@ -58,6 +58,7 @@ namespace game_store.Models
                             subGenres.Add(new GenreNodeViewModel
                             {
                                 GenreNodeId = sgenre.Id,
+                                Genre = sgenre.Genre,
                                 GenreName = sgenre.Genre.GetAttribute<DisplayAttribute>().Name,
                                 Checked = Genres.Any(g => g == sgenre.Genre)
                             });
@@ -67,6 +68,7 @@ namespace game_store.Models
                     genreModels.Add(new GenreNodeViewModel
                     {
                         GenreNodeId = node.Id,
+                        Genre = node.Genre,
                         GenreName = node.Genre.GetAttribute<DisplayAttribute>().Name,
                         Checked = Genres.Any(g => g == node.Genre),
                         SubGenreModels = subGenres

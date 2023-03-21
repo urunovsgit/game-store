@@ -2,7 +2,9 @@
 
 <div class="comment-form-warp">
     <h4 class="comment-title">Add new game</h4>
-    <form class="comment-form" asp-controller="Game" asp-action="AddGame" enctype="multipart/form-data">
+    <form id="newGameForm" class="comment-form" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Image" />
         <div class="blog-thumb set-bg" data-setbg="@(Model.GameImageUrl)">
         </div>
         <div class="row">
@@ -29,7 +31,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-outline-dark" data-bs-dismiss="modal">Apply</button>
+                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Apply</button>
                             </div>
                         </div>
                     </div>
@@ -40,7 +42,7 @@
             </div>
             <div class="col-lg-12">
                 <textarea asp-for="Description" placeholder="Description" required></textarea>
-                <button type="submit" class="site-btn btn-sm">Submit</button>
+                <button id="addNewGameBtn" type="submit" class="site-btn btn-sm">Submit</button>
             </div>
         </div>
     </form>
