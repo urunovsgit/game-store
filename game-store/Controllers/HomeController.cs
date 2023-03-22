@@ -11,17 +11,17 @@ namespace game_store.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IGameStoreServices _storeServicesProvider;
+        private readonly IGameService _gameServicesProvider;
 
-        public HomeController(IGameStoreServices gameServices)
+        public HomeController(IGameService gameServices)
         {
-            _storeServicesProvider = gameServices;
+            _gameServicesProvider = gameServices;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var genreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync();
+            var genreNodes = await _gameServicesProvider.GetAllGenreNodesModelsAsync();
             var options = new GamesFilterOptions();
 
             if (TempData.ContainsKey("FilterOptions"))
@@ -33,7 +33,7 @@ namespace game_store.Controllers
                 options.AppliedGenres = genreNodes.Select(gn => (int)gn.Genre).ToList();
             }
 
-            var games = await _storeServicesProvider.GetGamesAsync(options);
+            var games = await _gameServicesProvider.GetGamesByFilter(options);
 
             return View(new GamesListViewModel(games, genreNodes, options));
         }

@@ -80,17 +80,16 @@
                     <form id="commentDataForm">
                         <input type="hidden" name="GameId" value="@(Model.Id)" />
                         <input type="hidden" name="UserId" value="@(currentUser?.Id)" />
-
-                        <button class="comment-button" onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '0', '-1', '-1')">Comment</button>
-                        <div class="comment-form hidden" id="commentForm@(Model)">
-                            <textarea id="commentText@(Model)" placeholder="Enter your comment (max 600 characters)"></textarea>
-                            <div class="comment-buttons">
-                                <button id="comment-save" onclick="addCommentEvent('@ViewData["username"]')">Save</button>
-                                <button id="comment-cancel" onclick="cancelCommentEvent('@Model')">Cancel</button>
-                            </div>
-                        </div>
                     </form>
-                    <h4 class="comment-title">Coments</h4>
+                    <button type="button" class="comment-button" onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '', '-1', '-1')">Comment</button>
+                    @*<div class="comment-form hidden" id="comment-form">
+                        <textarea id="commentText" placeholder="Enter your comment (max 600 characters)"></textarea>
+                        <div class="comment-buttons">
+                            <button id="comment-save" onclick="addCommentEventHandler('@(currentUser?.UserName)', '', '-1', '-1')">Save</button>
+                            <button id="comment-cancel" onclick="cancelCommentEventHandler('')">Cancel</button>
+                        </div>
+                    </div>*@
+                    <h4 class="comment-title">Comments</h4>
                     <ul class="comment-list">
                         @for (var i = 0; i < leveledComments.Count; ++i)
                         {

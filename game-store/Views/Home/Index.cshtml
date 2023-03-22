@@ -65,14 +65,14 @@
                     <div class="rgi-extra">
                         <p>$@game.Price</p>
                     </div>
-                    @if (SignInManager.IsSignedIn(User))
+                    @if(SignInManager.IsSignedIn(User))
                     {
                         @*if (currentUser.Cart == null)
                         {
                             currentUser.Cart = new Cart { UserId = currentUser.Id };
                         }*@
 
-                        @if (currentUser.Cart.Items.Any(i => i.GameId == game.Id))
+                        @if (currentUser.Cart.Items != null && currentUser.Cart.Items.Any(i => i.GameId == game.Id))
                         {
                             <a class="site-btn btn-sm" asp-controller="Cart" asp-action="Index">View in cart</a>
                         }

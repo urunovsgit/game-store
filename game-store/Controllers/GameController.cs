@@ -8,29 +8,32 @@ namespace game_store.Controllers
 {
     public class GameController : Controller
     {
-        private readonly IGameStoreServices _storeServicesProvider;
+        private readonly IGameService _gameServicesProvider;
 
-        public GameController(IGameStoreServices gameServices)
+
+        public GameController(IGameService gameServices)
         {
-            _storeServicesProvider = gameServices;
+            _gameServicesProvider = gameServices;
         }
 
+        [HttpGet]
         public async Task<IActionResult> ViewGame(int gameId)
         {
-            var game = await _storeServicesProvider.GetGameByIdAsync(gameId);
+            var game = await _gameServicesProvider.GetByIdAsync(gameId);
             return View(new SingleGameViewModel(game));
         }
 
+        [HttpGet]
         public async Task<IActionResult> NewGame()
         {
-            var genreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync();
+            var genreNodes = await _gameServicesProvider.GetAllGenreNodesModelsAsync();
             return View(new EditGameViewModel(new GameModel(), genreNodes));
         }
 
         [HttpPost]
         public string AddGame(EditGameViewModel gameModel)
         {
-            _storeServicesProvider.AddNewGameAsync(gameModel).Wait();
+            _gameServicesProvider.CreateAsync(gameModel).Wait();
             var redirectUrl = Url.ActionLink("Index", "Home");
 
             return redirectUrl;
@@ -39,8 +42,8 @@ namespace game_store.Controllers
         [HttpGet]
         public async Task<IActionResult> EditGame(int gameId)
         {
-            var gameModel = await _storeServicesProvider.GetGameByIdAsync(gameId);
-            var genreNodes = await _storeServicesProvider.GetAllGenreNodesModelsAsync();
+            var gameModel = await _gameServicesProvider.GetByIdAsync(gameId);
+            var genreNodes = await _gameServicesProvider.GetAllGenreNodesModelsAsync();
 
             return View(new EditGameViewModel(gameModel, genreNodes));
         }
@@ -48,7 +51,7 @@ namespace game_store.Controllers
         [HttpPost]
         public string UpdateGameData(EditGameViewModel gameViewModel)
         {
-            _storeServicesProvider.UpdateGame(gameViewModel).Wait();
+            _gameServicesProvider.UpdateAsync(gameViewModel).Wait();
 
             var redirectUrl = Url.ActionLink("ViewGame", "Game", new { gameId = gameViewModel.Id });
             return redirectUrl;
@@ -56,15 +59,9 @@ namespace game_store.Controllers
 
         public async Task<ActionResult> DeleteGame(int gameId)
         {
-            await _storeServicesProvider.DeleteGameAsync(gameId);
+            await _gameServicesProvider.DeleteByIdAsync(gameId);
 
             return RedirectToAction(nameof(Index), "Home");
-        }
-
-        [HttpPost]
-        public async Task<int> AddComment(CommentViewModel commentModel)
-        {
-            return commentModel.Id;
         }
 
         //[HttpPost]

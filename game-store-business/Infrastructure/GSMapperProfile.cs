@@ -9,6 +9,11 @@ namespace Business
     {
         public GSMapperProfile()
         {
+            CreateMap<CommentModel, Comment>()
+                .ReverseMap()
+                .ForMember(cm => cm.SubCommentsIds, opt => opt.MapFrom(c => c.SubComments.Select(sc => sc.Id)))
+                .ForMember(cm => cm.Username, opt => opt.MapFrom(c => c.User.UserName));
+
             CreateMap<Game, GameModel>()
                 .ForMember(gm => gm.CommentModels, opt => opt.MapFrom(g => g.Comments))
                 .ReverseMap();
@@ -18,11 +23,6 @@ namespace Business
 
             CreateMap<Cart, CartModel>()
                 .ForMember(cm => cm.CartItemsIds, opt => opt.MapFrom(c => c.Items.Select(i => i.Id)))
-                .ReverseMap();
-
-            CreateMap<Comment, CommentModel>()
-                .ForMember(cm => cm.SubCommentsIds, opt => opt.MapFrom(c => c.SubComments.Select(sc => sc.Id)))
-                .ForMember(cm => cm.Username, opt => opt.MapFrom(c => c.User.UserName))
                 .ReverseMap();
 
             CreateMap<GenreNode, GenreNodeModel>()

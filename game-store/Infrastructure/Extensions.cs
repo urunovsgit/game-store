@@ -23,7 +23,6 @@ namespace game_store.Infrastructure
             services.AddScoped<IGameService, GameServiceProvider>();
             services.AddScoped<IOrderService, OrderServiceProvider>();
             services.AddScoped<ICommentService, CommentServiceProvider>();
-            services.AddScoped<IGameStoreServices, GameStoreServiceProvider>();
 
             return services;
         }

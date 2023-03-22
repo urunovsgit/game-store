@@ -4,6 +4,8 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Data.Interfaces;
+using game_store_business.ServiceInterfaces;
 using game_store_domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -20,13 +22,15 @@ namespace game_store.Areas.Identity.Pages.Account
         private readonly IUserStore<GameStoreUser> _userStore;
         private readonly IUserEmailStore<GameStoreUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IOrderService _orderServiceProvider;
         //private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<GameStoreUser> userManager,
             IUserStore<GameStoreUser> userStore,
             SignInManager<GameStoreUser> signInManager,
-            ILogger<RegisterModel> logger)
+            ILogger<RegisterModel> logger,
+            IOrderService orderServiceProvider)
             //IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -34,6 +38,7 @@ namespace game_store.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            _orderServiceProvider = orderServiceProvider;
             //_emailSender = emailSender;
         }
 
@@ -130,6 +135,8 @@ namespace game_store.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+                    await _orderServiceProvider.CreateCartForUser(int.Parse(userId));
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -161,11 +168,11 @@ namespace game_store.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private IdentityUser<int> CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<IdentityUser<int>>();
             }
             catch
             {

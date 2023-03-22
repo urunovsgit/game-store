@@ -121,5 +121,15 @@ namespace game_store_business.ServicesProviders
             order = await _gsUnitOfWork.OrderRepository.GetByIdAsync(order.Id);
             return _mapperProfile.Map<OrderModel>(order);
         }
+
+        public async Task<CartModel> CreateCartForUser(int userId)
+        {
+            var newCart = new Cart { UserId = userId };
+
+            await _gsUnitOfWork.CartRepository.AddAsync(newCart);
+            await _gsUnitOfWork.SaveAsync();
+
+            return _mapperProfile.Map<CartModel>(newCart);
+        }
     }
 }
