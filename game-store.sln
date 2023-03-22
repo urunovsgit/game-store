@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "game-store", "game-store\ga
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "game-store-domain", "game-store-domain\game-store-domain.csproj", "{48DBD6FC-8656-4011-A449-C35387B2CB58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "game-store-business", "game-store-business\game-store-business.csproj", "{F8719BB0-8CC3-49CE-B96D-E2E812EDAE39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "game-store-business", "game-store-business\game-store-business.csproj", "{F8719BB0-8CC3-49CE-B96D-E2E812EDAE39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7967E242-8FEC-4838-BC0D-62CB1965F171}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

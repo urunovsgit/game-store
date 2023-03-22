@@ -16,6 +16,7 @@ namespace game_store.Models
             Description = model.Description;
             Image = model.Image;
             Genres = model.Genres;
+            CommentModels = model.CommentModels;
         }
 
         public string GameImageUrl

@@ -1,7 +1,7 @@
 ﻿using game_store.Models;
 using game_store_business.Models;
+using game_store_business.ServiceInterfaces;
 using game_store_domain.Entities;
-using game_store_domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace game_store.Controllers
@@ -61,10 +61,16 @@ namespace game_store.Controllers
             return RedirectToAction(nameof(Index), "Home");
         }
 
+        [HttpPost]
+        public async Task<int> AddComment(CommentViewModel commentModel)
+        {
+            return commentModel.Id;
+        }
+
         //[HttpPost]
-        //public int AddComment([FromForm] string userId, int gameId, int parrentId, string comment)
+        //public async Task<int> AddComment([FromForm] string userId, int gameId, int parrentId, string comment)
         //{
-        //    var instance = _storeServicesProvider.AddComment(
+        //    var instance = await _storeServicesProvider.AddCommentAsync(
         //        new Comment
         //        {
         //            UserId = userId,

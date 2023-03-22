@@ -1,7 +1,7 @@
 ﻿using game_store.Models;
 using game_store_business.Models;
+using game_store_business.ServiceInterfaces;
 using game_store_domain.Entities;
-using game_store_domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

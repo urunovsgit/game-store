@@ -1,6 +1,6 @@
 ﻿using game_store_business.Models;
 
-namespace game_store_domain.Services
+namespace game_store_business.ServiceInterfaces
 {
     public interface IGameStoreServices
     {

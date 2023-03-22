@@ -12,10 +12,9 @@ namespace game_store.Models
         public EditGameViewModel() { }
         public EditGameViewModel(GameModel model, IEnumerable<GenreNodeModel> allGenreNodes) : base(model)
         {
-            AllGenreNodes = allGenreNodes;
+            GenreModels = allGenreNodes.ToGenreNodeViewModels(model.Genres);
         }
 
-        public IEnumerable<GenreNodeModel> AllGenreNodes { get; set; } = new List<GenreNodeModel>();
 
         private IFormFile? _uploadedImage;
         public IFormFile? UploadedImage
@@ -39,44 +38,6 @@ namespace game_store.Models
                 }
             }
         }
-
-        public IEnumerable<GenreNodeViewModel> GenreModels
-        {
-            get
-            {
-                var genreModels = new List<GenreNodeViewModel>();
-                var parrentNodes = AllGenreNodes.Where(gnm => gnm.ParentId == null);
-
-                foreach (var node in parrentNodes)
-                {
-                    var subGenres = new Collection<GenreNodeViewModel>();
-
-                    if (node.SubGenres.Any())
-                    {
-                        foreach (var sgenre in node.SubGenres)
-                        {
-                            subGenres.Add(new GenreNodeViewModel
-                            {
-                                GenreNodeId = sgenre.Id,
-                                Genre = sgenre.Genre,
-                                GenreName = sgenre.Genre.GetAttribute<DisplayAttribute>().Name,
-                                Checked = Genres.Any(g => g == sgenre.Genre)
-                            });
-                        }
-                    }
-
-                    genreModels.Add(new GenreNodeViewModel
-                    {
-                        GenreNodeId = node.Id,
-                        Genre = node.Genre,
-                        GenreName = node.Genre.GetAttribute<DisplayAttribute>().Name,
-                        Checked = Genres.Any(g => g == node.Genre),
-                        SubGenreModels = subGenres
-                    });
-                }
-
-                return genreModels;
-            }
-        }
+        public IEnumerable<GenreNodeViewModel> GenreModels { get; private set; }
     }
 }

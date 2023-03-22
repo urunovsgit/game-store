@@ -3,12 +3,21 @@ using game_store_domain.Entities;
 
 namespace game_store.Models
 {
-    public class CommentViewModel
+    public class CommentViewModel : CommentModel
     {
+        public CommentViewModel() { }
         public CommentViewModel(CommentModel model)
-            => CommentModel = model;
-
-        public CommentModel CommentModel { get; set; }
+        {
+            Id = model.Id;
+            Text = model.Text;
+            Username = model.Username;
+            DateTime = model.DateTime;
+            IsDeleted = model.IsDeleted;
+            UserId = model.UserId;
+            GameId = model.GameId;
+            ParentId = model.ParentId;
+            SubCommentsIds = model.SubCommentsIds;
+        }
         public int CommentLevel { get; set; }
     }
 }

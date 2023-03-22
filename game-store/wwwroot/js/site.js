@@ -3,14 +3,7 @@
 
 // Write your JavaScript code.
 
-
-/*const filterGenresBtn = $('#applyGenresFilterBtn');*/
-/*filterGenresBtn.click(applyGenresFilter);*/
-
 function applyGamesFilter() {
-    // stop submit the form, we will post it manually.
-    /*event.preventDefault();*/
-
     // Get form
     const form = $('#gamesFilterForm')[0];
 
