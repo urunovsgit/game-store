@@ -14,9 +14,10 @@ namespace Business
                 .ForMember(cm => cm.SubCommentsIds, opt => opt.MapFrom(c => c.SubComments.Select(sc => sc.Id)))
                 .ForMember(cm => cm.Username, opt => opt.MapFrom(c => c.User.UserName));
 
-            CreateMap<Game, GameModel>()
-                .ForMember(gm => gm.CommentModels, opt => opt.MapFrom(g => g.Comments))
-                .ReverseMap();
+            CreateMap<GameModel, Game>()
+                .ReverseMap()
+                .ForMember(gm => gm.CommentModels, opt => opt.MapFrom(g => g.Comments.Where(c => !c.IsDeleted)));
+                
 
             CreateMap<CartItem, CartItemModel>()
                 .ReverseMap();

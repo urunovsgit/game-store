@@ -46,7 +46,9 @@ namespace game_store_business.ServiceProviders
 
         public async Task DeleteByIdAsync(int id)
         {
-            await _gsUnitOfWork.CommentRepository.DeleteByIdAsync(id);
+            var comment = await _gsUnitOfWork.CommentRepository.GetByIdAsync(id);
+            comment.IsDeleted = true;
+            _gsUnitOfWork.CommentRepository.Update(comment);
             await _gsUnitOfWork.SaveAsync();
         }
 

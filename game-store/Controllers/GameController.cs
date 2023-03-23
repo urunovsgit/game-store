@@ -63,43 +63,5 @@ namespace game_store.Controllers
 
             return RedirectToAction(nameof(Index), "Home");
         }
-
-        //[HttpPost]
-        //public async Task<int> AddComment([FromForm] string userId, int gameId, int parrentId, string comment)
-        //{
-        //    var instance = await _storeServicesProvider.AddCommentAsync(
-        //        new Comment
-        //        {
-        //            UserId = userId,
-        //            ParentId = parrentId != 0 ? parrentId : null,
-        //            GameId = gameId,
-        //            Text = comment
-        //        });
-
-        //    return instance.Id;
-        //}
-
-        //[HttpPost]
-        //public void EditComment([FromForm]int id, string comment)
-        //{
-        //    _storeServicesProvider.EditComment(
-        //        new Comment
-        //        {
-        //            Id = id,
-        //            Text = comment
-        //        });
-        //}
-
-        //[HttpPost]
-        //public void DeleteComment(int commentId)
-        //{
-        //    _storeServicesProvider.DeleteComment(commentId);
-        //}
-
-        //[HttpPost]
-        //public void RestoreComment(int commentId)
-        //{
-        //    _storeServicesProvider.RestoreComment(commentId);
-        //}
     }
 }

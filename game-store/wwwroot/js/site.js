@@ -3,9 +3,6 @@
 
 // Write your JavaScript code.
 
-
-
-
 function addGameIntoCart(gameId) {
     event.preventDefault();
 

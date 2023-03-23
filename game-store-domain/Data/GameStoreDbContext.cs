@@ -12,6 +12,7 @@ namespace game_store_domain.Data
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<CartItem> CartItems { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
 
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)

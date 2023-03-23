@@ -21,9 +21,21 @@ namespace game_store.Controllers
         }
 
         [HttpPost]
+        public async Task EditComment(CommentViewModel commentModel)
+        {
+            await _commentServiceProvider.UpdateAsync(commentModel);
+        }
+
+        [HttpPost]
         public async Task DeleteComment(int commentId)
         {
             await _commentServiceProvider.DeleteByIdAsync(commentId);
+        }
+
+        [HttpPost]
+        public async Task RestoreComment(int commentId)
+        {
+            await _commentServiceProvider.RestoreCommentAsync(commentId);
         }
     }
 }

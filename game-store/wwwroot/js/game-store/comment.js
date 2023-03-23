@@ -1,15 +1,15 @@
-﻿function onCommentRoot() {
-    const commentForm = document.querySelector('.comment-form');
-    commentForm.classList.remove('hidden');
-}
+﻿//function onCommentRoot() {
+//    const commentForm = document.querySelector('.comment-form');
+//    commentForm.classList.remove('hidden');
+//}
 
 function beginCommentEventHandler(element, username, commentId, listItemIndex, itemLevel) {
-    //let commentForm = document.querySelector('.comment-form');
+    let commentForm = document.querySelector('.comment-form');
     //commentForm.classList.remove('hidden');
 
-    //if (commentForm != null) return;
+    if (commentForm != null) commentForm.remove();
 
-    const commentForm = createCommentForm(commentId);
+    commentForm = createCommentForm(commentId);
     const saveBtn = commentForm.querySelector('#saveBtn');
     const cancelBtn = commentForm.querySelector('#cancelBtn');
 
@@ -65,7 +65,7 @@ function addCommentEventHandler(username, commentId, listItemIndex, itemLevel) {
                 replyBtn.classList.add('comment-button', 'btn', 'btn-link');
                 replyBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
-                    beginCommentEventHandler(this, username, resultId, listItemIndex, parseInt(itemLevel)+1);
+                    beginCommentEventHandler(this, username, resultId, parseInt(listItemIndex)+1, parseInt(itemLevel)+1);
                 });
                 replyBtn.innerText = 'Reply';
 
@@ -127,14 +127,12 @@ function addCommentEventHandler(username, commentId, listItemIndex, itemLevel) {
                 if (listItemIndex != -1) {
                     const currentNode = commentsList.children[listItemIndex];
                     currentNode.parentNode.insertBefore(commentItem, currentNode.nextSibling);
-
-                    //document.getelem
                 }
                 else {
                     commentsList.appendChild(commentItem);
                 }
 
-                cancelCommentEventHandler(commentId);
+                cancelCommentEventHandler();
             }
         });
     } else {
@@ -143,9 +141,9 @@ function addCommentEventHandler(username, commentId, listItemIndex, itemLevel) {
 }
 
 function editCommentEventHandler(element, commentId, text) {
-    //let commentForm = document.querySelector('.comment-form');
+    let commentForm = document.querySelector('.comment-form');
 
-    //if (commentForm != null) return;
+    if (commentForm != null) commentForm.remove();
 
     commentForm = createCommentForm(commentId);
     const textbox = commentForm.querySelector('#commentText' + commentId);
@@ -156,17 +154,17 @@ function editCommentEventHandler(element, commentId, text) {
 
     saveBtn.addEventListener('click', function (e) {
         e.stopPropagation();
-        const commentText = document.querySelector('#commentText');
+        const commentText = document.querySelector('#commentText' + commentId);
         const comment = commentText.value;
 
         if (comment.length > 0 && comment.length <= 600) {
             const form = $('#commentDataForm')[0];
             const formData = new FormData(form);
-            formData.append('id', commentId);
-            formData.append('comment', comment);
+            formData.append('Id', commentId);
+            formData.append('Text', comment);
 
             $.ajax({
-                url: '/Game/EditComment',
+                url: '/Comment/EditComment',
                 data: formData,
                 contentType: false,
                 processData: false,
@@ -186,7 +184,7 @@ function editCommentEventHandler(element, commentId, text) {
 
     cancelBtn.addEventListener('click', function (e) {
         e.stopPropagation();
-        cancelCommentEventHandler(commentId);
+        cancelCommentEventHandler();
     });
 
     const parrentElement = element.parentElement;
@@ -198,8 +196,8 @@ function editCommentEventHandler(element, commentId, text) {
     }
 }
 
-function cancelCommentEventHandler(commentId) {
-    const commentForm = document.querySelector('#comment-form' + commentId);
+function cancelCommentEventHandler() {
+    const commentForm = document.querySelector('.comment-form');
     const parrentElement = commentForm.parentElement;
     parrentElement.removeChild(commentForm);
 }
@@ -223,7 +221,6 @@ function createCommentForm(commentId) {
     commentBtnsDiv.appendChild(cancelBtn);
 
     const commentForm = document.createElement('div');
-    commentForm.id = 'comment-form' + commentId;
     commentForm.classList.add('comment-form');
     commentForm.appendChild(commentTextbox);
     commentForm.appendChild(commentBtnsDiv);
@@ -279,7 +276,7 @@ function restoreCommentEventHandler(commentId, commentText) {
     const data = { commentId: commentId };
 
     $.ajax({
-        url: '/Game/RestoreComment',
+        url: '/Comment/RestoreComment',
         data: data,
         contentType: 'application/x-www-form-urlencoded',
         async: false,
