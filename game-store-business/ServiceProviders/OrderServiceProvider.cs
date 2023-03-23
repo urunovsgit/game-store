@@ -56,7 +56,8 @@ namespace game_store_business.ServicesProviders
             var cartItem = new CartItem
             {
                 CartId = cartId,
-                GameId = gameId
+                GameId = gameId,
+                Quantity = 1,
             };
 
             await _gsUnitOfWork.CartItemRepository.AddAsync(cartItem);
@@ -125,11 +126,24 @@ namespace game_store_business.ServicesProviders
         public async Task<CartModel> CreateCartForUser(int userId)
         {
             var newCart = new Cart { UserId = userId };
-
+            
             await _gsUnitOfWork.CartRepository.AddAsync(newCart);
             await _gsUnitOfWork.SaveAsync();
 
+            var user = await _gsUnitOfWork.UserManager.FindByIdAsync(userId.ToString());
+            user.CartId = newCart.Id;
+            await _gsUnitOfWork.UserManager.UpdateAsync(user);
+            await _gsUnitOfWork.SaveAsync();
+
             return _mapperProfile.Map<CartModel>(newCart);
+        }
+
+        public async Task<CartModel> GetCartByUserId(int userId)
+        {
+            var user = await _gsUnitOfWork.UserManager.FindByIdAsync(userId.ToString());
+            var cart = await _gsUnitOfWork.CartRepository.GetByIdAsync(user.CartId);
+
+            return _mapperProfile.Map<CartModel>(cart);
         }
     }
 }

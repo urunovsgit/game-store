@@ -26,9 +26,6 @@
     });
 }
 
-const addNewGameBtn = $('#addNewGameBtn');
-addNewGameBtn.click(postNewGameData);
-
 function postNewGameData() {
     // stop submit the form, we will post it manually.
     event.preventDefault();

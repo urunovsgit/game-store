@@ -74,13 +74,13 @@
 
                         @if (currentUser.Cart.Items != null && currentUser.Cart.Items.Any(i => i.GameId == game.Id))
                         {
-                            <a class="site-btn btn-sm" asp-controller="Cart" asp-action="Index">View in cart</a>
+                            <a class="site-btn btn-sm" asp-controller="Cart" asp-action="Index" asp-route-userId="@(currentUser.Id)">View in cart</a>
                         }
                         else
                         {
-                            <form id="gameDataForm@(game.Id)" onsubmit="addGameIntoCart('@(game.Id)')">
+                            <form id="gameDataForm@(game.Id)" onsubmit="addGameToCart('@(game.Id)', '@(currentUser.Id)')">
                                 <input name="gameId" type="hidden" value="@(game.Id)">
-                                <input name="userId" type="hidden" value="@(currentUser?.Id)">
+                                <input name="cartId" type="hidden" value="@(currentUser?.CartId)">
                                 <button id="buyBtn@(game.Id)" type="submit" class="site-btn btn-sm">Buy</button>
                             </form>
                         }

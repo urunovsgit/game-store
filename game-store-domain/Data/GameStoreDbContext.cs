@@ -27,9 +27,18 @@ namespace game_store_domain.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<GameStoreUser>()
-                .Property(user => user.AvatarImage)
-                .IsRequired(false);
+            modelBuilder.Entity<GameStoreUser>(entity =>
+            {
+                entity.Property(user => user.AvatarImage)
+                    .IsRequired(false);
+
+                entity.HasOne(user => user.Cart)
+                    .WithOne(cart => cart.User)
+                    .HasForeignKey<GameStoreUser>(user => user.CartId)
+                    .IsRequired(true)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+                
 
             modelBuilder.Entity<Game>(entity =>
             {
@@ -38,7 +47,7 @@ namespace game_store_domain.Data
                     .IsRequired(false);
 
                 entity.Property(game => game.Image)
-                    .IsRequired(false);
+                    .IsRequired(false);               
             });
 
 

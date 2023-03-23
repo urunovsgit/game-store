@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\CartController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="Views\Shared\ViewGame.cshtml" />
     <Content Remove="Views\Shared\_CommentForm.cshtml" />
   </ItemGroup>
@@ -55,6 +51,10 @@
   <ItemGroup>
     <Content Include="Views\Game\EditGame.cshtml" />
     <Content Include="Views\Game\NewGame.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Cart\Index.cshtml" />
   </ItemGroup>
 
 </Project>

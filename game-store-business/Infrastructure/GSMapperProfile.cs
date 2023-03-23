@@ -15,19 +15,25 @@ namespace Business
                 .ForMember(cm => cm.Username, opt => opt.MapFrom(c => c.User.UserName));
 
             CreateMap<GameModel, Game>()
+                .ForMember(g => g.Genres, opt => opt.MapFrom(gm => gm.Genres.Any() 
+                                                                    ? gm.Genres 
+                                                                    : new List<Genre> { Genre.Other }))
                 .ReverseMap()
-                .ForMember(gm => gm.CommentModels, opt => opt.MapFrom(g => g.Comments.Where(c => !c.IsDeleted)));
+                .ForMember(gm => gm.CommentModels, opt => opt.MapFrom(g => g.Comments.Where(c => !c.IsDeleted)))
+                .ForMember(gm => gm.Genres, opt => opt.MapFrom(g => g.Genres));
                 
 
-            CreateMap<CartItem, CartItemModel>()
-                .ReverseMap();
+            CreateMap<CartItemModel, CartItem>()
+                .ReverseMap()
+                .ForMember(cim => cim.GameTitle, opt => opt.MapFrom(ci => ci.Game.Title))
+                .ForMember(cim => cim.GameImage, opt => opt.MapFrom(ci => ci.Game.Image))
+                .ForMember(cim => cim.GamePrice, opt => opt.MapFrom(ci => ci.Game.Price));
 
             CreateMap<Cart, CartModel>()
-                .ForMember(cm => cm.CartItemsIds, opt => opt.MapFrom(c => c.Items.Select(i => i.Id)))
+                .ForMember(cm => cm.Items, opt => opt.MapFrom(c => c.Items))
                 .ReverseMap();
 
             CreateMap<GenreNode, GenreNodeModel>()
-                //.ForMember(gnm => gnm.SubGenresIds, opt => opt.MapFrom(gn => gn.SubGenres.Select(sg => sg.Id)))
                 .ReverseMap();
 
             CreateMap<GameStoreUser, GameStoreUserModel>()

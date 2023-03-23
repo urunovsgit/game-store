@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using game_store_domain.Entities;
+using System.Collections.ObjectModel;
 
 namespace game_store_business.Models
 {
@@ -7,6 +8,6 @@ namespace game_store_business.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public int? OrderId { get; set; }
-        public ICollection<int> CartItemsIds { get; set; } = new Collection<int>();
+        virtual public List<CartItemModel> Items { get; set; }
     }
 }
