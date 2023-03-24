@@ -92,20 +92,15 @@
         }
 </style>
 
-
-
 @if (Model.Items != null && Model.Items.Any())
 {
-    <form id="makeOrderForm" asp-controller="Cart" asp-action="MoveToOrder">
-        @*<input type="hidden" name="userId" value="@Model.UserId"/>*@
-        <input type="hidden" name="cartId" value="@Model.CartModel.Id" />
-        <div class="form-group row">
-            <div id="totalSum" class="total-sum col-sm-10 col-form-label">Cart total sum: $@(Model.TotalSum)</div>
-            <div class="col-sm-2">
-                <button class="site-btn btn-sm" type="submit">Proceed</button>
-            </div>
+    <div class="form-group row">
+        <div id="totalSum" class="total-sum col-sm-10 col-form-label">Cart total sum: $@(Model.TotalSum)</div>
+        <div class="col-sm-2">
+            <a asp-controller="Cart" asp-action="Order" asp-route-cartId="@(Model.CartModel.Id)"
+               class="site-btn btn-sm">Proceed</a>
         </div>
-    </form>
+    </div>
 
     foreach (var item in Model.Items)
     {

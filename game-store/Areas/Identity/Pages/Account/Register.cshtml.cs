@@ -5,6 +5,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Data.Interfaces;
+using game_store_business.Models;
 using game_store_business.ServiceInterfaces;
 using game_store_domain.Entities;
 using Microsoft.AspNetCore.Authentication;
@@ -22,7 +23,7 @@ namespace game_store.Areas.Identity.Pages.Account
         private readonly IUserStore<GameStoreUser> _userStore;
         private readonly IUserEmailStore<GameStoreUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IOrderService _orderServiceProvider;
+        private readonly ICartService _cartServiceProvider;
         //private readonly IEmailSender _emailSender;
 
         public RegisterModel(
@@ -30,7 +31,7 @@ namespace game_store.Areas.Identity.Pages.Account
             IUserStore<GameStoreUser> userStore,
             SignInManager<GameStoreUser> signInManager,
             ILogger<RegisterModel> logger,
-            IOrderService orderServiceProvider)
+            ICartService cartService)
             //IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -38,7 +39,7 @@ namespace game_store.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _orderServiceProvider = orderServiceProvider;
+            _cartServiceProvider = cartService;
             //_emailSender = emailSender;
         }
 
@@ -135,7 +136,7 @@ namespace game_store.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
-                    await _orderServiceProvider.CreateCartForUser(int.Parse(userId));
+                    await _cartServiceProvider.CreateAsync(new CartModel { UserId = int.Parse(userId) });
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

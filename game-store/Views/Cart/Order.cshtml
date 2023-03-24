@@ -1,4 +1,4 @@
-﻿@model Order
+﻿@model OrderModel
 
 @{
     var paymentTypes = Enum.GetValues(typeof(PaymentType));
@@ -58,11 +58,11 @@
     </div>
     <div class="form-group">
         <label for="inputEmail">Email address</label>
-        <input type="email" asp-for="Email" class="form-control" id="inputEmail" placeholder="Enter email" maxlength="600">
+        <input type="email" asp-for="Email" class="form-control" id="inputEmail" placeholder="Enter email" required maxlength="600">
     </div>
     <div class="form-group">
         <label for="inputPhone">Phone number</label>
-        <input type="tel" asp-for="PhoneNumber" class="form-control" id="inputPhone" placeholder="Enter phone number" maxlength="600">
+        <input type="tel" asp-for="PhoneNumber" class="form-control" id="inputPhone" placeholder="Enter phone number" required maxlength="600">
     </div>
     <label for="paymentTypes" class="form-label">Payment type</label>
     <select id="paymentTypes" asp-for="PaymentType" class="form-control form-select-sm" aria-label="Payment type">

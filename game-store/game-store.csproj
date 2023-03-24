@@ -57,4 +57,12 @@
     <Content Include="Views\Cart\Index.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Views\Cart\Order.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Cart\OrderSucceed.cshtml" />
+  </ItemGroup>
+
 </Project>

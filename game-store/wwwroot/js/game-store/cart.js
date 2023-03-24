@@ -48,12 +48,13 @@ function decreaseGameQuantity(itemId) {
         async: false,
         type: 'POST',
         success: function (result) {
-            document.querySelector('#sumItem' + itemId).innerText = '$' + result.itemSum.toFixed(2);
+            result = JSON.parse(result);
+            document.querySelector('#sumItem' + itemId).innerText = '$' + result.ItemSum;
             const quantityElem = document.querySelector('#quantityItem' + itemId);
-            quantityElem.innerText = result.quantity;
+            quantityElem.innerText = result.Quantity;
 
             const totalSumEl = document.querySelector('#totalSum');
-            totalSumEl.innerText = 'Cart total sum: $' + result.totalSum.toFixed(2);
+            totalSumEl.innerText = 'Cart total sum: $' + result.CartSum;
         }
     });
 }
@@ -70,12 +71,13 @@ function increaseGameQuantity(itemId) {
         async: false,
         type: 'POST',
         success: function (result) {
-            document.querySelector('#sumItem' + itemId).innerText = '$' + result.itemSum.toFixed(2);
+            result = JSON.parse(result);
+            document.querySelector('#sumItem' + itemId).innerText = '$' + result.ItemSum;
             const quantityElem = document.querySelector('#quantityItem' + itemId);
-            quantityElem.innerText = result.quantity;
+            quantityElem.innerText = result.Quantity;
 
             const totalSumEl = document.querySelector('#totalSum');
-            totalSumEl.innerText = 'Cart total sum: $' + result.totalSum.toFixed(2);
+            totalSumEl.innerText = 'Cart total sum: $' + result.CartSum;
         }
     });
 }

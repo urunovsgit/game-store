@@ -21,7 +21,7 @@ namespace game_store.Infrastructure
             services.AddScoped<IUnitOfWork, GSUnitOfWork>();
             services.AddAutoMapper(Assembly.GetAssembly(typeof(GSMapperProfile)));
             services.AddScoped<IGameService, GameServiceProvider>();
-            services.AddScoped<IOrderService, OrderServiceProvider>();
+            services.AddScoped<ICartService, CartServiceProvider>();
             services.AddScoped<ICommentService, CommentServiceProvider>();
 
             return services;

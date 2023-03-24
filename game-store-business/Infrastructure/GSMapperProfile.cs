@@ -33,6 +33,9 @@ namespace Business
                 .ForMember(cm => cm.Items, opt => opt.MapFrom(c => c.Items))
                 .ReverseMap();
 
+            CreateMap<Order, OrderModel>()
+                .ReverseMap();
+
             CreateMap<GenreNode, GenreNodeModel>()
                 .ReverseMap();
 
@@ -42,7 +45,7 @@ namespace Business
                 .ForMember(um => um.OrdersIds, opt => opt.MapFrom(u => u.Orders.Select(o => o.Id)))
                 .ReverseMap();
 
-            CreateMap<Order, OrderModel>()
+            CreateMap<Order, CartModel>()
                 .ReverseMap();
         }
     }
