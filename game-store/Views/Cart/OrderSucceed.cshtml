@@ -1,1 +1,22 @@
-﻿<p>Congratulations! You made an order! It will be deleivered as soon as possible.</p>
+﻿@model OrderModel
+
+<h3>Congratulations! You made an order! It will be deleivered as soon as possible.</h3>
+<br />
+<table class="table">
+    <tr>
+        <th>Order Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Payment type</th>
+        <th>Total sum</th>
+    </tr>
+    <tr>
+        <td>@(Model.Id)</td>
+        <td>@(Model.FirstName) @(Model.LastName)</td>
+        <td>@(Model.Email)</td>
+        <td>@(Model.PhoneNumber)</td>
+        <td>@(Model.PaymentType)</td>
+        <td>@(Model.TotalSum)</td>
+    </tr>
+</table>

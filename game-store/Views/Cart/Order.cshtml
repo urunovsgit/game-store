@@ -46,8 +46,10 @@
 </style>
 
 <form asp-action="ConfirmOrder" asp-controller="Cart">
+    <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="UserId" />
     <input type="hidden" asp-for="CartId" />
+    <input type="hidden" asp-for="TotalSum" />
     <div class="form-group">
         <label for="inputFirstName">First name</label>
         <input type="text" asp-for="FirstName" class="form-control" id="inputFirstName" placeholder="Enter first name" required maxlength="600">

@@ -9,19 +9,18 @@ namespace Business
     {
         public GSMapperProfile()
         {
-            CreateMap<CommentModel, Comment>()
-                .ReverseMap()
-                .ForMember(cm => cm.SubCommentsIds, opt => opt.MapFrom(c => c.SubComments.Select(sc => sc.Id)))
-                .ForMember(cm => cm.Username, opt => opt.MapFrom(c => c.User.UserName));
-
             CreateMap<GameModel, Game>()
-                .ForMember(g => g.Genres, opt => opt.MapFrom(gm => gm.Genres.Any() 
-                                                                    ? gm.Genres 
+                .ForMember(g => g.Genres, opt => opt.MapFrom(gm => gm.Genres.Any()
+                                                                    ? gm.Genres
                                                                     : new List<Genre> { Genre.Other }))
                 .ReverseMap()
                 .ForMember(gm => gm.CommentModels, opt => opt.MapFrom(g => g.Comments.Where(c => !c.IsDeleted)))
                 .ForMember(gm => gm.Genres, opt => opt.MapFrom(g => g.Genres));
-                
+
+            CreateMap<CommentModel, Comment>()
+                .ReverseMap()
+                .ForMember(cm => cm.SubCommentsIds, opt => opt.MapFrom(c => c.SubComments.Select(sc => sc.Id)))
+                .ForMember(cm => cm.Username, opt => opt.MapFrom(c => c.User.UserName));
 
             CreateMap<CartItemModel, CartItem>()
                 .ReverseMap()
@@ -43,9 +42,6 @@ namespace Business
                 .ForMember(um => um.AvatarImage, opt => opt.MapFrom(u => Convert.ToBase64String(u.AvatarImage)))
                 .ForMember(um => um.CommentsIds, opt => opt.MapFrom(u => u.Comments.Select(c => c.Id)))
                 .ForMember(um => um.OrdersIds, opt => opt.MapFrom(u => u.Orders.Select(o => o.Id)))
-                .ReverseMap();
-
-            CreateMap<Order, CartModel>()
                 .ReverseMap();
         }
     }

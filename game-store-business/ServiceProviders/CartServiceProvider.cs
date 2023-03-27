@@ -138,7 +138,8 @@ namespace game_store_business.ServicesProviders
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                TotalSum = cart.Items.Sum(i => i.Quantity * i.Game.Price)
             };
         }
 

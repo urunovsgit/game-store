@@ -61,8 +61,8 @@ namespace game_store.Controllers
         [HttpPost]
         public async Task<IActionResult> ConfirmOrder(OrderModel order)
         {
-            await _cartServiceProvider.ConfirmOrderCreationAsync(order);
-            return View("OrderSucceed");
+            order = await _cartServiceProvider.ConfirmOrderCreationAsync(order);
+            return View("OrderSucceed", order);
         }
     }
 }
