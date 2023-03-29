@@ -1,4 +1,5 @@
-﻿using Business;
+﻿using AutoMapper;
+using Business;
 using Data.Interfaces;
 using game_store.Models;
 using game_store_business.Models;
@@ -8,6 +9,7 @@ using game_store_business.Services;
 using game_store_business.ServicesProviders;
 using game_store_domain.Data;
 using game_store_domain.Entities;
+using Microsoft.Extensions.Caching.Memory;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -18,9 +20,17 @@ namespace game_store.Infrastructure
     {
         public static IServiceCollection AddGameStoreServices(this IServiceCollection services)
         {
+            services.AddMemoryCache();
             services.AddScoped<IUnitOfWork, GSUnitOfWork>();
             services.AddAutoMapper(Assembly.GetAssembly(typeof(GSMapperProfile)));
-            services.AddScoped<IGameService, GameServiceProvider>();
+            services.AddScoped<IGameService, CachingGameServiceProvider>((serviceProvider) =>
+            {
+                var service = new GameServiceProvider(
+                    serviceProvider.GetService<IUnitOfWork>(),
+                    serviceProvider.GetService<IMapper>());
+
+                return new CachingGameServiceProvider(service, serviceProvider.GetService<IMemoryCache>());
+            });
             services.AddScoped<ICartService, CartServiceProvider>();
             services.AddScoped<ICommentService, CommentServiceProvider>();
 

@@ -26,7 +26,7 @@ namespace game_store.Controllers
 
             if (TempData.ContainsKey("FilterOptions"))
             {
-                options = JsonConvert.DeserializeObject<GamesFilterOptions>(Convert.ToString(TempData["FilterOptions"]));
+                options = JsonConvert.DeserializeObject<GamesFilterOptions>(TempData["FilterOptions"].ToString());
             }
             else
             {
@@ -34,7 +34,6 @@ namespace game_store.Controllers
             }
 
             var games = await _gameServicesProvider.GetGamesByFilter(options);
-
             return View(new GamesListViewModel(games, genreNodes, options));
         }
 

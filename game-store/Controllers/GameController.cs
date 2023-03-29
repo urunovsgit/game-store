@@ -52,7 +52,6 @@ namespace game_store.Controllers
         public string UpdateGameData(EditGameViewModel gameViewModel)
         {
             _gameServicesProvider.UpdateAsync(gameViewModel).Wait();
-
             var redirectUrl = Url.ActionLink("ViewGame", "Game", new { gameId = gameViewModel.Id });
             return redirectUrl;
         }
@@ -60,7 +59,6 @@ namespace game_store.Controllers
         public async Task<ActionResult> DeleteGame(int gameId)
         {
             await _gameServicesProvider.DeleteByIdAsync(gameId);
-
             return RedirectToAction(nameof(Index), "Home");
         }
     }

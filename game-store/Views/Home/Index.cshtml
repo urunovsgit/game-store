@@ -52,7 +52,7 @@
     @foreach (var game in Model.Games)
     {
         <div class="col-lg-4 col-md-6">
-            <div class="recent-game-item">
+            <div class="recent-game-item" style="margin-bottom: 20px">
                 <div class="rgi-thumb set-bg" data-setbg="@(game.GameImageUrl)">
                     @if (!string.IsNullOrEmpty(game.GenresAsString))
                     {
