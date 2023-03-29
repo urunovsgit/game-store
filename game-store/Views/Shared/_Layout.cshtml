@@ -33,7 +33,7 @@
     </header>
 
     <!-- Header section end -->
-    <section class="recent-game-section spad set-bg" data-setbg="img/recent-game-bg.png">
+    <section class="recent-game-section spad" >
         <div class="container">
             
             @RenderBody()
@@ -45,9 +45,6 @@
         <div class="container">
             <ul class="footer-menu">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="review.html">Games</a></li>
-                <li><a href="categories.html">Blog</a></li>
-                <li><a href="community.html">Forums</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <p class="copyright">
@@ -68,6 +65,9 @@
     <script src="@Url.Content("/lib/jquery/dist/jquery.min.js")"></script>
     <script src="@Url.Content("/lib/bootstrap/dist/js/bootstrap.js")"></script>
     <script src="@Url.Content("/js/site.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/game-store/game.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/game-store/cart.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("/js/game-store/comment.js")" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,23 +1,33 @@
-﻿using game_store_domain.Entities;
+﻿using game_store.Infrastructure;
+using game_store_business.Models;
+using game_store_domain.Entities;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 
 namespace game_store.Models
 {
-    public class EditGameViewModel : Game
+    public class EditGameViewModel : GameViewModelBase
     {
-        public IFormFile UploadedImage
+        public EditGameViewModel() { }
+        public EditGameViewModel(GameModel model, IEnumerable<GenreNodeModel> allGenreNodes) : base(model)
+        {
+            GenreModels = allGenreNodes.ToGenreNodeViewModels(model.Genres);
+        }
+
+
+        private IFormFile? _uploadedImage;
+        public IFormFile? UploadedImage
         {
             get
             {
-                if (Image == null) return null;
-
-                var memStream = new MemoryStream(Image);
-
-                return new FormFile(memStream, 0, memStream.Length, "img", "img.jpeg");
+                return _uploadedImage;
             }
             set
             {
                 if (value != null)
                 {
+                    _uploadedImage = value;
                     var memStream = new MemoryStream();
 
                     value.CopyTo(memStream);
@@ -28,16 +38,6 @@ namespace game_store.Models
                 }
             }
         }
-
-        public EditGameViewModel()
-        {
-
-        }
-
-        public EditGameViewModel(Game game)
-        {
-            Id = game.Id;
-            CopyFrom(game);
-        }
+        public IEnumerable<GenreNodeViewModel> GenreModels { get; private set; }
     }
 }

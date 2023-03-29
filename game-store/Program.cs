@@ -1,16 +1,21 @@
-using game_store_domain;
-using game_store_domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using game_store;
 using game_store_domain.Entities;
-using Microsoft.Extensions.Options;
+using game_store_domain.Data;
+using Data.Interfaces;
+using AutoMapper;
+using Business;
+using System.Reflection;
+using game_store_business.ServiceInterfaces;
+using game_store_business.Services;
+using game_store.Infrastructure;
+using game_store;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddIdentity<GameStoreUser, IdentityRole>(opt => {
+builder.Services.AddIdentity<GameStoreUser, IdentityRole<int>>(opt => {
     opt.User.RequireUniqueEmail = true;
     opt.Password.RequireDigit = false;
     opt.Password.RequiredLength = 4;
@@ -21,15 +26,18 @@ builder.Services.AddIdentity<GameStoreUser, IdentityRole>(opt => {
 .AddEntityFrameworkStores<GameStoreDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.AddGameStoreServices();
+
+// Create some test data if database is empty
+// TODO: Remove on production
+builder.Services.AddTransient<SeedData>();
+
 builder.Services.AddMvc();
 builder.Services.AddHealthChecks();
 
 builder.Services.AddDbContext<GameStoreDbContext>(opts => {
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:GAMESTORE_DB_CONN_STR"]);
 });
-
-builder.Services.AddScoped<IGameStoreServices, GameStoreServiceProvider>();
-
 
 var app = builder.Build();
 
@@ -49,6 +57,10 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+//app.MapControllerRoute(
+//    name: "games",
+//    pattern: "{controller=Game}/{action=Index}/{FilterOptions?}");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -56,3 +68,6 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+// TODO: Remove on production
+app.Services.GetService<SeedData>().Init(app.Services.GetService<GSUnitOfWork>());

@@ -8,6 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Cart\**" />
+    <Compile Remove="Views\Game\**" />
+    <Content Remove="Views\Cart\**" />
+    <Content Remove="Views\Game\**" />
+    <EmbeddedResource Remove="Views\Cart\**" />
+    <EmbeddedResource Remove="Views\Game\**" />
+    <None Remove="Views\Cart\**" />
+    <None Remove="Views\Game\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Shared\ViewGame.cshtml" />
+    <Content Remove="Views\Shared\_CommentForm.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.3" />
     <PackageReference Include="microsoft.EntityFrameworkCore.Design" Version="7.0.3">
@@ -24,7 +41,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\game-store-domain\game-store-domain.csproj" />
+    <ProjectReference Include="..\game-store-business\game-store-business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Game\ViewGame.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Game\EditGame.cshtml" />
+    <Content Include="Views\Game\NewGame.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Cart\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Cart\Order.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Cart\OrderSucceed.cshtml" />
   </ItemGroup>
 
 </Project>

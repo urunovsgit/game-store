@@ -75,9 +75,9 @@
             else
             {
                 <li>
-                    <a id="cartLink" asp-controller="Cart" asp-action="Index">
+                    <a id="cartLink" asp-controller="Cart" asp-action="Index" asp-route-userId="@(user.Id)">
                         <img src="/img/cart.jpg" width="30" class="rounded me-2" alt="">
-                        @(user?.Cart.Items.Count())
+                        @(user?.Cart?.Items?.Count())
                     </a>
                 </li>
             }

@@ -1,0 +1,63 @@
+﻿@model EditGameViewModel
+
+<!-- Page section -->
+<section class="page-section single-blog-page spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog-thumb set-bg" data-setbg="@(Model.GameImageUrl)">
+                    @if (!string.IsNullOrEmpty(Model.GenresAsString))
+                    {
+                        <div class="cata racing">@(Model.GenresAsString)</div>
+                    }
+                </div>
+                <div class="comment-form-warp">
+                    <h4 class="comment-title">Edit game data</h4>
+                    <form id="gameDataForm" class="comment-form" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id"/>
+                        <input type="hidden" asp-for="Image" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input asp-for="Title" type="text" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="file" asp-for="UploadedImage" accept="image/*"/>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" asp-for="Price" required>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
+                                    Add / remove genre
+                                </button>
+                                <div class="modal fade" id="editGenres" tabindex="-1" aria-labelledby="gameGenresEditLbl" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="gameGenresEditLbl">Edit game genres</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <div class="row g-3 align-items-end">
+                                                        <partial name="_GenresView" model="@(Model.GenreModels)" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <textarea asp-for="Description"></textarea>
+                                <button id="gameUpdateSbmtBtn" class="site-btn btn-sm">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Page section end -->

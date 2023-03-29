@@ -1,0 +1,119 @@
+﻿@model SingleGameViewModel
+
+@inject SignInManager<GameStoreUser> SignInManager
+@inject UserManager<GameStoreUser> UserManager
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+    var leveledComments = Model.LeveledComments;
+}
+
+
+<style>
+    .comment-form,
+    .comments {
+        margin-top: 20px;
+    }
+
+    .comment-buttons {
+        margin-top: 10px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .comment-first-level {
+        margin-left: 20px;
+    }
+
+    .comment-second-level {
+        margin-left: 40px;
+    }
+
+    .comment-third-level {
+        margin-left: 60px;
+    }
+
+    .comment-fourth-level {
+        margin-left: 80px;
+    }
+
+    .comment-removed {
+        color: darkgray
+    }
+</style>
+
+<!-- Page section -->
+<section class="page-section single-blog-page spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog-thumb set-bg" data-setbg="@(Model.GameImageUrl)">
+                    @if (!string.IsNullOrEmpty(Model.GenresAsString))
+                    {
+                        <div class="cata racing">@Model.GenresAsString</div>
+                    }
+                </div>
+                <div class="blog-content">
+                    <h3>@Model.Title</h3>
+                    <p>@Model.Description</p>
+                    <p>$@Model.Price</p>
+                    <a class="btn btn-primary btn-sm" asp-action="EditGame" asp-controller="Game" asp-route-gameId="@(Model.Id)">
+                        Edit game data
+                    </a>
+                    <form asp-action="DeleteGame" asp-controller="Game" method="post">
+                        <input type="hidden" asp-for="Id" name="gameId" />
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#removeGameModal" type="button">
+                            Delete game
+                        </button>
+                        <dlg id="removeGameModal" title="Remove game">
+                            Are you sure to want to completely remove this game?
+                        </dlg>
+                    </form>
+                </div>
+                <div class="comment-warp">
+                    <form id="commentDataForm">
+                        <input type="hidden" name="GameId" value="@(Model.Id)" />
+                        <input type="hidden" name="UserId" value="@(currentUser?.Id)" />
+                    </form>
+                    <button type="button" class="comment-button" onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '', '-1', '-1')">Comment</button>
+                    <h4 class="comment-title">Comments</h4>
+                    <ul class="comment-list">
+                        @for (var i = 0; i < leveledComments.Count; ++i)
+                        {
+                            var currentComment = leveledComments[i];
+                            string levelStyle = "";
+
+                            if (currentComment.CommentLevel == 1) levelStyle = "comment-first-level";
+                            else if (currentComment.CommentLevel == 2) levelStyle = "comment-second-level";
+                            else if (currentComment.CommentLevel == 3) levelStyle = "comment-third-level";
+                            else if (currentComment.CommentLevel > 0) levelStyle = "comment-fourth-level";
+
+                            <li class="@levelStyle">
+                                <div class="comment">
+                                    <div class="comment-content">
+                                        <h5>@(currentComment.Username) <span>@(currentComment.DateTime)</span></h5>
+                                        <p id="textContent@(currentComment.Id)">@(currentComment.Text)</p>
+                                        <button id="replyBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link"
+                                            onclick="beginCommentEventHandler(this, '@(currentUser?.UserName)', '@(currentComment.Id)', '@i', '@(currentComment.CommentLevel)')">
+                                            Reply
+                                        </button>
+                                        @if (currentUser?.Id == currentComment.UserId)
+                                        {
+                                            <button id="editBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="editCommentEventHandler(this, '@(currentComment.Id)', '@(currentComment.Text)')">Edit</button>
+                                            <button id="deleteBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link" onclick="deleteCommentEventHandler('@(currentComment.Id)')">Delete</button>
+                                            <button id="restoreBtn@(currentComment.Id)" type="button" class="comment-button btn btn-link hidden" onclick="restoreCommentEventHandler('@(currentComment.Id)', '@(currentComment.Text)')">Restore</button>
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Page section end -->

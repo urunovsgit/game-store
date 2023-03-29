@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace game_store_domain.Entities
 {
@@ -50,19 +44,11 @@ namespace game_store_domain.Entities
         Other
     }
 
-    public class GenreNode
+    public class GenreNode : BaseEntity
     {
-        public int Id { get; set; }
-
-        [Required]
         public Genre Genre { get; set; }
-
-        [AllowNull]
         virtual public GenreNode ParentGenre { get; set; }
-
         virtual public int? ParentId { get; set; }
-
-        [AllowNull]
-        virtual public List<GenreNode> SubGenres { get; set; }
+        virtual public ICollection<GenreNode> SubGenres { get; set; }
     }
 }

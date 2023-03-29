@@ -1,4 +1,4 @@
-﻿@model Cart
+﻿@model CartViewModel
 
 <style>
     .cart-item {
@@ -92,43 +92,27 @@
         }
 </style>
 
-
-
-@if (Model.Items.Any())
+@if (Model.Items != null && Model.Items.Any())
 {
-    <form id="makeOrderForm" asp-controller="Cart" asp-action="MoveToOrder">
-        <input type="hidden" name="userId" value="@Model.UserId"/>
-        <input type="hidden" name="cartId" value="@Model.Id" />
-        <div class="form-group row">
-            <div id="totalSum" class="total-sum col-sm-10 col-form-label">Cart total sum: $@(Model.TotalSum)</div>
-            <div class="col-sm-2">
-                <button class="site-btn btn-sm" type="submit">Proceed</button>
-            </div>
+    <div class="form-group row">
+        <div id="totalSum" class="total-sum col-sm-10 col-form-label">Cart total sum: $@(Model.TotalSum)</div>
+        <div class="col-sm-2">
+            <a asp-controller="Cart" asp-action="Order" asp-route-cartId="@(Model.CartModel.Id)"
+               class="site-btn btn-sm">Proceed</a>
         </div>
-    </form>
+    </div>
 
     foreach (var item in Model.Items)
     {
-        string imgDataUrl;
-        if (item.Game.Image != null && item.Game.Image.Length != 0)
-        {
-            var gameImage = Convert.ToBase64String(item.Game.Image);
-            imgDataUrl = string.Format("data:image/jpg;base64,{0}", gameImage);
-        }
-        else
-        {
-            imgDataUrl = "/img/default-game-image.jpeg";
-        }
-
         <div id="cartItem@(item.Id)" class="cart-item">
             <form id="cartItemForm@(item.Id)">
-                <input type="hidden" name="cartId" value="@(Model.Id)">
+                <input type="hidden" name="cartId" value="@(Model.CartModel.Id)">
                 <input type="hidden" name="itemId" value="@(item.Id)">
             </form>
-            <img class="game-image" src="@imgDataUrl" alt="Game Image">
+            <img class="game-image" src="@(item.GameImageUrl)" alt="Game Image">
             <div class="game-details">
-                <div class="game-title">@(item.Game.Title)</div>
-                <div class="game-price">$@(item.Game.Price)</div>
+                <div class="game-title">@(item.GameTitle)</div>
+                <div class="game-price">$@(item.GamePrice)</div>
                 <div class="btn-group">
                     <div class="btn minus" onclick="decreaseGameQuantity(@(item.Id))">-</div>
                     <div id="quantityItem@(item.Id)" class="btn quantity">@(item.Quantity)</div>

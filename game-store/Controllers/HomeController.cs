@@ -1,7 +1,7 @@
 ﻿using game_store.Models;
+using game_store_business.Models;
+using game_store_business.ServiceInterfaces;
 using game_store_domain.Entities;
-using game_store_domain.Services;
-using game_store_domain.Services.Infrastrucure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,59 +11,39 @@ namespace game_store.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IGameStoreServices _storeServicesProvider;
+        private readonly IGameService _gameServicesProvider;
 
-        public HomeController(ILogger<HomeController> logger, IGameStoreServices gameServices)
+        public HomeController(IGameService gameServices)
         {
-            _logger = logger;
-            _storeServicesProvider = gameServices;
+            _gameServicesProvider = gameServices;
         }
 
-
-        public IActionResult Index(string titleKey = "")
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            
-            ViewBag.GenreNodes = _storeServicesProvider.GetAllGenreNodes();
-            List<Game> games;
+            var genreNodes = await _gameServicesProvider.GetAllGenreNodesModelsAsync();
+            var options = new GamesFilterOptions();
 
-            if(!string.IsNullOrEmpty(titleKey)) 
+            if (TempData.ContainsKey("FilterOptions"))
             {
-                games = _storeServicesProvider.GetGamesByTitle(titleKey).ToList();
-                ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
-            }
-            else if (TempData.ContainsKey("SelectedGenres"))
-            {
-                var genres = JsonConvert.DeserializeObject<List<Genre>>((string)TempData["SelectedGenres"]);
-                games = _storeServicesProvider.GetGamesByGenres(genres).ToList();
-                ViewBag.SelectedGenres = genres;
+                options = JsonConvert.DeserializeObject<GamesFilterOptions>(Convert.ToString(TempData["FilterOptions"]));
             }
             else
             {
-                games = _storeServicesProvider.GetAllGames().ToList();
-                ViewBag.SelectedGenres = Enum.GetValues(typeof(Genre)).OfType<Genre>().ToList();
+                options.AppliedGenres = genreNodes.Select(gn => (int)gn.Genre).ToList();
             }
 
-            return View(new GamesViewModel { Games = games, TitleKey = titleKey });
+            var games = await _gameServicesProvider.GetGamesByFilter(options);
+
+            return View(new GamesListViewModel(games, genreNodes, options));
         }
 
         [HttpPost]
-        public void ApplyGenreFilterOptions(List<Genre> genres)
+        public void ApplyFilterOptions(GamesFilterOptions options)
         {
-            TempData["SelectedGenres"] = JsonConvert.SerializeObject(genres);
+            TempData["FilterOptions"] = JsonConvert.SerializeObject(options);
         }
 
-        [HttpPost]
-        public ActionResult FindByGameTitle(string titleToFind)
-        {
-            return RedirectToAction("Index", new {titleKey = titleToFind });
-        }
-
-        [Authorize]
-        public ActionResult AddGame()
-        {
-            return RedirectToAction(nameof(AddGame), nameof(GameController));
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

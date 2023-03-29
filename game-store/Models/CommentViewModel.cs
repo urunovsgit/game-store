@@ -1,23 +1,22 @@
-﻿using game_store_domain.Entities;
+﻿using game_store_business.Models;
+using game_store_domain.Entities;
 
 namespace game_store.Models
 {
-    public class CommentViewModel : Comment
+    public class CommentViewModel : CommentModel
     {
         public CommentViewModel() { }
-
-        public CommentViewModel(Comment comment)
+        public CommentViewModel(CommentModel model)
         {
-            Id = comment.Id;
-            Text = comment.Text;
-            DateTime = comment.DateTime;
-            User = comment.User;
-            UserId = comment.UserId;
-            ParentId = comment.ParentId;
-            RelatedTo = comment.RelatedTo;
-            SubComments = comment.SubComments;
-            GameId = comment.GameId;
-            Game = comment.Game;
+            Id = model.Id;
+            Text = model.Text;
+            Username = model.Username;
+            DateTime = model.DateTime;
+            IsDeleted = model.IsDeleted;
+            UserId = model.UserId;
+            GameId = model.GameId;
+            ParentId = model.ParentId;
+            SubCommentsIds = model.SubCommentsIds;
         }
         public int CommentLevel { get; set; }
     }
