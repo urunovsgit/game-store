@@ -17,7 +17,7 @@ namespace game_store_domain.Data
 
         public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : base(options)
         {
-            //Database.EnsureCreated();
+            Database.EnsureCreatedGameGenres(this);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -31,7 +31,7 @@
         }
         else
         {
-            imgDataUrl = "/img/default-game-image.jpeg";
+            imgDataUrl = "/img/def-user-img.png";
         }
 
         <div class="user-panel">
@@ -41,20 +41,25 @@
                         <img src="@imgDataUrl" alt="Avatar" class="avatar">
                     </a>
                 </div>
-                <div class="col-auto">
+                <div class="col-auto" style="display: flex; justify-content: center; align-items: center">
 
                     Hello @(user?.FirstName) @(user?.LastName)!
                 </div>
+                <div class="col-auto">
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="site-btn btn-sm">Logout</button>
+                </form>
+                </div>
             </div>
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="site-btn btn-sm">Logout</button>
-            </form>
+
         </div>
     }
     else
     {
         <div class="user-panel">
-            <a class="site-btn btn-sm" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            /
+            <a id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </div>
     }
     <!-- responsive -->
@@ -62,17 +67,11 @@
         <i class="fa fa-bars"></i>
     </div>
     <!-- site menu -->
-    <nav class="main-menu">
+    <nav class="main-menu" style="float:left">
         <ul>
             <li><a asp-controller="Home" asp-action="Index">Games</a></li>
 
-            @if (!SignInManager.IsSignedIn(User))
-            {
-                <li class="nav-item">
-                    <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                </li>
-            }
-            else
+            @if (SignInManager.IsSignedIn(User))
             {
                 <li>
                     <a id="cartLink" asp-controller="Cart" asp-action="Index" asp-route-userId="@(user.Id)">

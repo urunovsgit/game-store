@@ -16,10 +16,10 @@ namespace game_store_business.ServicesProviders
 {
     public class CartServiceProvider : ICartService
     {
-        private readonly IUnitOfWork _gsUnitOfWork;
+        private readonly Data.Interfaces.IUnitOfWork _gsUnitOfWork;
         private readonly IMapper _mapperProfile;
 
-        public CartServiceProvider(IUnitOfWork unitOfWork, IMapper mapperProfile)
+        public CartServiceProvider(Data.Interfaces.IUnitOfWork unitOfWork, IMapper mapperProfile)
         {
             _gsUnitOfWork = unitOfWork;
             _mapperProfile = mapperProfile;

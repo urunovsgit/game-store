@@ -14,9 +14,10 @@ namespace game_store.Models
                                   GamesFilterOptions filterOptions)
         {
             Games = new List<SingleGameViewModel>();
+            var genres = filterOptions.AppliedGenres?.Select(g => (Genre)g);
             games.ToList().ForEach(game => Games.Add(new SingleGameViewModel(game)));
 
-            GenreModels = allGenreNodes.ToGenreNodeViewModels(allGenreNodes.Select(gn => gn.Genre));
+            GenreModels = allGenreNodes.ToGenreNodeViewModels(genres ?? allGenreNodes.Select(gn => gn.Genre));
             FilterOptions = filterOptions;
         }
 

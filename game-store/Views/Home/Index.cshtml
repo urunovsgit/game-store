@@ -7,20 +7,22 @@
     var currentUser = await UserManager.GetUserAsync(User);
 }
 
-<div class="row">
+<div class="row" style="padding-bottom: 15px">
     <div class="col-lg-5 col-md-6">
         <div class="widget-item">
             <a class="site-btn btn-sm" asp-controller="Game" asp-action="NewGame">Add game</a>
         </div>
     </div>
+</div>
+<div class="row g-3">
     <form id="gamesFilterForm" onsubmit="applyGamesFilter()">
-        <div class="col-lg-5 col-md-6">
-            <div class="widget-item">
+        <div class="col-auto">
+            <div class="widget-item form-control-plaintext">
                 <input type="text" placeholder="Search" name="TitleSubstring" value="@(Model.FilterOptions.TitleSubstring)">
                 <button type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-auto">
             <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editGenres">
                 Filter by genres
             </button>
@@ -65,13 +67,8 @@
                     <div class="rgi-extra">
                         <p>$@game.Price</p>
                     </div>
-                    @if(SignInManager.IsSignedIn(User))
+                    @if (SignInManager.IsSignedIn(User))
                     {
-                        @*if (currentUser.Cart == null)
-                        {
-                            currentUser.Cart = new Cart { UserId = currentUser.Id };
-                        }*@
-
                         @if (currentUser.Cart.Items != null && currentUser.Cart.Items.Any(i => i.GameId == game.Id))
                         {
                             <a class="site-btn btn-sm" asp-controller="Cart" asp-action="Index" asp-route-userId="@(currentUser.Id)">View in cart</a>

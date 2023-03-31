@@ -33,9 +33,8 @@
     </header>
 
     <!-- Header section end -->
-    <section class="recent-game-section spad" >
+    <section class="recent-game-section" style="padding-top: 30px">
         <div class="container">
-            
             @RenderBody()
         </div>
     </section>
@@ -44,8 +43,7 @@
     <footer class="footer-section">
         <div class="container">
             <ul class="footer-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
             </ul>
             <p class="copyright">
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->

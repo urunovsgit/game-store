@@ -11,7 +11,8 @@ namespace game_store_business.ServiceProviders
 {
     public class CachingGameServiceProvider : IGameService
     {
-        private readonly string _gamesCacheKey = "Games";
+        private readonly string _gamesCacheKey = "GAMES";
+        private readonly string _genresCacheKey = "GENRES";
         private readonly IMemoryCache _cache;
         private readonly IGameService _gameService;
 
@@ -41,7 +42,8 @@ namespace game_store_business.ServiceProviders
 
         public async Task<IEnumerable<GenreNodeModel>> GetAllGenreNodesModelsAsync()
         {
-            return await _gameService.GetAllGenreNodesModelsAsync();
+            return await _cache.GetOrCreateAsync(_genresCacheKey,
+                (entry) => _gameService.GetAllGenreNodesModelsAsync());
         }
 
         public async Task<GameModel> GetByIdAsync(int id)
@@ -51,8 +53,7 @@ namespace game_store_business.ServiceProviders
 
         public async Task<IEnumerable<GameModel>> GetGamesByFilter(GamesFilterOptions options)
         {
-            return await _cache.GetOrCreateAsync(_gamesCacheKey,
-                (entry) => _gameService.GetGamesByFilter(options));
+            return await _gameService.GetGamesByFilter(options);
         }
 
         public async Task<GameModel> UpdateAsync(GameModel modelDTO)

@@ -35,21 +35,12 @@ namespace game_store_business.Services
 
             if (options.AppliedGenres != null)
             {
-                var genresNodes = await _gsUnitOfWork.GenreNodeRepository.GetAllAsync();
-                var genres = genresNodes.Where(gn => options.AppliedGenres.Contains((int)gn.Genre))
-                                                                          .Select(gn => gn.Genre);
-
-                games = games.Where(game => game.Genres
-                                 .Any(genre => genres
-                                    .Contains(genre)))
-                             .ToList();
+                games = FilterByGenres(games, options.AppliedGenres);
             }
 
             if (options.TitleSubstring != null)
             {
-                games = games.Where(game => game.Title
-                                    .Contains(options.TitleSubstring, StringComparison.InvariantCultureIgnoreCase))
-                                    .ToList();
+                games = FilterByTitle(games, options.TitleSubstring);
             }
 
             return _mapperProfile.Map<IEnumerable<GameModel>>(games);
@@ -92,6 +83,23 @@ namespace game_store_business.Services
         {
             var nodes = await _gsUnitOfWork.GenreNodeRepository.GetAllAsync();
             return _mapperProfile.Map<IEnumerable<GenreNodeModel>>(nodes);
+        }
+
+        private IEnumerable<Game> FilterByGenres(IEnumerable<Game> games, ICollection<int> appliedGenres)
+        {
+            var genresNodes = _gsUnitOfWork.GenreNodeRepository.GetAllAsync().Result;
+            var genres = genresNodes.Where(gn => appliedGenres.Contains((int)gn.Genre))
+                                                                .Select(gn => gn.Genre);
+
+            return games.Where(game => game.Genres
+                             .Any(genre => genres
+                                .Contains(genre)));
+        }
+
+        private IEnumerable<Game> FilterByTitle(IEnumerable<Game> games, string entry)
+        {
+            return games.Where(game => game.Title
+                            .Contains(entry, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

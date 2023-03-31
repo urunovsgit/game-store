@@ -1,1 +1,1 @@
-﻿1. Used patterns Repository, UoW, Adapter(DTO -> DTOVM)
+﻿1. Used patterns Repository, UoW, Adapter(DTO -> DTOVM), Proxy (CachingGames)

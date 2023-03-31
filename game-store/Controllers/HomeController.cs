@@ -23,17 +23,18 @@ namespace game_store.Controllers
         {
             var genreNodes = await _gameServicesProvider.GetAllGenreNodesModelsAsync();
             var options = new GamesFilterOptions();
+            IEnumerable<GameModel> games;
 
             if (TempData.ContainsKey("FilterOptions"))
             {
                 options = JsonConvert.DeserializeObject<GamesFilterOptions>(TempData["FilterOptions"].ToString());
+                games = await _gameServicesProvider.GetGamesByFilter(options);
             }
             else
             {
-                options.AppliedGenres = genreNodes.Select(gn => (int)gn.Genre).ToList();
+                games = await _gameServicesProvider.GetAllAsync();
             }
-
-            var games = await _gameServicesProvider.GetGamesByFilter(options);
+            
             return View(new GamesListViewModel(games, genreNodes, options));
         }
 
