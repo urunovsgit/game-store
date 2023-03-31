@@ -1,8 +1,6 @@
-﻿using Data.Interfaces;
-using game_store_domain.Data;
+﻿using game_store_domain.Data;
 using game_store_domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace game_store
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace game_store_business.ServiceInterfaces
+﻿namespace game_store_business.ServiceInterfaces
 {
     public interface ICrudService<TModel> where TModel : class
     {

@@ -1,16 +1,7 @@
 ﻿using AutoMapper;
-using Business;
-using Data.Interfaces;
 using game_store_business.Models;
 using game_store_business.ServiceInterfaces;
-using game_store_domain.Data;
 using game_store_domain.Entities;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace game_store_business.ServicesProviders
 {

@@ -1,9 +1,5 @@
 ﻿using game_store.Infrastructure;
 using game_store_business.Models;
-using game_store_domain.Entities;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
 
 namespace game_store.Models
 {

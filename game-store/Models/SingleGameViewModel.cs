@@ -1,6 +1,4 @@
-﻿using game_store.Infrastructure;
-using game_store_business.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using game_store_business.Models;
 
 namespace game_store.Models
 {

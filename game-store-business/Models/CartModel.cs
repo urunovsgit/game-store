@@ -1,7 +1,4 @@
-﻿using game_store_domain.Entities;
-using System.Collections.ObjectModel;
-
-namespace game_store_business.Models
+﻿namespace game_store_business.Models
 {
     public class CartModel
     {

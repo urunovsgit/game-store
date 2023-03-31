@@ -1,5 +1,4 @@
 ﻿using game_store_business.Models;
-using game_store_domain.Entities;
 
 namespace game_store.Models
 {

@@ -2,12 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using game_store_domain.Entities;
 using game_store_domain.Data;
-using Data.Interfaces;
-using AutoMapper;
-using Business;
-using System.Reflection;
-using game_store_business.ServiceInterfaces;
-using game_store_business.Services;
 using game_store.Infrastructure;
 using game_store;
 
