@@ -125,7 +125,6 @@ namespace game_store_business.ServicesProviders
             return new OrderModel
             {
                 UserId = cart.UserId,
-                CartId = cartId,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
@@ -137,11 +136,11 @@ namespace game_store_business.ServicesProviders
         public async Task<OrderModel> ConfirmOrderCreationAsync(OrderModel orderModel)
         {
             var order = _mapperProfile.Map<Order>(orderModel);
-            var cart = await _gsUnitOfWork.CartRepository.GetByIdAsync(order.CartId);
+            var user = await _gsUnitOfWork.UserManager.FindByIdAsync(order.UserId.ToString());
 
             await _gsUnitOfWork.OrderRepository.AddAsync(order);
 
-            foreach (var item in cart.Items)
+            foreach (var item in user?.Cart.Items)
             {
                 _gsUnitOfWork.CartItemRepository.Delete(item);
             }

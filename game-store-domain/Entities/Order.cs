@@ -14,7 +14,6 @@ namespace game_store_domain.Entities
     public class Order : BaseEntity
     {
         public int UserId { get; set; }
-        public int CartId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

@@ -99,12 +99,6 @@ namespace game_store_domain.Data
                     .HasForeignKey(x => x.UserId)
                     .IsRequired(true)
                     .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(x => x.Cart)
-                    .WithOne(x => x.Order)
-                    .HasForeignKey<Order>(x => x.CartId)
-                    .IsRequired(true)
-                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Cart>(entity =>
