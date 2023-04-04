@@ -34,7 +34,7 @@ var app = builder.Build();
 
 // Create some test data if database is empty
 // TODO: Remove on production
-DataSeeder.Init(app);
+//DataSeeder.Init(app);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
