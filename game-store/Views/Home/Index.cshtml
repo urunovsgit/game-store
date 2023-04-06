@@ -63,7 +63,6 @@
                 </div>
                 <div id="rgi@(game.Id)" class="rgi-content">
                     <a asp-controller="Game" asp-action="ViewGame" asp-route-gameId="@game.Id"><h5>@game.Title</h5></a>
-                    <p class="comment">@(game.LeveledComments.Count()) Comments</p>
                     <div class="rgi-extra">
                         <p>$@game.Price</p>
                     </div>
