@@ -1,11 +1,6 @@
-﻿//function onCommentRoot() {
-//    const commentForm = document.querySelector('.comment-form');
-//    commentForm.classList.remove('hidden');
-//}
-
+﻿
 function beginCommentEventHandler(element, username, commentId, listItemIndex, itemLevel) {
     let commentForm = document.querySelector('.comment-form');
-    //commentForm.classList.remove('hidden');
 
     if (commentForm != null) commentForm.remove();
 

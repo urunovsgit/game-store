@@ -1,9 +1,11 @@
 ﻿using game_store.Models;
 using game_store_business.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace game_store.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly ICommentService _commentServiceProvider;
