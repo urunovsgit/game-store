@@ -27,7 +27,7 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddDbContext<GameStoreDbContext>(opts =>
 {
-    opts.UseSqlServer(builder.Configuration["ConnectionStrings:GAMESTORE_DB_CONN_STR"]);
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:AZURE_SQL_CONNECTIONSTRING"]);
 });
 
 var app = builder.Build();
