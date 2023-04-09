@@ -15,7 +15,7 @@ namespace game_store.Controllers
             _cartServiceProvider = cartService;
         }
 
-        [HttpGet]
+        [HttpGet("cart")]
         public async Task<IActionResult> Index(int userId)
         {
             var cartModel = await _cartServiceProvider.GetCartByUserId(userId);
@@ -49,7 +49,7 @@ namespace game_store.Controllers
             return cart.Sum;
         }
 
-        [HttpGet]
+        [HttpGet("order/{cartId}")]
         public async Task<IActionResult> Order(int cartId)
         {
             var order = await _cartServiceProvider.CreateOrderForCartAsync(cartId);

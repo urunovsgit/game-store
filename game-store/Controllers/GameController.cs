@@ -15,14 +15,14 @@ namespace game_store.Controllers
             _gameServicesProvider = gameServices;
         }
 
-        [HttpGet]
+        [HttpGet("games/{gameId}")]
         public async Task<IActionResult> ViewGame(int gameId)
         {
             var game = await _gameServicesProvider.GetByIdAsync(gameId);
             return View(new SingleGameViewModel(game));
         }
 
-        [HttpGet]
+        [HttpGet("games/new")]
         public async Task<IActionResult> NewGame()
         {
             var genreNodes = await _gameServicesProvider.GetAllGenreNodesModelsAsync();
@@ -38,7 +38,7 @@ namespace game_store.Controllers
             return redirectUrl;
         }
 
-        [HttpGet]
+        [HttpGet("games/edit/{gameId}")]
         public async Task<IActionResult> EditGame(int gameId)
         {
             var gameModel = await _gameServicesProvider.GetByIdAsync(gameId);
