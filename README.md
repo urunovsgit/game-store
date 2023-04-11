@@ -49,12 +49,12 @@ Above all, its power to manage multiple views makes MVC the best architecture pa
 ### Structure (logic separation)
 The solution containing three VS projects:
 1. A class library project which contains classes that represent the data access layer ([game-store-domain](./game-store-domain/)).
-2. A business logic layer ([todo-domain-entities.Test](./game-store-business/)).
+2. A business logic layer ([game-store-business](./game-store-business/)).
 3. A client ASP.NET Core MVC application is the UI layer ([game-store](./game-store/)).
 
 
 ### Data access layer
-To store the data about ToDo lists is used a Localdb under the management of MSSQL server. The access to the database and managing data providing 
+To store the data of application is used a Localdb under the management of MSSQL server. The access to the database and managing data providing 
 by [Entity Framework Core](https://learn.microsoft.com/en-us/ef/core/) object-relational mapping tool which allows to create a database without designing the tables directly. This aproach is called 
 Code-First helps to create a new database and gives a possibility of changing the configuration of a database upon changing the classes. 
 It enables the developers to get more control through the code only.
@@ -64,8 +64,7 @@ For each DAO type is created Repository classes implementing `IRepository` inter
 by corresponding repository class object. Also `GSUnitOfWork` class is the implementation of Unit of Work pattern which used to group one or more operations 
 into a single transaction.
 
-Class `GameStoreDbContext` derives `IdentityDbContext<GameStoreUser, IdentityRole<int>, int>` which is the primary class that is responsible for interacting with the database. 
-`AppDbContext` class contains `DbSet<ToDoList>` and `DbSet<ToDoEntry>` properties which represents the collection of entities in the context, 
+Class `GameStoreDbContext` derives `IdentityDbContext<GameStoreUser, IdentityRole<int>, int>` which is the primary class that is responsible for interacting with the database. This class contains `DbSet<Entity>` properties which represents the collection of entities in the context, 
 or that can be queried from the database. Also it accepts context configuration options passed through constructor.
 
 
